@@ -1,0 +1,2079 @@
+<!DOCTYPE html>
+<html lang="es" class="light">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SONYA | Motor CRITIC + MRP</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class", theme: {
+                extend: {
+                    colors: {
+                        "primary": "#004655", "primary-container": "#005f73", "on-primary": "#ffffff",
+                        "secondary": "#00696c", "on-secondary": "#ffffff", "secondary-container": "#86f0f3",
+                        "tertiary": "#8b3d97", "on-tertiary": "#ffffff",
+                        "error": "#ba1a1a", "error-container": "#ffdad6", "on-error-container": "#93000a",
+                        "surface": "#f6fafe", "on-surface": "#171c1f",
+                        "surface-container-lowest": "#ffffff", "surface-container-low": "#f0f4f8",
+                        "surface-container": "#eaeef2", "surface-container-high": "#e4e9ed", "surface-container-highest": "#dfe3e7",
+                        "outline": "#6f797c", "outline-variant": "#bfc8cc", "on-surface-variant": "#3f484c"
+                    },
+                    fontFamily: { "headline": ["Manrope", "sans-serif"], "body": ["Inter", "sans-serif"], "mono": ["JetBrains Mono", "monospace"], "label": ["Space Grotesk", "sans-serif"] },
+                    borderRadius: { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "2xl": "0.75rem", "3xl": "1rem", "full": "9999px" },
+                }
+            }
+        }
+    </script>
+    <style>
+        :root {
+            --purple: #8b3d97;
+            --purple-dark: #5d2766;
+            --teal: #00696c;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f6fafe;
+            color: #171c1f;
+            margin: 0;
+        }
+
+        .font-headline {
+            font-family: 'Manrope', sans-serif;
+        }
+
+        .data-mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+            line-height: 1;
+        }
+
+        .fill-icon {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .blueprint-grid {
+            background-color: #f6fafe;
+            background-image: radial-gradient(circle, #dfe3e7 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+
+        .watercolor-wash {
+            background: radial-gradient(circle at 50% 30%, rgba(139, 61, 151, 0.04) 0%, transparent 60%);
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeUp 0.3s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+
+            to {
+                opacity: 1;
+                transform: none;
+            }
+        }
+
+        .toast-wrap {
+            position: fixed;
+            top: 76px;
+            right: 24px;
+            z-index: 900;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            pointer-events: none;
+        }
+
+        .toast {
+            background: white;
+            border: 1px solid rgba(195, 197, 215, 0.4);
+            border-radius: 12px;
+            padding: 12px 16px;
+            box-shadow: 0 12px 32px rgba(25, 28, 30, 0.08);
+            font-size: 13px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            pointer-events: auto;
+            animation: toastIn 0.3s ease;
+        }
+
+        .toast.removing {
+            animation: toastOut 0.3s ease forwards;
+        }
+
+        @keyframes toastIn {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: none;
+            }
+        }
+
+        @keyframes toastOut {
+            to {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+        }
+
+        #loading {
+            position: fixed;
+            inset: 0;
+            z-index: 999;
+            background: rgba(246, 250, 254, 0.88);
+            backdrop-filter: blur(6px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #loading.show {
+            display: flex;
+        }
+
+        .spinner {
+            width: 36px;
+            height: 36px;
+            border: 3px solid #bfc8cc;
+            border-top-color: var(--purple);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        ::-webkit-scrollbar {
+            width: 5px;
+            height: 5px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #bfc8cc;
+            border-radius: 10px;
+        }
+
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .no-scrollbar {
+            scrollbar-width: none;
+        }
+
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 16px;
+            border-radius: 12px;
+            font-family: 'Manrope', sans-serif;
+            font-weight: 700;
+            font-size: 12px;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: #3f484c;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .sidebar-link:hover {
+            background: rgba(139, 61, 151, 0.07);
+            color: var(--purple);
+        }
+
+        .sidebar-link.active {
+            background: rgba(139, 61, 151, 0.12);
+            color: var(--purple);
+        }
+
+        .mrp-tab-btn {
+            display: flex;
+            align-items: center;
+            height: 100%;
+            font-family: 'Manrope', sans-serif;
+            font-weight: 700;
+            font-size: 11px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: #6f797c;
+            border: none;
+            border-bottom: 2px solid transparent;
+            background: none;
+            cursor: pointer;
+            padding: 0 2px;
+            transition: all 0.2s;
+        }
+
+        .mrp-tab-btn:hover {
+            color: var(--purple);
+        }
+
+        .mrp-tab-btn.tab-active {
+            color: var(--purple);
+            border-bottom-color: var(--purple);
+        }
+
+        .std-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            border: 2px solid #bfc8cc;
+            background: white;
+            flex-shrink: 0;
+        }
+
+        .red-dot {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #ba1a1a;
+            border: 3px solid white;
+            box-shadow: 0 0 0 3px rgba(186, 26, 26, 0.18);
+            flex-shrink: 0;
+        }
+
+        .connector {
+            width: 2px;
+            background: #dfe3e7;
+            min-height: 24px;
+            margin: 0 5px;
+            flex-shrink: 0;
+        }
+
+        .badge-ok {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 6px;
+            background: #dcfce7;
+            color: #166534;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            font-weight: 700;
+            border: 1px solid #bbf7d0;
+        }
+
+        .badge-ko {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 6px;
+            background: #fee2e2;
+            color: #991b1b;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            font-weight: 700;
+            border: 1px solid #fecaca;
+        }
+
+        .badge-n {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 6px;
+            background: #f1f5f9;
+            color: #475569;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            font-weight: 700;
+            border: 1px solid #e2e8f0;
+        }
+
+        .badge-ok.lim,
+        .badge-ko.lim,
+        .badge-n.lim {
+            outline: 2px solid #ba1a1a;
+            outline-offset: 2px;
+        }
+    </style>
+</head>
+
+<body class="flex min-h-screen blueprint-grid">
+
+    <div id="loading">
+        <div
+            class="bg-white p-8 rounded-2xl border border-outline-variant/20 shadow-2xl flex flex-col items-center gap-4">
+            <div class="spinner"></div>
+            <p id="spin-msg" class="text-sm font-bold text-on-surface-variant font-headline">Calculando...</p>
+        </div>
+    </div>
+    <div class="toast-wrap" id="toast-wrap"></div>
+
+    <!-- SIDEBAR -->
+    <aside
+        class="hidden md:flex flex-col h-screen w-64 fixed left-0 top-0 z-40 bg-[#f8faff] border-r border-slate-200 overflow-hidden">
+        <div class="p-6">
+            <div class="flex items-center mb-10 cursor-pointer" onclick="location.href='../index.html'">
+                <img src="/Prueba1_Sonya/logo_sonya.png" alt="SONYA Logo" class="h-10 w-auto object-contain">
+            </div>
+            <nav class="space-y-1">
+                <a href="../index.html" class="sidebar-link"><span
+                        class="material-symbols-outlined text-xl">grid_view</span>Dashboard</a>
+                <a href="gestion_bbdd.html" class="sidebar-link"><span
+                        class="material-symbols-outlined text-xl">database</span>BBDD</a>
+                <a href="mrp.html" class="sidebar-link active"><span
+                        class="material-symbols-outlined fill-icon text-xl">analytics</span>Motor MRP</a>
+                <a href="topsis.html" class="sidebar-link"><span
+                        class="material-symbols-outlined text-xl">insights</span>Motor TOPSIS</a>
+            </nav>
+            <div class="mt-8 p-5 bg-gradient-to-br from-white to-red-50/40 border border-red-100 rounded-2xl shadow-sm">
+                <div class="flex items-center gap-2 mb-2">
+                    <span class="material-symbols-outlined fill-icon text-red-500 text-lg">error</span>
+                    <span class="text-[10px] font-mono font-bold uppercase tracking-widest text-red-500">Lógica de
+                        Veto</span>
+                </div>
+                <h4 class="font-headline font-bold text-xs text-slate-900 mb-2">Sostenibilidad Fuerte</h4>
+                <p class="text-[11px] leading-relaxed text-slate-600">Garantiza que indicadores críticos no sean
+                    compensados. Umbrales de reserva innegociables. SS = min(s_eco, s_amb, s_soc).</p>
+            </div>
+            <div class="mt-6">
+                <label class="block font-mono text-[9px] uppercase tracking-widest text-outline mb-2">Acción</label>
+                <select id="uf-sidebar-sel" onchange="onUFChange(this.value)"
+                    class="w-full bg-white border border-slate-200 rounded-xl p-2.5 text-xs font-bold text-slate-700 focus:ring-2 focus:ring-[#8b3d97]/20 transition-all cursor-pointer">
+                    <option value="">Cargando U.F....</option>
+                </select>
+            </div>
+        </div>
+        <div class="mt-auto p-4 mx-4 mb-4 bg-surface-container rounded-xl border border-outline-variant/20">
+            <p class="font-mono text-[10px] text-outline uppercase tracking-wider mb-1.5">System Status</p>
+            <div class="flex items-center gap-2">
+                <div class="w-2 h-2 rounded-full bg-[#8b3d97] animate-pulse"></div>
+                <span class="text-xs font-medium font-headline" id="sidebar-status">Engine Ready</span>
+            </div>
+        </div>
+    </aside>
+
+    <!-- MAIN -->
+    <div class="md:ml-64 flex-1 flex flex-col min-h-screen">
+        <header
+            class="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-xl border-b border-outline-variant/30 flex justify-between items-center pr-8 md:pl-[280px] h-16 shadow-sm">
+            <nav class="hidden md:flex gap-4 lg:gap-8 h-16 overflow-x-auto no-scrollbar">
+                <button
+                    class="mrp-tab-btn tab-active h-full border-b-[3px] border-[#8b3d97] text-[#8b3d97] font-bold text-sm tracking-wide px-2 lg:px-4 transition-all whitespace-nowrap"
+                    onclick="switchInnerTab('ranking', this)">Ranking Global</button>
+                <button
+                    class="mrp-tab-btn h-full border-b-[3px] border-transparent text-slate-500 font-semibold text-sm tracking-wide px-2 lg:px-4 transition-all whitespace-nowrap"
+                    onclick="switchInnerTab('simulacion', this)">Nueva Simulación</button>
+                <button
+                    class="mrp-tab-btn h-full border-b-[3px] border-transparent text-slate-500 font-semibold text-sm tracking-wide px-2 lg:px-4 transition-all whitespace-nowrap"
+                    onclick="switchInnerTab('control', this)">Panel de Control</button>
+                <button
+                    class="mrp-tab-btn h-full border-b-[3px] border-transparent text-slate-500 font-semibold text-sm tracking-wide px-2 lg:px-4 transition-all whitespace-nowrap"
+                    onclick="switchInnerTab('scenario', this)">Ranking Seleccionable</button>
+            </nav>
+            <div class="flex items-center gap-3 flex-shrink-0 ml-4">
+                <div id="uf-header-badge"
+                    class="hidden items-center gap-2 px-3 py-1.5 bg-[#8b3d97]/10 rounded-full border border-[#8b3d97]/20">
+                    <span class="material-symbols-outlined text-[#8b3d97] text-sm fill-icon">category</span>
+                    <span class="text-[10px] font-mono font-bold text-[#8b3d97] uppercase tracking-widest"
+                        id="uf-header-label">--</span>
+                </div>
+                <div class="flex items-center gap-2 px-3 py-1.5 bg-green-50 rounded-full border border-green-200">
+                    <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse shadow-[0_0_6px_rgba(34,197,94,0.6)]">
+                    </div>
+                    <span class="text-[10px] font-label font-bold text-green-700 uppercase tracking-widest">Motor
+                        Local</span>
+                </div>
+            </div>
+        </header>
+
+        <main class="flex-1 mt-24 p-8 lg:p-10 max-w-7xl mx-auto w-full space-y-10 watercolor-wash">
+            <div>
+                <h1
+                    class="text-4xl font-extrabold font-headline tracking-tighter text-slate-900 mb-1 flex items-center gap-1">
+                    <span class="font-medium text-slate-400">Motor</span> <span class="text-[#8b3d97] ml-1">CRITIC +
+                        MRP</span>
+                </h1>
+                <div class="h-1 w-10 bg-[#8b3d97] mt-2 rounded-full opacity-50 mb-3"></div>
+
+                <!-- UF infobar -->
+                <div id="uf-infobar"
+                    class="mt-5 p-4 bg-white rounded-xl border border-outline-variant/20 shadow-sm hidden">
+                    <div class="flex items-center justify-between flex-wrap gap-3">
+                        <div class="flex items-center gap-3">
+                            <span class="material-symbols-outlined fill-icon text-[#8b3d97]">category</span>
+                            <div>
+                                <p class="font-mono text-[9px] uppercase tracking-widest text-outline">Acción Activa</p>
+                                <p class="font-headline font-bold text-slate-900" id="uf-infobar-label">--</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-6">
+                            <div class="text-center">
+                                <p class="font-mono text-[9px] text-outline uppercase tracking-widest">Unidad</p>
+                                <p class="font-bold text-sm text-slate-700 font-headline" id="uf-infobar-unit">--</p>
+                            </div>
+                            <div class="text-center">
+                                <p class="font-mono text-[9px] text-outline uppercase tracking-widest">Alternativas</p>
+                                <p class="font-bold text-sm text-[#8b3d97] font-headline" id="uf-infobar-count">--</p>
+                            </div>
+                            <div class="text-center">
+                                <p class="font-mono text-[9px] text-outline uppercase tracking-widest">Línea Roja</p>
+                                <p class="font-bold text-sm text-red-600 font-headline" id="uf-lr-display">α=1.0</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ████ TAB: RANKING GLOBAL ████ -->
+            <div id="tab-ranking" class="tab-content active space-y-8">
+                <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5" id="m-metrics-container">
+                    <div class="bg-white p-6 rounded-xl border border-outline-variant/10 shadow-sm"><span
+                            class="font-headline text-xs font-bold text-on-surface-variant uppercase tracking-widest">Cargando...</span>
+                    </div>
+                </section>
+
+                <section class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- CRITIC Weights -->
+                    <div class="bg-surface-container-low p-8 rounded-xl border border-outline-variant/10">
+                        <div class="flex items-center justify-between mb-8">
+                            <h4 class="font-headline font-bold text-xl flex items-center gap-2"><span
+                                    class="material-symbols-outlined text-secondary">balance</span>CRITIC Weights</h4>
+                            <span
+                                class="text-[10px] font-mono bg-white px-2 py-1 rounded border border-outline-variant/20 text-outline font-bold">AUTO-ADJUSTED</span>
+                        </div>
+                        <div class="space-y-6" id="m-weights-container">
+                            <p class="text-sm text-outline">Calculando...</p>
+                        </div>
+                        <div
+                            class="mt-8 p-4 bg-white/60 border-l-4 border-[#8b3d97] rounded text-sm italic text-on-surface-variant">
+                            "Weights calculated via contrast intensity and inter-criteria correlation analysis."</div>
+                    </div>
+                    <!-- Red Line Panel -->
+                    <div class="bg-surface-container-low p-8 rounded-xl border border-outline-variant/10">
+                        <div class="flex items-center justify-between mb-8">
+                            <h4 class="font-headline font-bold text-xl flex items-center gap-2"><span
+                                    class="material-symbols-outlined text-error">gavel</span>Active Red Line</h4>
+                            <span
+                                class="text-[10px] font-mono bg-white px-2 py-1 rounded border border-outline-variant/20 text-outline font-bold">MRP
+                                VETO LOGIC</span>
+                        </div>
+                        <div class="space-y-0">
+                            <div class="flex items-start gap-3">
+                                <div class="flex flex-col items-center pt-1">
+                                    <div class="std-dot"></div>
+                                    <div class="connector h-7"></div>
+                                </div>
+                                <div class="flex-1 pb-5 flex items-center justify-between"><span
+                                        class="font-headline font-bold text-sm text-slate-400">Alpha [4] :
+                                        Ideal</span><span class="data-mono text-[11px] text-slate-400">4.00</span></div>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <div class="flex flex-col items-center pt-1">
+                                    <div class="std-dot"></div>
+                                    <div class="connector h-7"></div>
+                                </div>
+                                <div class="flex-1 pb-5 flex items-center justify-between"><span
+                                        class="font-headline font-bold text-sm text-slate-400">Alpha [3] : Rendimiento
+                                        Alto</span><span class="data-mono text-[11px] text-slate-400">3.00</span></div>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <div class="flex flex-col items-center pt-1">
+                                    <div class="std-dot"></div>
+                                    <div class="connector h-8"></div>
+                                </div>
+                                <div class="flex-1 pb-5 flex items-center justify-between"><span
+                                        class="font-headline font-bold text-sm text-slate-400">Alpha [2] :
+                                        Estándar</span><span class="data-mono text-[11px] text-slate-400">2.50</span>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <div class="flex flex-col items-center pt-1">
+                                    <div class="red-dot"></div>
+                                    <div class="connector h-8"></div>
+                                </div>
+                                <div class="flex-1 bg-red-50/60 border border-red-200 rounded-lg px-4 py-3 mb-0">
+                                    <div class="flex items-center justify-between"><span
+                                            class="font-headline font-extrabold text-sm text-red-600 uppercase tracking-tight">Alpha
+                                            [1] : LÍNEA ROJA (VETO)</span><span
+                                            class="data-mono text-sm font-bold text-red-600" id="lr-display">1.00</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3 pt-3">
+                                <div class="flex flex-col items-center pt-1">
+                                    <div class="std-dot opacity-40"></div>
+                                </div>
+                                <div class="flex-1 flex items-center justify-between"><span
+                                        class="font-headline font-bold text-sm text-slate-300">Alpha [0] :
+                                        Inaceptable</span><span class="data-mono text-[11px] text-slate-300">0.00</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Ranking Table -->
+                <section class="bg-white rounded-xl border border-outline-variant/20 shadow-xl overflow-hidden">
+                    <div
+                        class="px-6 py-5 border-b border-outline-variant/10 flex justify-between items-center bg-surface-container-low/40">
+                        <h4 class="font-headline font-bold text-xl">High-Resolution Ranking</h4>
+                        <button onclick="loadM()"
+                            class="p-2 hover:bg-surface-container rounded-lg transition-colors"><span
+                                class="material-symbols-outlined text-sm text-outline">refresh</span></button>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr
+                                    class="bg-surface-container-low text-[10px] font-mono font-bold text-outline uppercase tracking-widest border-b border-outline-variant/10">
+                                    <th class="px-4 py-4">#</th>
+                                    <th class="px-4 py-4">Alternativa</th>
+                                    <th class="px-4 py-4 text-right">Amb (raw)</th>
+                                    <th class="px-4 py-4 text-right">Soc (raw)</th>
+                                    <th class="px-4 py-4 text-right">Eco (raw)</th>
+                                    <th
+                                        class="px-5 py-3 text-center text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                                        Variación vs EX-ANTE</th>
+                                    <th class="px-4 py-4">Score SS</th>
+                                    <th class="px-4 py-4">Logros (Amb / Soc / Eco)</th>
+                                    <th class="px-4 py-4 text-right">Veredicto</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-outline-variant/10" id="m-table-body">
+                                <tr>
+                                    <td colspan="8" class="p-10 text-center text-outline font-headline">Selecciona una
+                                        Acción para iniciar...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="m-veto-note-container"></div>
+                </section>
+            </div>
+
+            <!-- ████ TAB: NUEVA SIMULACIÓN ████ -->
+            <div id="tab-simulacion" class="tab-content space-y-12">
+                <section class="space-y-6">
+                    <div class="flex items-center gap-5 mb-2">
+
+                        <div>
+                            <span
+                                class="inline-block px-2 py-1 bg-primary/10 text-primary text-[10px] font-black uppercase tracking-widest rounded-md mb-1">Paso
+                                1: Línea Base</span>
+                            <h2
+                                class="text-3xl md:text-4xl font-extrabold font-headline tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-slate-900 to-primary">
+                                Definición Escenario EX-ANTE</h2>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                        <div
+                            class="lg:col-span-8 bg-surface-container-low p-8 rounded-xl shadow-sm border border-transparent space-y-6">
+                            <div>
+                                <label
+                                    class="block font-mono text-[10px] uppercase tracking-widest text-outline mb-2"></label>
+                                <select id="sim-uf-sel" onchange="onUFChange(this.value)"
+                                    class="w-full bg-white border-0 border-b-2 border-outline focus:border-[#8b3d97] focus:ring-0 font-body text-sm py-3 px-1 transition-colors cursor-pointer">
+                                    <option value="">Cargando...</option>
+                                </select>
+                                <div id="m-action-builder-container"
+                                    class="hidden mt-6 p-6 bg-primary/5 rounded-2xl border-2 border-dashed border-primary/20 animate-in fade-in slide-in-from-top-4 duration-300">
+                                    <div class="flex items-center gap-3 mb-6 text-primary">
+                                        <span class="material-symbols-outlined">create_new_folder</span>
+                                        <h3 class="font-headline font-bold text-sm uppercase tracking-wider">Configurar
+                                            Nueva Unidad Funcional</h3>
+                                    </div>
+
+                                    <div class="space-y-5 mb-0">
+                                        <div>
+                                            <label
+                                                class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Nombre
+                                                de la Acción</label>
+                                            <input type="text" id="gna-name"
+                                                placeholder="Ej: Nueva Ley de Residuos, Proceso de Producción X"
+                                                class="w-full bg-white border border-slate-200 rounded-xl p-3.5 text-sm font-bold text-slate-800 focus:ring-2 focus:ring-[#8b3d97]/30 outline-none transition-all">
+                                        </div>
+                                        <div>
+                                            <label
+                                                class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Unidad
+                                                de Medida (Opcional)</label>
+                                            <input type="text" id="gna-unit" placeholder="Ej: Horas, €, kg CO2"
+                                                class="w-full bg-white border border-slate-200 rounded-xl p-3.5 text-sm font-bold text-slate-800 focus:ring-2 focus:ring-[#8b3d97]/30 outline-none transition-all">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <label
+                                    class="block font-mono text-[10px] uppercase tracking-widest text-outline mb-2">Acción
+                                    de Referencia</label>
+                                <select id="m-ante-sel" onchange="onAnteChange(this.value)"
+                                    class="w-full bg-white border-0 border-b-2 border-outline focus:border-[#8b3d97] focus:ring-0 font-body text-sm py-3 px-1 transition-colors cursor-pointer"></select>
+                            </div>
+                            <div id="m-ante-new" class="hidden pt-6 border-t border-slate-100/60">
+                                <h4 class="text-sm font-bold text-primary mb-4 font-headline flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-base">edit_document</span>Parámetros de
+                                    la Nueva Solución
+                                </h4>
+                                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                                    <div class="md:col-span-4"><input type="text" id="m-ante-nom"
+                                            placeholder="Escribe un nombre descriptivo para la acción..."
+                                            class="w-full bg-white border-none rounded-xl p-3.5 font-body text-sm focus:ring-2 focus:ring-primary/20 transition-shadow">
+                                    </div>
+                                    <div><label
+                                            class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5 ml-2">Ambiental</label><input
+                                            type="number" id="m-ante-amb" placeholder="Valor"
+                                            class="w-full bg-white border-none rounded-xl p-3 pl-4 font-label font-bold focus:ring-2 focus:ring-primary/20">
+                                    </div>
+                                    <div><label
+                                            class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5 ml-2">Social</label><input
+                                            type="number" id="m-ante-soc" placeholder="Valor"
+                                            class="w-full bg-white border-none rounded-xl p-3 pl-4 font-label font-bold focus:ring-2 focus:ring-primary/20">
+                                    </div>
+                                    <div><label
+                                            class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5 ml-2">Económico</label><input
+                                            type="number" id="m-ante-eco" placeholder="Valor"
+                                            class="w-full bg-white border-none rounded-xl p-3 pl-4 font-label font-bold focus:ring-2 focus:ring-primary/20">
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+
+                <section class="space-y-6">
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-end mt-12 mb-6 gap-4">
+                        <div class="flex items-center gap-5">
+
+                            <div>
+                                <span
+                                    class="inline-block px-2 py-1 bg-primary/10 text-primary text-[10px] font-black uppercase tracking-widest rounded-md mb-1">Paso
+                                    2: Proyección</span>
+                                <h3
+                                    class="text-3xl md:text-4xl font-extrabold font-headline tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-slate-900 to-primary">
+                                    Alternativas EX-POST</h3>
+                            </div>
+                        </div>
+                        <div id="m-expost-existing-container"
+                            class="hidden mb-6 p-5 bg-slate-50 rounded-2xl border border-slate-200">
+                            <p class="text-[10px] font-black uppercase text-slate-400 tracking-widest mb-4">Soluciones
+                                existentes en la base de datos:</p>
+                            <div id="m-expost-existing-list" class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            </div>
+                        </div>
+                        <button onclick="addSimRow()"
+                            class="bg-white border-2 border-slate-200 px-5 py-3 rounded-xl text-sm font-extrabold text-slate-600 hover:text-primary hover:border-primary/50 hover:bg-primary/5 transition-all shadow-sm flex items-center gap-2"><span
+                                class="material-symbols-outlined text-lg">add_circle</span> Añadir Escenario</button>
+                    </div>
+                    <div id="m-expost-list" class="space-y-3"></div>
+                    <div class="pt-8 flex justify-between items-center border-t border-outline-variant/20">
+                        <div class="hidden lg:block">
+                            <p class="font-mono text-[10px] text-outline uppercase tracking-wider">Engine Protocol</p>
+                            <p class="font-body text-xs text-on-surface">CRITIC · MRP · Leontief Veto · No-compensatorio
+                            </p>
+                        </div>
+                        <button onclick="executeDraftSimulation()"
+                            class="flex items-center gap-4 bg-[#8b3d97] text-white px-16 py-5 rounded-2xl shadow-xl shadow-[#8b3d97]/30 hover:bg-[#7a3486] hover:scale-[1.02] active:scale-95 transition-all font-headline font-black text-lg tracking-tight">
+                             Ejecutar Matriz (Modo
+                            Borrador)
+                        </button>
+                    </div>
+                </section>
+
+                <div id="m-sim-res"
+                    class="hidden bg-white rounded-2xl p-8 border border-outline-variant/10 shadow-sm border-t-4 border-t-[#8b3d97]">
+                </div>
+            </div>
+
+
+            <div id="tab-scenario" class="tab-content space-y-8">
+                <section class="bg-white p-8 rounded-2xl border border-outline-variant/20 shadow-sm">
+                    <h3 class="font-headline text-2xl font-bold text-slate-800 mb-6 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-[#8b3d97]">checklist</span> Constructor de
+                        Escenarios
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div>
+                            <label
+                                class="block font-mono text-[10px] uppercase tracking-widest text-outline mb-2">Seleccionar
+                                Acción</label>
+                            <select id="m-scenario-uf" onchange="onScenarioActionChange(this.value)"
+                                class="w-full bg-slate-50 border-0 border-b-2 border-outline focus:border-[#8b3d97] focus:ring-0 font-body text-sm py-3 transition-colors cursor-pointer"></select>
+                            <div class="mt-6 p-4 bg-purple-50 rounded-xl border border-purple-100">
+                                <p class="text-[10px] font-black text-purple-400 uppercase tracking-widest mb-1">Línea
+                                    Base Detectada</p>
+                                <div id="m-scenario-base-info" class="text-sm font-bold text-purple-900 italic">
+                                    Selecciona una acción...</div>
+                            </div>
+                        </div>
+                        <div>
+                            <label
+                                class="block font-mono text-[10px] uppercase tracking-widest text-outline mb-2 text-center">Seleccionar
+                                Alternativas a Comparar</label>
+                            <div id="m-scenario-expost-list"
+                                class="space-y-2 max-h-60 overflow-y-auto pr-2 no-scrollbar"></div>
+                            <button onclick="generateScenarioRanking()"
+                                class="w-full mt-6 bg-[#8b3d97] text-white py-4 rounded-xl font-headline font-black text-sm shadow-lg hover:bg-[#7a3486] transition-all flex items-center justify-center gap-2">
+                                Generar Ranking Específico
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+                <div id="m-scenario-results" class="hidden">
+                    <section class="bg-white rounded-2xl border border-outline-variant/20 shadow-xl overflow-hidden">
+                        <div class="px-6 py-5 border-b bg-slate-50 flex justify-between items-center">
+                            <h4 class="font-headline font-bold text-xl text-slate-800">Ranking Específico</h4>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr
+                                        class="bg-slate-50 text-[10px] font-mono font-bold text-outline uppercase tracking-widest border-b">
+                                        <th class="px-4 py-4">#</th>
+                                        <th class="px-4 py-4">Alternativa</th>
+                                        <th class="px-4 py-4 text-right">Amb</th>
+                                        <th class="px-4 py-4 text-right">Soc</th>
+                                        <th class="px-4 py-4 text-right">Eco</th>
+                                        <th class="px-4 py-4 text-center">Variación</th>
+                                        <th class="px-4 py-4">Score SS</th>
+                                        <th class="px-4 py-4">Logros</th>
+                                        <th class="px-4 py-4 text-right">Veredicto</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="m-scenario-table-body" class="divide-y"></tbody>
+                            </table>
+                        </div>
+                    </section>
+                    <div id="m-scenario-tiebreak-container"></div>
+                </div>
+            </div>
+            <!-- ████ TAB: PANEL DE CONTROL ████ -->
+            <div id="tab-control" class="tab-content space-y-8">
+                <div class="grid grid-cols-12 gap-8">
+                    <div
+                        class="col-span-12 lg:col-span-5 bg-white/60 backdrop-blur-md border-l-4 border-[#8b3d97] p-8 rounded-xl shadow-sm">
+                        <h3 class="font-headline text-xl font-bold mb-8 flex items-center gap-2"><span
+                                class="material-symbols-outlined text-[#8b3d97]">tune</span>Escala Alpha</h3>
+                        <div class="space-y-6" id="ctrl-alpha-inputs"></div>
+                    </div>
+                    <div class="col-span-12 lg:col-span-7 space-y-6">
+                        <div class="bg-white p-8 rounded-xl shadow-sm border border-outline-variant/20">
+                            <h3 class="font-headline text-xl font-bold mb-2">Selector de Línea Roja</h3>
+                            <p class="text-sm text-on-surface-variant mb-6">Define el nivel de veto absoluto. Acciones
+                                por debajo serán descartadas.</p>
+                            <div id="ctrl-lr-selector"
+                                class="flex items-center gap-1 bg-surface-container rounded-full p-1.5 h-20"></div>
+                            <div
+                                class="mt-6 flex items-center gap-3 p-4 bg-error-container/20 rounded-xl border border-error/10">
+                                <span class="material-symbols-outlined text-error">warning</span>
+                                <p class="text-xs text-on-error-container font-medium" id="ctrl-lr-text">Configuración
+                                    de línea roja activa.</p>
+                            </div>
+                        </div>
+                        <div class="bg-white/60 backdrop-blur-md p-8 rounded-xl shadow-sm border-t-2 border-secondary">
+                            <div class="flex justify-between items-start mb-6">
+                                <div>
+                                    <h3 class="font-headline text-xl font-bold">Gestor de Umbrales Q</h3>
+                                    <p class="text-xs text-on-surface-variant font-mono mt-1">Configuración paramétrica
+                                        por eje.</p>
+                                </div>
+                                <button onclick="resetMQ()"
+                                    class="px-4 py-2 bg-white border border-outline-variant/30 text-secondary text-xs font-bold flex items-center gap-2 rounded-lg hover:bg-secondary/5 transition-all active:scale-95"><span
+                                        class="material-symbols-outlined text-sm">refresh</span>Restaurar
+                                    Data-Driven</button>
+                            </div>
+                            <div class="overflow-x-auto no-scrollbar">
+                                <table class="w-full text-left border-separate border-spacing-y-3">
+                                    <thead>
+                                        <tr
+                                            class="text-[10px] uppercase tracking-widest text-on-surface-variant/70 font-bold font-headline">
+                                            <th class="pb-2 pl-2">Criterio</th>
+                                            <th class="pb-2 text-center">q0 (Peor)</th>
+                                            <th class="pb-2 text-center">q1 (P75)</th>
+                                            <th class="pb-2 text-center">q2 (P50)</th>
+                                            <th class="pb-2 text-center">q3 (P25)</th>
+                                            <th class="pb-2 text-center">q4 (Ideal)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="ctrl-q-inputs"></tbody>
+                                </table>
+                            </div>
+                            <button onclick="applyMConfig()"
+                                class="w-full mt-6 px-8 py-4 bg-[#8b3d97] text-white rounded-xl font-headline font-extrabold tracking-wide shadow-xl shadow-[#8b3d97]/30 transition-all hover:scale-[1.01] active:scale-95">Aplicar
+                                Configuración MRP</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ████ TAB: DESARROLLO MATEMÁTICO ████ -->
+            <div id="tab-math" class="tab-content">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                    <div class="lg:col-span-8 space-y-6">
+                        <h3
+                            class="text-2xl font-extrabold font-headline tracking-tight text-slate-800 flex items-center gap-2 mb-2">
+                            <span class="material-symbols-outlined text-primary">data_object</span>Desarrollo Empírico
+                            de la Sesión
+                        </h3>
+                        <div id="m-math-container">
+                            <div
+                                class="p-12 text-center text-slate-400 bg-white rounded-xl border border-outline-variant/15 shadow-sm">
+                                <span class="material-symbols-outlined text-5xl mb-4 block">functions</span>
+                                <p class="font-headline font-bold">Carga el Ranking Global para extraer la matriz de
+                                    decisión.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="lg:col-span-4 sticky top-24">
+                        <div
+                            class="bg-slate-900 rounded-[2rem] border border-slate-800 shadow-2xl p-8 relative overflow-hidden">
+                            <div
+                                class="absolute -right-10 -top-10 w-48 h-48 bg-[#8b3d97]/30 blur-[70px] rounded-full pointer-events-none">
+                            </div>
+                            <div class="relative z-10">
+                                <div
+                                    class="w-14 h-14 bg-white/10 rounded-2xl flex items-center justify-center border border-white/20 mb-6">
+                                    <span class="material-symbols-outlined text-white text-3xl"
+                                        style="font-variation-settings: 'FILL' 1;">menu_book</span>
+                                </div>
+                                <h3 class="font-headline font-extrabold text-2xl text-white mb-4 tracking-tight">
+                                    Evidencia Científica</h3>
+                                <p class="text-slate-400 font-body text-sm leading-relaxed mb-10">Demostración
+                                    matemática completa del algoritmo MRP con interpolación a tramos y operador de Veto
+                                    de Leontief.</p>
+                                <a href="../presentacion_topsis_vs_mrp/SONYA_MRP_.pdf" target="_blank"
+                                    class="w-full flex items-center justify-center gap-3 bg-white text-slate-900 px-6 py-4 rounded-xl font-bold font-headline transition-all duration-300 hover:bg-purple-50 mb-3">
+                                    <span class="material-symbols-outlined text-error">picture_as_pdf</span>VER
+                                    WHITEPAPER PDF
+                                </a>
+                                <a href="../presentacion_topsis_vs_mrp/SONYA_MRP_.pdf" download
+                                    class="w-full flex items-center justify-center gap-2 bg-transparent border-2 border-slate-700 hover:border-slate-500 hover:bg-slate-800 text-white px-6 py-3.5 rounded-xl font-bold font-headline transition-all text-sm">
+                                    Descargar<span class="material-symbols-outlined text-base">arrow_forward</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/mrp_engine.js"></script>
+    <script src="js/logic_connector.js"></script>
+
+
+    <script>
+        // ── Roomba limpiadora Global ───────────────────────
+        function sanitizeBBDD() {
+            let customUFs = JSON.parse(localStorage.getItem('sonya_custom_ufs')) || [];
+            let runtimeAlts = JSON.parse(localStorage.getItem('sonya_runtime_alts')) || [];
+
+            let cleanedUFs = customUFs.filter(uf => {
+                let count = runtimeAlts.filter(a => a.uf === uf.id || a.ufId === uf.id).length;
+                let label = (uf.label || '').toLowerCase();
+                if ((label.includes('preuba') || label.includes('prueba')) && count === 0) {
+                    return false;
+                }
+                return true;
+            });
+
+            let uniqueUFs = [];
+            let seenIds = new Set();
+            cleanedUFs.forEach(uf => {
+                if (!seenIds.has(uf.id)) {
+                    seenIds.add(uf.id);
+                    uniqueUFs.push(uf);
+                }
+            });
+
+            localStorage.setItem('sonya_custom_ufs', JSON.stringify(uniqueUFs));
+        }
+        sanitizeBBDD(); // Se ejecuta al instante
+
+        // ── State ────────────────────────────────────────────────
+        let connector = null;
+        let activeUF = '';
+        let lastResult = null;
+        let simEC = 0;
+        let mrpAlpha = [...MRPEngine.ALPHA_DEFAULT];
+        let mrpLR = MRPEngine.LR_DEFAULT;
+        let mrpQCustom = null; // null = data-driven
+
+        // ── Helpers UI ───────────────────────────────────────────
+        function msg(txt, type = 'info') {
+            const w = document.getElementById('toast-wrap'), t = document.createElement('div');
+            t.className = 'toast';
+            const c = type === 'err' ? '#ba1a1a' : type === 'ok' ? '#00696c' : '#8b3d97';
+            const ic = type === 'err' ? 'error' : type === 'ok' ? 'check_circle' : 'info';
+            t.innerHTML = `<span class="material-symbols-outlined fill-icon" style="color:${c}">${ic}</span><span style="font-size:13px;font-weight:600;color:#171c1f">${txt}</span>`;
+            w.appendChild(t);
+            setTimeout(() => { t.classList.add('removing'); setTimeout(() => t.remove(), 300); }, 3500);
+        }
+        function spin(on, text = 'Calculando...') {
+            document.getElementById('spin-msg').innerText = text;
+            document.getElementById('loading').classList.toggle('show', on);
+        }
+        function updateArc(v) {
+            const c = Math.min(100, Math.max(0, parseFloat(v) || 0));
+            const el = document.getElementById('sat-arc');
+            if (el) el.setAttribute('stroke-dashoffset', (2 * Math.PI * 56) * (1 - c / 100));
+        }
+        function switchInnerTab(tab, btn) {
+            document.querySelectorAll('.mrp-tab-btn').forEach(b => {
+                b.className = 'mrp-tab-btn h-full border-b-[3px] border-transparent text-slate-500 font-semibold text-sm tracking-wide px-2 lg:px-4 transition-all whitespace-nowrap';
+            });
+            btn.className = 'mrp-tab-btn tab-active h-full border-b-[3px] border-[#8b3d97] text-[#8b3d97] font-bold text-sm tracking-wide px-2 lg:px-4 transition-all whitespace-nowrap';
+            document.querySelectorAll('.tab-content').forEach(e => e.classList.remove('active'));
+            document.getElementById(`tab-${tab}`).classList.add('active');
+            if (tab === 'math') buildMath();
+            if (tab === 'control') buildMCtrl();
+        }
+
+        // ── Badge renderers ──────────────────────────────────────
+        const bVerd = ss => ss >= mrpLR
+            ? `<span class="inline-flex items-center gap-1.5 px-3 py-1 bg-green-100 text-green-800 text-xs font-bold rounded-full border border-green-200"><span class="w-1.5 h-1.5 rounded-full bg-green-600"></span>Viable</span>`
+            : `<span class="inline-flex items-center gap-1.5 px-3 py-1 bg-red-100 text-red-700 text-xs font-bold rounded-full border border-red-200"><span class="w-1.5 h-1.5 rounded-full bg-red-600 animate-pulse"></span>Vetada</span>`;
+
+        const fmtS = (val, isLim) => {
+            const cls = isLim ? ' lim' : '';
+            if (val >= 3.99) return `<span class="badge-ok${cls}">${val.toFixed(2)}</span>`;
+            if (val <= 0.01) return `<span class="badge-ko${cls}">${val.toFixed(2)}</span>`;
+            return `<span class="badge-n${cls}">${val.toFixed(2)}</span>`;
+        };
+        function getBadge(baseValue, currentValue) {
+            if (!baseValue || !currentValue) return '<span class="text-slate-300">-</span>';
+            const diff = baseValue - currentValue;
+            const pct = Math.abs(((currentValue - baseValue) / baseValue) * 100).toFixed(1);
+
+            if (diff < 0) {
+                return `<span class="bg-red-100 text-red-700 font-bold px-2 py-0.5 rounded text-[10px] inline-block w-14 text-center">+${pct}%</span>`;
+            } else if (diff > 0) {
+                return `<span class="bg-emerald-100 text-emerald-700 font-bold px-2 py-0.5 rounded text-[10px] inline-block w-14 text-center">-${pct}%</span>`;
+            } else {
+                return `<span class="bg-gray-100 text-gray-600 font-bold px-2 py-0.5 rounded text-[10px] inline-block w-14 text-center">=</span>`;
+            }
+        }
+
+
+        // ── UF sync ──────────────────────────────────────────────
+        function syncUFSelectors(ufId) {
+            ['uf-sidebar-sel', 'sim-uf-sel'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ufId; });
+        }
+
+        // 1. TU CÓDIGO EXACTO PARA LOS SELECTORES
+        function populateUFSelectors(ufs, selectedId) {
+            const opts = ufs.map(uf => `<option value="${uf.id}" ${uf.id === selectedId ? 'selected' : ''}>${uf.label} (${uf.count || 0})</option>`).join('');
+
+            const sidebarSel = document.getElementById('uf-sidebar-sel');
+            if (sidebarSel) sidebarSel.innerHTML = opts + `<option value="__new__">➕ Crear Nueva Acción - Nueva Simulación</option>`;
+
+            const simGlobalSel = document.getElementById('sim-uf-sel');
+            if (simGlobalSel) simGlobalSel.innerHTML = `<option value="">-- Seleccionar Acción existente --</option><option value="__new__" style="font-weight:bold; color:#8b3d97">➕ Crear Acción Nueva desde Cero</option>` + opts;
+
+            const scenarioSel = document.getElementById('m-scenario-uf');
+            if (scenarioSel) scenarioSel.innerHTML = `<option value="">-- Seleccionar Acción existente --</option>` + opts;
+        }
+        async function onUFChange(ufId) {
+            const builderAction = document.getElementById('m-action-builder-container');
+            const anteSel = document.getElementById('m-ante-sel');
+            const exPostList = document.getElementById('m-expost-existing-container');
+            const infoBar = document.getElementById('uf-infobar');
+
+            syncUFSelectors(ufId);
+
+            if (ufId === '__new__') {
+                if (infoBar) infoBar.classList.add('hidden');
+                if (builderAction) builderAction.classList.remove('hidden');
+                if (exPostList) exPostList.classList.add('hidden');
+                if (anteSel) {
+                    anteSel.innerHTML = `<option value="__new_base__">Definir Base Inicial</option>`;
+                    anteSel.disabled = true;
+                    onAnteChange('__new_base__');
+                }
+                switchInnerTab('simulacion', document.querySelectorAll('.mrp-tab-btn')[1]);
+                return;
+            }
+
+            if (!ufId) return;
+            activeUF = ufId;
+            lastResult = null;
+
+            if (builderAction) builderAction.classList.add('hidden');
+            if (exPostList) exPostList.classList.remove('hidden');
+            if (anteSel) anteSel.disabled = false;
+
+            refreshAnteSelect();
+            refreshExPostExistingList(ufId);
+            await loadM();
+        }
+        // 3. MOSTRAR/OCULTAR LOS CAMPOS (AMB/SOC/ECO) DE LA BASE
+        function onAnteChange(val) {
+            const baselineInputs = document.getElementById('m-ante-new');
+            if (val === '__new_base__') {
+                if (baselineInputs) {
+                    baselineInputs.classList.remove('hidden');
+                    // Limpiamos los campos
+                    ['m-ante-nom', 'm-ante-amb', 'm-ante-soc', 'm-ante-eco'].forEach(id => {
+                        const el = document.getElementById(id);
+                        if (el) el.value = '';
+                    });
+                }
+            } else {
+                if (baselineInputs) baselineInputs.classList.add('hidden');
+            }
+        }
+
+        function refreshAnteSelect() {
+            if (!connector || !activeUF || activeUF === '__new__') return;
+
+            let alts = connector.getAlternatives(activeUF);
+            if (activeUF.startsWith('uf_custom_')) {
+                const customUFs = JSON.parse(localStorage.getItem('sonya_custom_ufs')) || [];
+                const current = customUFs.find(u => u.id === activeUF);
+                if (current) alts = current.alternativas || [];
+            }
+
+            const exAntes = alts.filter(a => a.tipo === 'EX-ANTE');
+            const anteSel = document.getElementById('m-ante-sel');
+            if (!anteSel) return;
+
+            let html = '';
+            exAntes.forEach(a => {
+                html += `<option value="${a.nombre}">${a.nombre}</option>`;
+            });
+
+            if (exAntes.length === 0) {
+                html = '<option value="">-- No hay soluciones EX-ANTE disponibles --</option>';
+                anteSel.innerHTML = html;
+                document.getElementById('m-ante-new').classList.add('hidden');
+                return;
+            }
+
+            anteSel.innerHTML = html;
+
+            if (exAntes.length > 0) {
+                anteSel.value = exAntes[0].nombre;
+                onAnteChange(exAntes[0].nombre);
+            }
+        }
+
+        // ── UF infobar ───────────────────────────────────────────
+        function renderUFInfobar(uf) {
+            document.getElementById('uf-infobar-label').textContent = uf.label;
+            document.getElementById('uf-infobar-unit').textContent = uf.unit;
+            document.getElementById('uf-infobar-count').textContent = uf.count;
+            document.getElementById('uf-lr-display').textContent = `α=${mrpLR.toFixed(1)}`;
+            document.getElementById('uf-infobar').classList.remove('hidden');
+            document.getElementById('uf-header-badge').classList.remove('hidden');
+            document.getElementById('uf-header-badge').classList.add('flex');
+            document.getElementById('uf-header-label').textContent = uf.label;
+            document.getElementById('lr-display').textContent = mrpLR.toFixed(2);
+        }
+
+        // ── Weights panel ─────────────────────────────────────────
+        function renderWeights(pesos) {
+            const wColors = { 'Económico': '#004655', 'Ambiental': '#00696c', 'Social': '#8b3d97' };
+            document.getElementById('m-weights-container').innerHTML = Object.entries(pesos).map(([k, v]) => `
+                <div class="space-y-2">
+                    <div class="flex justify-between text-sm font-mono font-bold uppercase">
+                        <span class="text-on-surface-variant">${k}</span><span style="color:${wColors[k] ?? '#8b3d97'}">${(v * 100).toFixed(1)}%</span>
+                    </div>
+                    <div class="w-full h-3 bg-white rounded-full overflow-hidden">
+                        <div class="h-full rounded-full transition-all duration-700" style="width:${v * 100}%;background:${wColors[k] ?? '#8b3d97'}"></div>
+                    </div>
+                </div>`).join('');
+        }
+        async function loadM() {
+            if (!connector || !activeUF) return;
+
+            let altsDisponibles = [];
+            let ufInfo = null;
+
+            try {
+                if (activeUF.startsWith('uf_custom_')) {
+                    const customUFs = JSON.parse(localStorage.getItem('sonya_custom_ufs')) || [];
+                    const current = customUFs.find(u => u.id === activeUF);
+                    if (current && current.alternativas && current.alternativas.length > 0) {
+                        altsDisponibles = current.alternativas.map(alt => ({
+                            id: alt.id, nombre: alt.nombre, tipo: alt.tipo,
+                            eco: parseFloat(alt.eco) || 0, amb: parseFloat(alt.amb) || 0, soc: parseFloat(alt.soc) || 0
+                        }));
+                        ufInfo = { id: current.id, label: current.label, unit: current.unit, count: altsDisponibles.length };
+                    }
+                } else {
+                    altsDisponibles = connector.getAlternatives(activeUF) || [];
+                    ufInfo = connector.getUF(activeUF);
+                }
+            } catch (e) { console.error("Error extrayendo datos:", e); }
+
+            if (!altsDisponibles || altsDisponibles.length < 2) {
+                document.getElementById('m-table-body').innerHTML = `<tr><td colspan="9" class="p-12 text-center text-outline opacity-40">Esperando datos suficientes...</td></tr>`;
+                return;
+            }
+
+            spin(true, 'Procesando matriz MRP...');
+            try {
+                lastResult = MRPEngine.run(altsDisponibles, { alpha: mrpAlpha, qCustom: mrpQCustom, lineaRoja: mrpLR });
+
+                if (ufInfo) renderUFInfobar({ ...ufInfo, count: altsDisponibles.length });
+                renderWeights(lastResult.pesos);
+
+                const d = lastResult.ranking;
+                const ok = d.filter(r => !r.vetada).length;
+                const exAnte = d.find(item => item.tipo === 'EX-ANTE');
+
+                // 1. Renderizado de KPIs (Tarjetas superiores)
+                document.getElementById('m-metrics-container').innerHTML = `
+                    <div class="bg-white p-6 rounded-xl border border-outline-variant/10 shadow-sm"><p class="text-xs font-mono uppercase text-outline mb-4">Total Alternativas</p><h3 class="text-5xl font-bold font-headline">${d.length}</h3></div>
+                    <div class="bg-white p-6 rounded-xl border border-outline-variant/10 shadow-sm"><p class="text-xs font-mono uppercase text-outline mb-4">Viable (SS ≥ ${mrpLR})</p><h3 class="text-5xl font-bold font-headline text-green-600">${ok}</h3></div>
+                    <div class="bg-white p-6 rounded-xl border border-outline-variant/10 shadow-sm"><p class="text-xs font-mono uppercase text-outline mb-4">Vetadas (SS < ${mrpLR})</p><h3 class="text-5xl font-bold font-headline text-error">${d.length - ok}</h3></div>
+                    <div class="bg-white p-6 rounded-xl border border-outline-variant/10 shadow-sm"><p class="text-xs font-mono uppercase text-outline mb-4">Best Score (SS)</p><h3 class="text-5xl font-bold font-headline text-[#8b3d97]">${d[0]?.ss?.toFixed(3) || '--'}</h3></div>`;
+
+                // 2. Construcción del HTML de la Tabla Principal
+                const tableHTML = d.map((r, i) => `
+                    <tr class="hover:bg-surface-container-low/50 transition-colors group ${r.vetada ? 'bg-error-container/5' : ''}">
+                        <td class="px-4 py-5 font-mono text-sm text-outline">${String(i + 1).padStart(2, '0')}</td>
+                        <td class="px-4 py-5"><div class="font-headline font-bold text-on-surface">${r.accion}</div><div class="text-[9px] font-bold font-mono text-secondary mt-1 tracking-widest uppercase">${r.tipo}</div></td>
+                        <td class="px-4 py-5 text-right"><span class="data-mono text-xs font-bold text-slate-700">${r.amb}</span></td>
+                        <td class="px-4 py-5 text-right"><span class="data-mono text-xs font-bold text-slate-700">${r.soc}</span></td>
+                        <td class="px-4 py-5 text-right"><span class="data-mono text-xs font-bold text-slate-700">${r.eco}</span></td>
+                        <td class="px-5 py-2 text-center align-middle border-l border-r border-outline-variant/10 bg-surface-container-lowest/50">
+                            ${r.tipo === 'EX-ANTE' || !exAnte ? `<span class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Línea Base</span>` :
+                        `<div class="flex flex-col gap-1 items-center justify-center">
+                                <div class="flex items-center gap-1"><span class="text-[9px] text-slate-400 font-bold">Amb:</span> ${getBadge(exAnte.amb, r.amb)}</div>
+                                <div class="flex items-center gap-1"><span class="text-[9px] text-slate-400 font-bold">Soc:</span> ${getBadge(exAnte.soc, r.soc)}</div>
+                                <div class="flex items-center gap-1"><span class="text-[9px] text-slate-400 font-bold">Eco:</span> ${getBadge(exAnte.eco, r.eco)}</div>
+                            </div>`}
+                        </td>
+                        <td class="px-4 py-5 font-mono font-bold text-lg ${r.vetada ? 'text-error' : 'text-[#8b3d97]'}">${r.ss.toFixed(3)}</td>
+                        <td class="px-4 py-5">
+                            <div class="flex items-center justify-end gap-2">
+                                ${fmtS(r.s_amb, r.s_amb === r.ss)}
+                                ${fmtS(r.s_soc, r.s_soc === r.ss)}
+                                ${fmtS(r.s_eco, r.s_eco === r.ss)}
+                            </div>
+                        </td>
+                        <td class="px-4 py-5 text-right">${bVerd(r.ss)}</td>
+                    </tr>`).join('');
+
+                document.getElementById('m-table-body').innerHTML = tableHTML;
+
+                // 3. LÓGICA DE SEGUNDA TABLA (PARA EL TRIPLE VETO)
+                const noteContainer = document.getElementById('m-veto-note-container');
+                const todasVetadas = d.length >= 2 && d.every(r => r.ss === 0);
+
+                if (todasVetadas) {
+                    // Calculamos ranking secundario
+                    const survivalRanking = d.map(r => {
+                        const logs = [
+                            { val: r.s_amb, label: 'Ambiental' },
+                            { val: r.s_soc, label: 'Social' },
+                            { val: r.s_eco, label: 'Económico' }
+                        ];
+                        const pilarCritico = logs.find(l => l.val === 0) || logs[0];
+                        const logsRestantes = logs.filter(l => l !== pilarCritico);
+                        const newScore = logsRestantes.reduce((a, b) => a + b.val, 0) / logsRestantes.length;
+                        return { ...r, ss2: newScore, pilarEliminado: pilarCritico.label, logsRestantes: logsRestantes };
+                    }).sort((a, b) => b.ss2 - a.ss2);
+
+                    const notaHTML = `
+                        <div class="mt-8 p-6 bg-blue-50 border-l-4 border-blue-500 rounded-t-xl shadow-sm">
+                            <div class="flex items-start gap-4">
+                                <span class="material-symbols-outlined text-blue-600 text-3xl">info</span>
+                                <div>
+                                    <h4 class="font-headline font-black text-blue-900 text-sm uppercase tracking-tighter">Análisis de Segunda Capa: Desempate Técnico</h4>
+                                    <p class="text-xs text-blue-800 leading-relaxed mt-1">Las 3 soluciones han sido vetadas por Sostenibilidad Fuerte. El siguiente ranking muestra el desempeño tras omitir el factor crítico de cada alternativa.</p>
+                                </div>
+                            </div>
+                        </div>`;
+
+                    const tabla2HTML = `
+                        <div class="overflow-hidden rounded-b-xl border border-blue-100 bg-white shadow-xl mb-10">
+                            <table class="w-full text-left text-sm">
+                                <thead class="bg-slate-800 text-[10px] uppercase font-black text-slate-200 tracking-widest">
+                                    <tr>
+                                        <th class="px-6 py-4 text-center">#</th><th class="px-6 py-4">Alternativa (Análisis Resiliente)</th>
+                                        <th class="px-6 py-4 text-center">Factor Crítico Omitido</th><th class="px-6 py-4 text-right">Score Supervivencia</th>
+                                        <th class="px-6 py-4 text-center">Logros Restantes</th><th class="px-6 py-4 text-right">Veredicto</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-100">
+                                    ${survivalRanking.map((r, i) => `
+                                        <tr class="hover:bg-blue-50/30 transition-colors">
+                                            <td class="px-6 py-5 text-center font-mono font-bold text-blue-600">${String(i + 1).padStart(2, '0')}</td>
+                                            <td class="px-6 py-5">
+                                                <div class="font-headline font-bold text-slate-800">${r.accion}</div>
+                                                <div class="text-[9px] text-slate-400 font-bold uppercase">${r.tipo}</div>
+                                            </td>
+                                            <td class="px-6 py-5 text-center"><span class="px-2 py-1 bg-red-50 text-red-500 border border-red-100 rounded text-[9px] font-black uppercase font-mono">OMITIDO: ${r.pilarEliminado}</span></td>
+                                            <td class="px-6 py-5 text-right font-mono font-black text-xl text-blue-700">${r.ss2.toFixed(3)}</td>
+                                            <td class="px-6 py-5"><div class="flex items-center justify-center gap-2">${r.logsRestantes.map(l => `<span class="badge-ok text-[10px] font-bold">${l.label.substring(0, 3)}: ${l.val.toFixed(2)}</span>`).join('')}</div></td>
+                                            <td class="px-6 py-5 text-right"><span class="inline-flex items-center gap-1.5 px-3 py-1 ${i === 0 ? 'bg-green-100 text-green-800' : 'bg-slate-100 text-slate-500'} text-[10px] font-black rounded-full border">${i === 0 ? 'RECOMENDADA' : 'SECUNDARIA'}</span></td>
+                                        </tr>`).join('')}
+                                </tbody>
+                            </table>
+                        </div>`;
+                    noteContainer.innerHTML = notaHTML + tabla2HTML;
+                } else {
+                    noteContainer.innerHTML = "";
+                }
+
+                document.getElementById('sidebar-status').textContent = `${d.length} alt. · LR=${mrpLR}`;
+                msg(`Ranking MRP actualizado`, 'ok');
+
+            } catch (e) {
+                console.error("Error en motor MRP:", e);
+                msg(e.message, 'err');
+            }
+            spin(false);
+        }
+
+
+
+        // ── Control Panel ─────────────────────────────────────────
+        function buildMCtrl() {
+            const labels = ['Inaceptable', 'Reserva (Línea Roja)', 'Estándar', 'Rendimiento Alto', 'Ideal'];
+            document.getElementById('ctrl-alpha-inputs').innerHTML = mrpAlpha.map((a, i) => `
+                <div class="flex items-center justify-between">
+                    <label class="font-label text-sm text-on-surface-variant flex flex-col">
+                        <span class="font-bold ${i === 1 ? 'text-error' : 'text-on-surface'}">Alpha ${i}</span>
+                        <span class="text-[11px] opacity-60">${labels[i]}</span>
+                    </label>
+                    <input type="number" step="0.1" id="ca-${i}" value="${a}" class="w-28 bg-surface-container-low border-none border-b-2 ${i === 1 ? 'border-error' : 'border-outline'} focus:ring-0 focus:border-[#8b3d97] font-mono text-right py-2 px-2 text-sm transition-all"/>
+                </div>`).join('');
+
+            document.getElementById('ctrl-lr-selector').innerHTML = mrpAlpha.map((a, i) => `
+                <button onclick="mrpLR=${a};buildMCtrl();" class="flex-1 h-full rounded-full flex flex-col items-center justify-center transition-all font-mono text-xs font-bold ${mrpLR === a ? 'bg-error text-white shadow-lg shadow-error/30 ring-4 ring-red-100' : 'hover:bg-white/60 text-outline'}">
+                    A${i}${mrpLR === a ? '<span style="font-size:8px;letter-spacing:0.05em;text-transform:uppercase;font-weight:700;display:block">Veto</span>' : ''}
+                </button>`).join('');
+
+            document.getElementById('ctrl-lr-text').textContent = `Bloqueo activo para valores inferiores a ${mrpLR} (Alpha[${mrpAlpha.indexOf(mrpLR)}]).`;
+
+            // Q thresholds table — use last result if available
+            const umbrales = lastResult?.umbrales_raw ?? {};
+            const criteriaKeys = [['eco', 'Económico'], ['amb', 'Ambiental'], ['soc', 'Social']];
+            document.getElementById('ctrl-q-inputs').innerHTML = criteriaKeys.map(([k, label]) => `
+                <tr>
+                    <td class="bg-slate-100 p-3 rounded-l font-bold text-teal-900 text-sm">${label}</td>
+                    ${[0, 1, 2, 3, 4].map(i => `
+                        <td class="px-2">
+                            <input type="number" step="any" id="cq-${k}-${i}"
+                                value="${umbrales[k]?.[i]?.toFixed ? umbrales[k][i].toFixed(4) : (umbrales[k]?.[i] ?? '')}"
+                                class="w-full bg-slate-50 border-none text-center font-mono text-xs p-2 focus:bg-white focus:ring-1 focus:ring-[#8b3d97] rounded"/>
+                        </td>`).join('')}
+                </tr>`).join('');
+        }
+
+        function applyMConfig() {
+            mrpAlpha = [0, 1, 2, 3, 4].map(i => parseFloat(document.getElementById(`ca-${i}`).value));
+            if (!mrpAlpha.includes(mrpLR)) mrpLR = mrpAlpha[1];
+            const nq = {};
+            let valid = true;
+            [['eco', 'Económico'], ['amb', 'Ambiental'], ['soc', 'Social']].forEach(([k]) => {
+                nq[k] = [0, 1, 2, 3, 4].map(i => { const v = parseFloat(document.getElementById(`cq-${k}-${i}`).value); if (isNaN(v)) valid = false; return v; });
+            });
+            if (!valid) { msg('Existen valores Q inválidos', 'err'); return; }
+            mrpQCustom = nq;
+            msg('Configuración del Motor MRP Aplicada', 'ok');
+            lastResult = null; loadM();
+        }
+
+        function resetMQ() {
+            mrpQCustom = null;
+            msg('Percentiles restaurados a modo Data-Driven', 'info');
+            lastResult = null; loadM(); setTimeout(buildMCtrl, 600);
+        }
+
+        // ── Simulation ────────────────────────────────────────────
+        // ════════════════════════════════════════════════════════════════════════════
+        // NUEVA LÓGICA DE SIMULACIÓN: MODO BORRADOR (SANDBOX)
+        // ════════════════════════════════════════════════════════════════════════════
+
+        let simDraftCount = 0;
+        let currentDraftSimulation = null;
+
+        // 3. Añadir Escenario Nuevo
+        function addSimRow() {
+            simDraftCount++;
+            const d = document.createElement('div');
+            d.id = `sim-ep-${simDraftCount}`;
+            d.innerHTML = `
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm relative border-l-4 border-l-[#8b3d97]/60 hover:border-l-[#8b3d97] transition-colors mb-4">
+                    <button onclick="document.getElementById('sim-ep-${simDraftCount}').remove()" class="absolute top-4 right-4 text-slate-300 hover:text-error transition-colors"><span class="material-symbols-outlined text-xl">cancel</span></button>
+                    <div class="flex items-center gap-2 mb-4"><h4 class="font-headline font-bold text-sm text-slate-800">Nuevo Escenario ${simDraftCount}</h4></div>
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-3">
+                        <div class="md:col-span-4"><input type="text" id="sim-ep-nom-${simDraftCount}" placeholder="Nombre descriptivo..." class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm font-body"></div>
+                        <div><label class="block text-[9px] font-bold text-teal-600 uppercase tracking-widest mb-1 ml-1">Ambiental</label><input type="number" step="any" id="sim-ep-amb-${simDraftCount}" placeholder="0.0" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 font-mono text-sm focus:ring-2 focus:ring-[#8b3d97]/20"></div>
+                        <div><label class="block text-[9px] font-bold text-purple-600 uppercase tracking-widest mb-1 ml-1">Social</label><input type="number" step="any" id="sim-ep-soc-${simDraftCount}" placeholder="0.0" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 font-mono text-sm focus:ring-2 focus:ring-[#8b3d97]/20"></div>
+                        <div><label class="block text-[9px] font-bold text-primary uppercase tracking-widest mb-1 ml-1">Económico</label><input type="number" step="any" id="sim-ep-eco-${simDraftCount}" placeholder="0.0" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 font-mono text-sm focus:ring-2 focus:ring-[#8b3d97]/20"></div>
+                    </div>
+                </div>`;
+            document.getElementById('m-expost-list').appendChild(d);
+        }
+
+        function executeDraftSimulation() {
+            const ufVal = document.getElementById('sim-uf-sel')?.value;
+            if (!ufVal) { msg('Selecciona o Crea una Acción primero', 'err'); return; }
+
+            const draftData = { actionId: ufVal, allEngineData: [], postData: [] };
+
+            // A. VALIDAR NOMBRE DE ACCIÓN NUEVA
+            if (ufVal === '__new__') {
+                const manualActionName = document.getElementById('gna-name')?.value.trim();
+                const manualActionUnit = document.getElementById('gna-unit')?.value.trim();
+                if (!manualActionName) { msg('Escribe el nombre de la nueva Acción', 'err'); return; }
+
+                draftData.isNewAction = true;
+                draftData.actionLabel = manualActionName;
+                draftData.actionUnit = manualActionUnit || 'Unidades';
+            }
+
+            // B. CARGAR DATOS EX-ANTE
+            const anteSelect = document.getElementById('m-ante-sel');
+            if (anteSelect && anteSelect.value === '__new_base__') {
+                const manualBaseName = document.getElementById('m-ante-nom')?.value.trim();
+                if (!manualBaseName) { msg('Escribe el nombre de la solución base', 'err'); return; }
+
+                draftData.anteData = {
+                    nombre: manualBaseName, tipo: 'EX-ANTE',
+                    amb: parseFloat(document.getElementById('m-ante-amb')?.value) || 0,
+                    soc: parseFloat(document.getElementById('m-ante-soc')?.value) || 0,
+                    eco: parseFloat(document.getElementById('m-ante-eco')?.value) || 0,
+                    isNew: true
+                };
+            } else if (anteSelect) {
+                let alts = ufVal.startsWith('uf_custom_')
+                    ? (JSON.parse(localStorage.getItem('sonya_custom_ufs'))?.find(u => u.id === ufVal)?.alternativas || [])
+                    : connector.getAlternatives(ufVal);
+                const foundBase = alts.find(a => a.nombre === anteSelect.value && a.tipo === 'EX-ANTE');
+                if (foundBase) draftData.anteData = { ...foundBase };
+            }
+
+            if (!draftData.anteData) { msg('Error: Base EX-ANTE no encontrada', 'err'); return; }
+            draftData.allEngineData.push(draftData.anteData);
+
+            // C. CARGAR DATOS EX-POST
+            document.querySelectorAll('.sim-expost-db-chk:checked').forEach(chk => {
+                const d = JSON.parse(chk.getAttribute('data-json'));
+                draftData.allEngineData.push(d);
+                draftData.postData.push(d);
+            });
+
+            for (let i = 1; i <= simDraftCount; i++) {
+                const nomInput = document.getElementById(`sim-ep-nom-${i}`);
+                if (nomInput && nomInput.value.trim()) {
+                    const item = {
+                        nombre: nomInput.value.trim(), tipo: 'EX-POST',
+                        amb: parseFloat(document.getElementById(`sim-ep-amb-${i}`)?.value) || 0,
+                        soc: parseFloat(document.getElementById(`sim-ep-soc-${i}`)?.value) || 0,
+                        eco: parseFloat(document.getElementById(`sim-ep-eco-${i}`)?.value) || 0,
+                        isNew: true
+                    };
+                    draftData.allEngineData.push(item);
+                    draftData.postData.push(item);
+                }
+            }
+
+            if (draftData.postData.length === 0) { msg('Añade al menos un escenario de mejora (EX-POST)', 'err'); return; }
+
+            // D. EJECUTAR MOTOR
+            spin(true, 'Calculando simulación...');
+            try {
+                const res = MRPEngine.run(draftData.allEngineData, { alpha: mrpAlpha, qCustom: mrpQCustom, lineaRoja: mrpLR });
+                currentDraftSimulation = draftData;
+                const d = res.ranking;
+                const exAnteRes = d.find(r => r.tipo === 'EX-ANTE') || { amb: 0, soc: 0, eco: 0 };
+
+                let html = `<div class="bg-yellow-50 text-yellow-800 p-3 text-center text-[10px] font-black border-b border-yellow-200 uppercase tracking-widest">⚠️ Resultados en Modo Borrador</div>
+                            <div class="overflow-x-auto bg-white">
+                                <table class="w-full text-left text-sm">
+                                    <thead class="bg-slate-50 border-b"><tr><th class="px-6 py-4">Alternativa</th><th class="px-6 py-4 text-center">Variación</th><th class="px-6 py-4 text-right">Score SS</th><th class="px-6 py-4 text-center">Logros</th><th class="px-6 py-4 text-right">Veredicto</th></tr></thead>
+                                    <tbody class="divide-y">`;
+
+                d.forEach(r => {
+                    html += `<tr class="${r.vetada ? 'bg-red-50/30' : ''}">
+                                <td class="px-6 py-4 font-bold text-slate-700">${r.accion} <span class="text-[9px] opacity-40 ml-1 uppercase">${r.tipo}</span></td>
+                                <td class="px-6 py-4 text-center">${r.tipo === 'EX-ANTE' ? '-' : `<div class="flex flex-col gap-1">${getBadge(exAnteRes.amb, r.amb)} ${getBadge(exAnteRes.soc, r.soc)} ${getBadge(exAnteRes.eco, r.eco)}</div>`}</td>
+                                <td class="px-6 py-4 text-right font-black text-lg ${r.vetada ? 'text-error' : 'text-[#8b3d97]'}">${r.ss.toFixed(3)}</td>
+                                <td class="px-6 py-4"><div class="flex justify-center gap-2">${fmtS(r.s_amb, r.s_amb === r.ss)} ${fmtS(r.s_soc, r.s_soc === r.ss)} ${fmtS(r.s_eco, r.s_eco === r.ss)}</div></td>
+                                <td class="px-6 py-4 text-right">${bVerd(r.ss)}</td>
+                            </tr>`;
+                });
+                html += `</tbody></table></div>`;
+
+                // Análisis de Segunda Capa (Triple Veto)
+                const todasVetadas = d.length >= 2 && d.every(r => r.ss === 0);
+                if (todasVetadas) {
+                    const survivalRanking = d.map(r => {
+                        const logs = [
+                            { val: r.s_amb, label: 'Amb' },
+                            { val: r.s_soc, label: 'Soc' },
+                            { val: r.s_eco, label: 'Eco' }
+                        ];
+                        const pilarCritico = logs.find(l => l.val === 0) || logs[0];
+                        const logsSanos = logs.filter(l => l !== pilarCritico);
+
+                        const newScore = logsSanos.reduce((a, b) => a + b.val, 0) / logsSanos.length;
+
+                        return { ...r, ss2: newScore, eliminado: pilarCritico.label, restantes: logsSanos };
+                    }).sort((a, b) => b.ss2 - a.ss2);
+
+                    html += `
+                        <div class="mt-0 p-6 bg-blue-50 border-t-2 border-blue-200">
+                            <h4 class="font-black text-blue-900 text-sm uppercase mb-4">Análisis de Resiliencia (Desempate)</h4>
+                            <div class="overflow-hidden rounded-xl border border-blue-200 bg-white">
+                                <table class="w-full text-left text-xs">
+                                    <thead class="bg-blue-600 text-white"><tr><th class="p-3">Alternativa</th><th class="p-3 text-center">Omitido</th><th class="p-3 text-right">Score Resiliente</th><th class="p-3 text-right">Estado</th></tr></thead>
+                                    <tbody class="divide-y divide-blue-50">
+                                        ${survivalRanking.map((r, i) => {
+                        // LÓGICA VISUAL: Icono dinámico según el pilar y estilo premium
+                        const icon = r.eliminado === 'Amb' ? 'eco' : (r.eliminado === 'Soc' ? 'groups' : 'payments');
+                        return `<tr>
+                                                <td class="p-3 font-bold">${r.accion}</td>
+                                                <td class="p-3 text-center">
+                                                    <div class="inline-flex flex-col items-center justify-center bg-red-50 border border-red-200 rounded-lg px-3 py-1.5 shadow-sm min-w-[100px]">
+                                                        <span class="text-[8px] font-black text-red-500 uppercase tracking-widest mb-1">Pilar Omitido</span>
+                                                        <div class="flex items-center gap-1.5 text-red-700 opacity-60">
+                                                            <span class="material-symbols-outlined text-[14px]">${icon}</span>
+                                                            <span class="text-xs font-headline font-bold line-through decoration-red-500/50">${r.eliminado}</span>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td class="p-3 text-right font-black text-blue-700">${r.ss2.toFixed(3)}</td>
+                                                <td class="p-3 text-right font-black">${i === 0 ? 'RECOMENDADA' : ''}</td>
+                                            </tr>`;
+                    }).join('')}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>`;
+                }
+
+                html += `<div class="p-6 bg-slate-900 rounded-b-2xl flex justify-end"><button onclick="persistDraftSimulation()" class="bg-white text-slate-900 px-8 py-2 rounded-xl font-black text-xs hover:bg-purple-50">Guardar en BBDD</button></div>`;
+
+                const resBox = document.getElementById('m-sim-res');
+                resBox.innerHTML = html;
+                resBox.classList.remove('hidden');
+                resBox.scrollIntoView({ behavior: 'smooth' });
+
+            } catch (e) { msg(e.message, 'err'); }
+            spin(false);
+        }
+        async function generateScenarioRanking() {
+            const actionName = document.getElementById('m-scenario-uf').value;
+            const tiebreakContainer = document.getElementById('m-scenario-tiebreak-container');
+            if (!actionName) { msg('Selecciona una Acción primero', 'err'); return; }
+            if (scenarioSelectedEPs.length === 0) { msg('Marca alternativas EX-POST', 'err'); return; }
+
+            spin(true, 'Generando Escenario Específico...');
+            try {
+                let alts = actionName.startsWith('uf_custom_')
+                    ? (JSON.parse(localStorage.getItem('sonya_custom_ufs'))?.find(u => u.id === actionName)?.alternativas || [])
+                    : connector.getAlternatives(actionName) || [];
+
+                const runtimeAlts = JSON.parse(localStorage.getItem('sonya_runtime_alts')) || [];
+                alts = [...alts, ...runtimeAlts.filter(a => a.uf === actionName || a.ufId === actionName)];
+
+                const exAnte = alts.find(a => a.tipo === 'EX-ANTE');
+                const subset = [exAnte];
+                scenarioSelectedEPs.forEach(n => {
+                    const f = alts.find(a => a.nombre === n && a.tipo === 'EX-POST');
+                    if (f) subset.push(f);
+                });
+
+                const res = MRPEngine.run(subset, { alpha: mrpAlpha, qCustom: mrpQCustom, lineaRoja: mrpLR });
+                const d = res.ranking;
+                renderScenarioResults(d, exAnte);
+                document.getElementById('m-scenario-results').classList.remove('hidden');
+
+                // LÓGICA DE SEGUNDA CAPA
+                if (d.length >= 2 && d.every(r => r.ss === 0) && tiebreakContainer) {
+                    const survival = d.map(r => {
+                        const logs = [{ v: r.s_amb, l: 'Amb' }, { v: r.s_soc, l: 'Soc' }, { v: r.s_eco, l: 'Eco' }];
+                        const clean = logs.filter(l => l.v > 0);
+                        const media = clean.reduce((a, b) => a + b.v, 0) / clean.length;
+                        return { ...r, ss2: media, critico: logs.find(l => l.v === 0)?.l || 'N/A' };
+                    }).sort((a, b) => b.ss2 - a.ss2);
+
+                    tiebreakContainer.innerHTML = `
+                        <div class="mt-8 p-6 bg-blue-50 border-l-4 border-blue-500 rounded-xl">
+                            <h4 class="font-black text-blue-900 text-sm uppercase mb-4">Análisis de Segunda Capa (Desempate)</h4>
+                            <div class="overflow-hidden rounded-xl border border-blue-200 bg-white">
+                                <table class="w-full text-left text-xs">
+                                    <thead class="bg-blue-600 text-white"><tr><th class="p-3">Alternativa</th><th class="p-3 text-center">Fallo Omitido</th><th class="p-3 text-right">Score Resiliente</th></tr></thead>
+                                    <tbody class="divide-y divide-blue-50">
+                                        ${survival.map(r => `<tr><td class="p-3 font-bold">${r.accion}</td><td class="p-3 text-center text-red-500">-${r.critico}</td><td class="p-3 text-right font-black text-blue-700">${r.ss2.toFixed(3)}</td></tr>`).join('')}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>`;
+                } else if (tiebreakContainer) { tiebreakContainer.innerHTML = ""; }
+                msg('Ranking Generado', 'ok');
+            } catch (e) { msg(e.message, 'err'); }
+            spin(false);
+        }
+        function persistDraftSimulation() {
+            if (!currentDraftSimulation) {
+                msg('No hay datos de simulación para guardar.', 'err');
+                return;
+            }
+            spin(true, 'Guardando en Base de Datos...');
+
+            setTimeout(() => {
+                try {
+                    let targetId = currentDraftSimulation.actionId;
+
+                    // 1. Si creamos una acción totalmente nueva
+                    if (currentDraftSimulation.isNewAction) {
+                        targetId = 'uf_custom_' + Date.now();
+                        const newUF = {
+                            id: targetId,
+                            label: currentDraftSimulation.actionLabel,
+                            unit: currentDraftSimulation.actionUnit || 'Unidades',
+                            count: 0,
+                            alternativas: []
+                        };
+                        let customUFs = JSON.parse(localStorage.getItem('sonya_custom_ufs')) || [];
+                        customUFs.push(newUF);
+                        localStorage.setItem('sonya_custom_ufs', JSON.stringify(customUFs));
+                    }
+
+                    const saveToDB = (dataObj) => {
+                        // Generamos un ID único compatible con el motor
+                        const uniqueId = 'alt_' + Date.now() + Math.random().toString(36).substr(2, 4);
+
+                        // IMPORTANTE: El campo debe ser 'nombre' y debe incluir 'uf' para el buscador de la BBDD
+                        const newAlt = {
+                            id: uniqueId,
+                            uf: targetId,
+                            ufId: targetId,
+                            nombre: dataObj.nombre,
+                            tipo: dataObj.tipo,
+                            amb: parseFloat(dataObj.amb) || 0,
+                            soc: parseFloat(dataObj.soc) || 0,
+                            eco: parseFloat(dataObj.eco) || 0,
+                            source: 'runtime'
+                        };
+
+                        if (targetId.startsWith('uf_custom_')) {
+                            let customUFs = JSON.parse(localStorage.getItem('sonya_custom_ufs')) || [];
+                            let idx = customUFs.findIndex(u => u.id === targetId);
+                            if (idx !== -1) {
+                                if (!customUFs[idx].alternativas) customUFs[idx].alternativas = [];
+                                // Evitamos duplicados por nombre
+                                if (!customUFs[idx].alternativas.some(a => a.nombre === dataObj.nombre)) {
+                                    customUFs[idx].alternativas.push(newAlt);
+                                    customUFs[idx].count = customUFs[idx].alternativas.length;
+                                    localStorage.setItem('sonya_custom_ufs', JSON.stringify(customUFs));
+                                }
+                            }
+                        } else {
+                            // Si la acción ya existía, guardamos en el almacén runtime general
+                            let runtimeAlts = JSON.parse(localStorage.getItem('sonya_runtime_alts')) || [];
+                            if (!runtimeAlts.some(a => a.uf === targetId && a.nombre === dataObj.nombre)) {
+                                runtimeAlts.push(newAlt);
+                                localStorage.setItem('sonya_runtime_alts', JSON.stringify(runtimeAlts));
+                            }
+                        }
+                    };
+
+                    // Guardamos la base si es nueva y las mejoras si son nuevas
+                    if (currentDraftSimulation.anteData && currentDraftSimulation.anteData.isNew) {
+                        saveToDB(currentDraftSimulation.anteData);
+                    }
+                    if (currentDraftSimulation.postData) {
+                        currentDraftSimulation.postData.forEach(post => {
+                            if (post.isNew) saveToDB(post);
+                        });
+                    }
+
+                    msg('¡Simulación guardada en BBDD!', 'ok');
+                    setTimeout(() => location.reload(), 1000);
+                } catch (e) {
+                    msg('Error al guardar: ' + e.message, 'err');
+                    spin(false);
+                }
+            }, 500);
+        }
+
+        // ── Math Tab ──────────────────────────────────────────────
+        function buildMath() {
+            if (!lastResult) {
+                document.getElementById('m-math-container').innerHTML = `<div class="p-12 text-center text-slate-400 bg-white rounded-xl border border-outline-variant/15 shadow-sm"><span class="material-symbols-outlined text-5xl mb-4 block">functions</span><p class="font-headline font-bold">Carga primero el Ranking Global.</p></div>`;
+                return;
+            }
+            const r = lastResult;
+            const criteriaLabels = ['Ambiental', 'Social', 'Económico'];
+            const criteriaKeys = ['amb', 'soc', 'eco'];
+
+            // Build Q thresholds table
+            let qH = '';
+            criteriaKeys.forEach((k, ci) => {
+                const q = r.umbrales_raw?.[k] ?? [];
+                qH += `<tr class="bg-surface-container-low/50 hover:bg-surface-container-low transition-colors">
+                    <td class="py-4 pl-4 font-headline font-bold text-on-surface">${criteriaLabels[ci]}</td>
+                    ${q.map((v, i) => `<td class="py-4 font-mono text-sm text-center ${mrpLR === mrpAlpha[i] ? 'text-error font-bold' : ''}">${v?.toFixed(4) ?? '--'}</td>`).join('')}
+                </tr>`;
+            });
+
+            document.getElementById('m-math-container').innerHTML = `
+                <!-- CRITIC -->
+                <div class="bg-white rounded-xl p-8 shadow-sm border border-outline-variant/15">
+                    <div class="flex items-center justify-between mb-6 border-b border-outline-variant/20 pb-4">
+                        <h2 class="text-2xl font-bold font-headline text-[#8b3d97]">I. Ponderación CRITIC</h2>
+                        <span class="font-mono text-xs text-outline px-2 py-1 bg-surface-container rounded border border-outline-variant/20">σ · Σ(1−r)</span>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                        ${Object.entries(r.std ?? {}).map(([k, v]) => `
+                            <div class="bg-surface-container-low p-5 rounded-xl border border-outline-variant/15">
+                                <p class="text-[10px] font-bold uppercase tracking-widest text-outline font-headline">σ — ${k}</p>
+                                <p class="data-mono text-xl font-bold text-slate-800 mt-2">${typeof v === 'number' ? v.toFixed(6) : '--'}</p>
+                            </div>`).join('')}
+                    </div>
+                </div>
+
+                <!-- Thresholds -->
+                <div class="bg-white rounded-xl p-8 shadow-sm border border-outline-variant/15">
+                    <div class="flex items-center justify-between mb-6 border-b border-outline-variant/20 pb-4">
+                        <h2 class="text-2xl font-bold font-headline text-[#8b3d97]">II. Estandarización a Tramos (Percentiles)</h2>
+                        <span class="font-mono text-xs text-outline px-2 py-1 bg-surface-container rounded border border-outline-variant/20">METRIC_V01</span>
+                    </div>
+                    <p class="text-sm text-on-surface-variant mb-6">Para MINIMIZACIÓN: q0=máximo(peor) → q4=mínimo(ideal). Para BENEFICIO: q0=mínimo(peor) → q4=máximo(ideal).</p>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-separate border-spacing-y-2">
+                            <thead><tr class="text-outline text-xs uppercase tracking-widest font-bold">
+                                <th class="pb-4 pl-4 font-label">Criterio</th>
+                                <th class="pb-4 font-label text-center">q0 (Peor)</th>
+                                <th class="pb-4 font-label text-center">q1 (P75)</th>
+                                <th class="pb-4 font-label text-center">q2 (P50)</th>
+                                <th class="pb-4 font-label text-center">q3 (P25)</th>
+                                <th class="pb-4 pr-4 font-label text-center">q4 (Ideal)</th>
+                            </tr></thead>
+                            <tbody>${qH}</tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Leontief -->
+                <div class="bg-white rounded-xl p-8 shadow-sm border border-outline-variant/15">
+                    <div class="flex items-center justify-between mb-6 border-b border-outline-variant/20 pb-4">
+                        <h2 class="text-2xl font-bold font-headline text-[#8b3d97]">III. Sostenibilidad Fuerte — Veto de Leontief</h2>
+                        <div class="bg-slate-900 text-white px-4 py-2 rounded-lg font-mono text-sm">SS = min(s_Eco, s_Amb, s_Soc)</div>
+                    </div>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+
+                        ${r.ranking.map(row => `
+                            <div class="p-4 rounded-lg border-l-4 ${row.vetada ? 'border-error bg-error-container/10' : 'border-[#8b3d97] bg-surface-container'}">
+                                <p class="text-[10px] text-outline uppercase font-bold mb-1">Alternativa</p>
+                                <p class="font-headline font-extrabold text-on-surface text-sm">${row.accion}</p>
+                                <div class="mt-2 text-2xl font-mono font-bold ${row.vetada ? 'text-error' : 'text-[#8b3d97]'}">SS ${row.ss.toFixed(2)}</div>
+                                ${row.vetada ? `<p class="text-[9px] text-error font-bold mt-1 uppercase">Pilar: ${row.pilar_fallido}</p>` : ''}
+                            </div>`).join('')}
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                            <thead class="border-b border-surface-container-high">
+                                <tr class="text-outline text-[10px] uppercase tracking-wider font-black">
+                                    <th class="py-3 px-2">Alternativa</th>
+                                    <th class="px-4 py-4 text-right">Amb (raw)</th>
+                                    <th class="px-4 py-4 text-right">Soc (raw)</th>
+                                    <th class="px-4 py-4 text-right">Eco (raw)</th>
+                                    <th class="py-3 px-2 text-center">s_Amb</th>
+                                    <th class="py-3 px-2 text-center">s_Soc</th>
+                                    <th class="py-3 px-2 text-center">s_Eco</th>
+                                    <th class="py-3 px-2 text-right">SS Final</th>
+                                </tr>
+                            </thead>
+                            <tbody class="font-mono text-xs">
+                                ${r.ranking.map(row => `r.eco?.
+                                    <tr class="border-b border-surface-container/50 hover:bg-surface-container-low/30 transition-colors">
+                                        <td class="py-3 px-2 font-headline font-bold text-on-surface">${row.accion}</td>
+                                        <td class="py-3 px-2 text-slate-500">${row.eco?.toLocaleString('es-ES', { maximumFractionDigits: 2 }) ?? '--'}</td>
+                                        <td class="py-3 px-2 text-slate-500">${row.amb?.toLocaleString('es-ES', { maximumFractionDigits: 2 }) ?? '--'}</td>
+                                        <td class="py-3 px-2 text-slate-500">${row.soc?.toLocaleString('es-ES', { maximumFractionDigits: 2 }) ?? '--'}</td>
+                                        <td class="py-3 px-2 text-center ${row.s_amb === row.ss ? 'text-error font-bold underline underline-offset-4' : 'text-slate-500'}">${row.s_amb.toFixed(4)}</td>
+                                        <td class="py-3 px-2 text-center ${row.s_soc === row.ss ? 'text-error font-bold underline underline-offset-4' : 'text-slate-500'}">${row.s_soc.toFixed(4)}</td>
+                                        <td class="py-3 px-2 text-center ${row.s_eco === row.ss ? 'text-error font-bold underline underline-offset-4' : 'text-slate-500'}">${row.s_eco.toFixed(4)}</td>
+                                        <td class="py-3 px-2 text-right font-bold text-sm ${row.vetada ? 'text-error' : 'text-[#8b3d97]'}">${row.ss.toFixed(4)}</td>
+                                    </tr>`).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="text-xs text-outline mt-6 italic flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-error flex-shrink-0"></span>En rojo subrayado: criterio limitante que dicta el SS por Veto de Leontief.</p>
+                </div>`;
+        }
+
+        // ── Bootstrap ─────────────────────────────────────────────
+        window.addEventListener('DOMContentLoaded', async () => {
+            spin(true, 'Inicializando Motor MRP y cargando BBDD...');
+            try {
+                connector = await SonyaConnector.init();
+
+                // --- INYECTAR ACCIONES PERSONALIZADAS (CON FILTRO DE FANTASMAS) ---
+                const customUFs = JSON.parse(localStorage.getItem('sonya_custom_ufs')) || [];
+                const ufs = connector.getUFs();
+
+                customUFs.forEach(cuf => {
+                    // Solo inyectamos la acción si NO existe ya en el JSON y SI tiene al menos 1 alternativa
+                    if (!ufs.some(u => u.id === cuf.id) && cuf.alternativas && cuf.alternativas.length > 0) {
+                        // Actualizamos el contador real por seguridad
+                        cuf.count = cuf.alternativas.length;
+                        ufs.push(cuf);
+                    }
+                });
+                // ------------------------------------------------------------------
+
+                populateUFSelectors(ufs, ufs[0].id);
+                activeUF = ufs[0].id;
+                await loadM();
+            } catch (e) {
+                spin(false);
+                msg(`Error al inicializar: ${e.message}`, 'err');
+                document.getElementById('m-table-body').innerHTML = `<tr><td colspan="8" class="p-10 text-center text-error font-headline">${e.message}</td></tr>`;
+            }
+        });
+        // ════════════════════════════════════════════════════════════════════════════
+        // TAREA 2: LÓGICA DEL RANKING SELECCIONABLE (SCENARIO BUILDER)
+        // ════════════════════════════════════════════════════════════════════════════
+
+        let scenarioSelectedEPs = [];
+        async function onScenarioActionChange(val) {
+            if (!val || !connector) return;
+
+            scenarioSelectedEPs = [];
+            const container = document.getElementById('m-scenario-expost-list');
+            const infoDiv = document.getElementById('m-scenario-base-info');
+            document.getElementById('m-scenario-results').classList.add('hidden');
+
+            // --- UNIFICACIÓN DE DATOS (Estáticos + Runtime) ---
+            let alts = [];
+            if (val.startsWith('uf_custom_')) {
+                const custom = JSON.parse(localStorage.getItem('sonya_custom_ufs'))?.find(u => u.id === val);
+                alts = custom ? custom.alternativas : [];
+            } else {
+                // Datos del JSON
+                alts = connector.getAlternatives(val) || [];
+                // + Datos añadidos en caliente (Runtime)
+                const runtimeAlts = JSON.parse(localStorage.getItem('sonya_runtime_alts')) || [];
+                const extra = runtimeAlts.filter(a => a.uf === val || a.ufId === val);
+                alts = [...alts, ...extra];
+            }
+
+            const exAnte = alts.find(a => a.tipo === 'EX-ANTE');
+
+            infoDiv.innerHTML = exAnte
+                ? `${exAnte.nombre} <span class="text-[10px] opacity-50 font-mono">(A:${exAnte.amb} S:${exAnte.soc} E:${exAnte.eco})</span>`
+                : '<span class="text-error">No hay base EX-ANTE para esta acción.</span>';
+
+            const exPosts = alts.filter(a => a.tipo === 'EX-POST');
+            container.innerHTML = exPosts.map(ep => `
+                <label class="flex items-center gap-3 p-3 bg-slate-50 rounded-xl cursor-pointer hover:bg-purple-50 border border-transparent hover:border-purple-200 transition-all group">
+                    <input type="checkbox" onchange="toggleScenarioAlt('${ep.nombre}', this.checked)" class="w-4 h-4 rounded border-slate-300 text-[#8b3d97]">
+                    <div class="flex flex-col">
+                        <span class="text-sm font-bold text-slate-700">${ep.nombre}</span>
+                        <span class="text-[9px] font-mono text-slate-400">A:${ep.amb} | S:${ep.soc} | E:${ep.eco}</span>
+                    </div>
+                </label>
+            `).join('');
+        }
+        // 2. Guardar qué checkboxes se han marcado
+        function toggleScenarioAlt(nombre, isChecked) {
+            if (isChecked) {
+                if (!scenarioSelectedEPs.includes(nombre)) scenarioSelectedEPs.push(nombre);
+            } else {
+                scenarioSelectedEPs = scenarioSelectedEPs.filter(n => n !== nombre);
+            }
+        }
+
+
+        async function generateScenarioRanking() {
+            const actionName = document.getElementById('m-scenario-uf').value;
+            if (!actionName) { msg('Selecciona una Acción primero', 'err'); return; }
+            if (scenarioSelectedEPs.length === 0) { msg('Marca al menos una alternativa EX-POST', 'err'); return; }
+
+            spin(true, 'Recalculando pesos con datos seleccionados...');
+
+            try {
+                let alts = actionName.startsWith('uf_custom_')
+                    ? (JSON.parse(localStorage.getItem('sonya_custom_ufs'))?.find(u => u.id === actionName)?.alternativas || [])
+                    : connector.getAlternatives(actionName) || [];
+
+                const runtimeAlts = JSON.parse(localStorage.getItem('sonya_runtime_alts')) || [];
+                const extra = runtimeAlts.filter(a => a.uf === actionName || a.ufId === actionName);
+                alts = [...alts, ...extra];
+
+                const exAnte = alts.find(a => a.tipo === 'EX-ANTE');
+                if (!exAnte) throw new Error("Se requiere una solución EX-ANTE para comparar.");
+
+                const subset = [exAnte];
+                scenarioSelectedEPs.forEach(epName => {
+                    const found = alts.find(a => a.nombre === epName && a.tipo === 'EX-POST');
+                    if (found) subset.push(found);
+                });
+
+                // 1. EJECUTAR MOTOR MRP
+                const res = MRPEngine.run(subset, { alpha: mrpAlpha, qCustom: mrpQCustom, lineaRoja: mrpLR });
+                const d = res.ranking;
+
+                // 2. RENDERIZAR TABLA PRINCIPAL (Llamamos a tu función de renderizado)
+                renderScenarioResults(d, exAnte);
+                document.getElementById('m-scenario-results').classList.remove('hidden');
+
+                // 3. LÓGICA DE SEGUNDA CAPA: DESEMPATE TÉCNICO (Tu petición)
+                const tiebreakContainer = document.getElementById('m-scenario-tiebreak-container');
+                const todasVetadas = d.length >= 2 && d.every(r => r.ss === 0);
+
+                if (todasVetadas) {
+                    // Calculamos el ranking de resiliencia
+                    const survivalRanking = d.map(r => {
+                        const logs = [
+                            { val: r.s_amb, label: 'Amb' },
+                            { val: r.s_soc, label: 'Soc' },
+                            { val: r.s_eco, label: 'Eco' }
+                        ];
+                        // Identificamos el pilar que causó el 0.00
+                        const pilarCritico = logs.find(l => l.val === 0) || logs[0];
+                        const logsSanos = logs.filter(l => l !== pilarCritico);
+                        const newScore = logsSanos.reduce((a, b) => a + b.val, 0) / logsSanos.length;
+
+                        return {
+                            ...r,
+                            ss2: newScore,
+                            eliminado: pilarCritico.label,
+                            restantes: logsSanos
+                        };
+                    }).sort((a, b) => b.ss2 - a.ss2);
+
+                    tiebreakContainer.innerHTML = `
+                        <div class="mt-8 p-6 bg-blue-50 border-l-4 border-blue-500 rounded-t-xl shadow-sm animate-in fade-in duration-500">
+                            <div class="flex items-start gap-4">
+                                <span class="material-symbols-outlined text-blue-600 text-3xl">info</span>
+                                <div>
+                                    <h4 class="font-headline font-black text-blue-900 text-sm uppercase tracking-tighter">Análisis de Segunda Capa: Desempate Técnico</h4>
+                                    <p class="text-xs text-blue-800 leading-relaxed mt-1">
+                                        Las 3 soluciones seleccionadas están vetadas. El siguiente ranking muestra el desempeño omitiendo el factor crítico (0.00) de cada alternativa.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="overflow-hidden rounded-b-xl border border-blue-100 bg-white shadow-xl mb-12">
+                            <table class="w-full text-left text-sm">
+                                <thead class="bg-slate-800 text-[10px] uppercase font-black text-slate-200 tracking-widest">
+                                    <tr>
+                                        <th class="px-6 py-4 text-center">#</th>
+                                        <th class="px-6 py-4">Alternativa (Análisis Resiliente)</th>
+                                        <th class="px-6 py-4 text-center">Factor Crítico Omitido</th>
+                                        <th class="px-6 py-4 text-right">Score Supervivencia</th>
+                                        <th class="px-6 py-4 text-center">Logros Restantes</th>
+                                        <th class="px-6 py-4 text-right">Veredicto</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-100">
+                                    ${survivalRanking.map((r, i) => `
+                                        <tr class="hover:bg-blue-50/30 transition-colors">
+                                            <td class="px-6 py-5 text-center font-mono font-bold text-blue-600">${String(i + 1).padStart(2, '0')}</td>
+                                            <td class="px-6 py-5">
+                                                <div class="font-headline font-bold text-slate-800">${r.accion}</div>
+                                                <div class="text-[9px] text-slate-400 font-bold uppercase">${r.tipo}</div>
+                                            </td>
+                                            <td class="px-6 py-5 text-center">
+                                                <span class="px-2 py-1 bg-red-50 text-red-500 border border-red-100 rounded text-[9px] font-black uppercase font-mono">
+                                                    OMITIDO: ${r.eliminado}
+                                                </span>
+                                            </td>
+                                            <td class="px-6 py-5 text-right font-mono font-black text-xl text-blue-700">${r.ss2.toFixed(3)}</td>
+                                            <td class="px-6 py-5">
+                                                <div class="flex items-center justify-center gap-2">
+                                                    ${r.restantes.map(l => `<span class="badge-ok text-[10px] font-bold">${l.label}: ${l.val.toFixed(2)}</span>`).join('')}
+                                                </div>
+                                            </td>
+                                            <td class="px-6 py-5 text-right">
+                                                <span class="inline-flex items-center gap-1.5 px-3 py-1 ${i === 0 ? 'bg-green-100 text-green-800' : 'bg-slate-100 text-slate-500'} text-[10px] font-black rounded-full border">
+                                                    ${i === 0 ? 'RECOMENDADA' : 'SECUNDARIA'}
+                                                </span>
+                                            </td>
+                                        </tr>`).join('')}
+                                </tbody>
+                            </table>
+                            </table>
+                </div>
+            </section>
+            <div id="m-scenario-tiebreak-container"></div> 
+        </div>
+                        </div>`;
+                } else {
+                    tiebreakContainer.innerHTML = "";
+                }
+
+                msg('Ranking Específico Generado', 'ok');
+
+            } catch (e) {
+                msg(e.message, 'err');
+                console.error(e);
+            }
+            spin(false);
+        }
+
+
+        // 4. Dibujar la tabla manteniendo el orden Amb, Soc, Eco y los Badges de colores
+        function renderScenarioResults(ranking, exAnte) {
+            const tbody = document.getElementById('m-scenario-table-body');
+            if (!tbody) return;
+
+            tbody.innerHTML = ranking.map((r, i) => {
+                // 1. Verificamos la satisfacción (si no existe, asumimos 100)
+                const satVal = r.sat !== undefined ? r.sat : 100;
+                const fallaSat = satVal < 50;
+
+                // 2. Etiqueta informativa
+                const infoSatisfaccion = `<div class="text-[9px] font-bold text-blue-600 mt-1 uppercase tracking-widest">Satisfacción: ${satVal}%</div>`;
+
+                // 3. Advertencia
+                let advertencia = '';
+                let veredictoHtml = bVerd(r.ss);
+
+                if (fallaSat && !r.vetada) {
+                    advertencia = `<div class="text-[9px] text-orange-600 font-bold mt-1 leading-tight bg-orange-50 p-1 rounded">⚠️ La solución es viable pero no cumple con la satisfacción del usuario (${satVal}%).</div>`;
+                    veredictoHtml = `<span class="inline-flex items-center gap-1.5 px-3 py-1 bg-orange-100 text-orange-800 text-xs font-bold rounded-full border border-orange-200">Rechazada</span>`;
+                } else if (fallaSat && r.vetada) {
+                    advertencia = `<div class="text-[9px] text-red-600 font-bold mt-1 bg-red-50 p-1.5 rounded inline-block border border-red-200">⚠️ Vetada por el Motor y rechazada por el Usuario</div>`;
+                }
+
+                // 4. Color de fila
+                const rowColor = r.vetada ? 'bg-red-50/30' : (fallaSat ? 'bg-orange-50/20' : '');
+
+                return `
+                <tr class="${rowColor} hover:bg-surface-container-low/50 transition-colors group">
+                    <td class="px-4 py-5 font-mono text-sm text-outline">${String(i + 1).padStart(2, '0')}</td>
+                    <td class="px-4 py-5">
+                        <div class="font-headline font-bold text-on-surface">${r.accion}</div>
+                        <div class="text-[9px] font-bold font-mono text-secondary mt-1 tracking-widest uppercase">${r.tipo}</div>
+                        ${infoSatisfaccion}
+                        ${advertencia}
+                    </td>
+                    
+                    <td class="px-4 py-5 text-right"><span class="data-mono text-xs font-bold text-slate-700">${r.amb?.toLocaleString('es-ES', { useGrouping: false, maximumFractionDigits: 2 }) ?? '--'}</span></td>
+                    <td class="px-4 py-5 text-right"><span class="data-mono text-xs font-bold text-slate-700">${r.soc?.toLocaleString('es-ES', { useGrouping: false, maximumFractionDigits: 2 }) ?? '--'}</span></td>
+                    <td class="px-4 py-5 text-right"><span class="data-mono text-xs font-bold text-slate-700">${r.eco?.toLocaleString('es-ES', { useGrouping: false, maximumFractionDigits: 2 }) ?? '--'}</span></td>
+                    
+                    <td class="px-5 py-2 text-center align-middle border-l border-r border-outline-variant/10 bg-surface-container-lowest/50">
+                        ${r.tipo === 'EX-ANTE' || !exAnte
+                        ? '<span class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Línea Base</span>'
+                        : `<div class="flex flex-col gap-1.5 items-center justify-center">
+                                   <div class="flex items-center gap-1"><span class="text-[9px] text-slate-400 w-6 text-right uppercase font-bold">Amb:</span> ${getBadge(exAnte.amb, r.amb)}</div>
+                                   <div class="flex items-center gap-1"><span class="text-[9px] text-slate-400 w-6 text-right uppercase font-bold">Soc:</span> ${getBadge(exAnte.soc, r.soc)}</div>
+                                   <div class="flex items-center gap-1"><span class="text-[9px] text-slate-400 w-6 text-right uppercase font-bold">Eco:</span> ${getBadge(exAnte.eco, r.eco)}</div>
+                               </div>`
+                    }
+                    </td>
+
+                    <td class="px-4 py-5 font-mono font-bold text-lg ${r.vetada ? 'text-error' : 'text-[#8b3d97]'}">${r.ss.toFixed(3)}</td>
+                    <td class="px-4 py-5">
+                        <div class="flex items-center gap-2">
+                            ${fmtS(r.s_amb, r.s_amb === r.ss)}
+                            ${fmtS(r.s_soc, r.s_soc === r.ss)}
+                            ${fmtS(r.s_eco, r.s_eco === r.ss)}
+                        </div>
+                    </td>
+                    <td class="px-4 py-5 text-right">${veredictoHtml}</td>
+                </tr>`
+            }).join('');
+        }
+        function confirmNewAction() {
+            const nombre = document.getElementById('gna-name').value.trim();
+            const unit = document.getElementById('gna-unit').value.trim();
+            if (!nombre) { msg('Ingresa un nombre', 'err'); return; }
+
+            const newUF = { id: 'uf_custom_' + Date.now(), label: nombre, unit: unit || 'Unidades', count: 0, alternativas: [] };
+            const customUFs = JSON.parse(localStorage.getItem('sonya_custom_ufs')) || [];
+            customUFs.push(newUF);
+            localStorage.setItem('sonya_custom_ufs', JSON.stringify(customUFs));
+
+            msg(`Acción "${nombre}" creada`, 'ok');
+            closeNewActionModal();
+            setTimeout(() => location.reload(), 600);
+        }
+
+        function openNewActionModal() { document.getElementById('global-new-action-modal').classList.remove('hidden'); }
+        function closeNewActionModal() { document.getElementById('global-new-action-modal').classList.add('hidden'); }
+
+        function refreshExPostExistingList(ufId) {
+            const container = document.getElementById('m-expost-existing-container');
+            const list = document.getElementById('m-expost-existing-list');
+
+            if (!ufId || ufId === '__new__') {
+                if (container) container.classList.add('hidden');
+                return;
+            }
+
+            let alts = [];
+            if (ufId.startsWith('uf_custom_')) {
+                const customUFs = JSON.parse(localStorage.getItem('sonya_custom_ufs')) || [];
+                const current = customUFs.find(u => u.id === ufId);
+                if (current) alts = current.alternativas || [];
+            } else {
+                alts = connector.getAlternatives(ufId) || [];
+            }
+
+            const exPosts = alts.filter(a => a.tipo === 'EX-POST');
+
+            if (exPosts.length > 0 && container && list) {
+                container.classList.remove('hidden');
+                list.innerHTML = exPosts.map(ep => `
+                    <label class="flex items-center gap-3 p-3 bg-white border border-slate-200 rounded-xl cursor-pointer hover:bg-purple-50 transition-all shadow-sm group">
+                        <input type="checkbox" class="sim-expost-db-chk w-4 h-4 rounded border-slate-300 text-[#8b3d97] focus:ring-[#8b3d97]" value="${ep.nombre}" data-json='${JSON.stringify(ep)}'>
+                        <div class="flex flex-col">
+                            <span class="font-bold text-xs text-slate-800">${ep.nombre}</span>
+                            <span class="text-[9px] font-mono text-slate-500">A:${ep.amb} | S:${ep.soc} | E:${ep.eco}</span>
+                        </div>
+                    </label>`).join('');
+            } else if (container && list) {
+                container.classList.add('hidden');
+                list.innerHTML = '';
+            }
+        }
+
+
+    </script>
+
+
+</body>
+
+</html>

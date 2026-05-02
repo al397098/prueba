@@ -1,0 +1,68 @@
+{
+  "_meta": {
+    "project": "SONYA Suite Analítica",
+    "version": "2.0.0",
+    "description": "Base de datos segmentada por Unidades Funcionales (U.F.)",
+    "criteria": {
+      "eco": { "label": "Económico", "nature": "cost" },
+      "amb": { "label": "Ambiental", "nature": "cost" },
+      "soc": { "label": "Social", "nature": "cost" }
+    }
+  },
+  "functional_units": {
+    "tramites_diarios": {
+      "id": "tramites_diarios",
+      "label": "Trámites administrativos diarios",
+      "description": "Alternativas para la prestación de servicios de atención social medidas por trámite procesado en jornada laboral",
+      "unit": "trámite/día",
+      "alternativas": [
+  { "id": "A1", "accion": "Microbús", "tipo": "EX-ANTE", "eco": 5920.13, "amb": 68.38, "soc": 960377.53 },
+  { "id": "A2", "accion": "Telematico", "tipo": "EX-POST", "eco": 431.63, "amb": 5.73, "soc": 77257.43 },
+  { "id": "A3", "accion": "A3", "tipo": "EX-POST", "eco": 1850, "amb": 18.45, "soc": 215400 },
+  { "id": "A4", "accion": "A4", "tipo": "EX-POST", "eco": 4500, "amb": 45.00, "soc": 150000 },
+  { "id": "A5", "accion": "A5", "tipo": "EX-POST", "eco": 850, "amb": 8.50, "soc": 110000 },
+  { "id": "A6", "accion": "A6", "tipo": "EX-POST", "eco": 2200, "amb": 12.00, "soc": 180000 }
+]
+    },
+    "kg_fruta": {
+      "id": "kg_fruta",
+      "label": "kg de fruta procesada",
+      "description": "Alternativas para la cadena de valor frutícola medidas por kilogramo de fruta procesada en planta",
+      "unit": "kg procesado",
+      "alternatives": [
+        {
+          "id": "alt_kf_001",
+          "label": "Fruteria local",
+          "tipo": "EX-ANTE",
+          "source": "static",
+          "scores": {
+            "eco": 0.71,
+            "amb": 193.53,
+            "soc": 481.19
+          },
+          "metadata": {
+            "description": "Canal corto de distribución: frutería de proximidad con aprovisionamiento local",
+            "year": 2022,
+            "tags": ["baseline", "local", "canal-corto", "proximidad"]
+          }
+        },
+        {
+          "id": "alt_kf_002",
+          "label": "Fruta España",
+          "tipo": "EX-POST",
+          "source": "static",
+          "scores": {
+            "eco": 0.92,
+            "amb": 261.46,
+            "soc": 576.56
+          },
+          "metadata": {
+            "description": "Canal largo de distribución: fruta de origen nacional a través de red de distribución centralizada",
+            "year": 2023,
+            "tags": ["nacional", "canal-largo", "distribucion"]
+          }
+        }
+      ]
+    }
+  }
+}
