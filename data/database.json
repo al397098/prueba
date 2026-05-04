@@ -2,7 +2,7 @@
   "_meta": {
     "project": "SONYA Suite Analítica",
     "version": "2.0.0",
-    "description": "Base de datos segmentada por Unidades Funcionales (U.F.)",
+    "description": "Base de datos segmentada por Unidades Funcionales (ACCIONES)",
     "criteria": {
       "eco": { "label": "Económico", "nature": "cost" },
       "amb": { "label": "Ambiental", "nature": "cost" },
@@ -16,13 +16,13 @@
       "description": "Alternativas para la prestación de servicios de atención social medidas por trámite procesado en jornada laboral",
       "unit": "trámite/día",
       "alternativas": [
-  { "id": "A1", "accion": "Microbús", "tipo": "EX-ANTE", "eco": 5920.13, "amb": 68.38, "soc": 960377.53 },
-  { "id": "A2", "accion": "Telematico", "tipo": "EX-POST", "eco": 431.63, "amb": 5.73, "soc": 77257.43 },
-  { "id": "A3", "accion": "A3", "tipo": "EX-POST", "eco": 1850, "amb": 18.45, "soc": 215400 },
-  { "id": "A4", "accion": "A4", "tipo": "EX-POST", "eco": 4500, "amb": 45.00, "soc": 150000 },
-  { "id": "A5", "accion": "A5", "tipo": "EX-POST", "eco": 850, "amb": 8.50, "soc": 110000 },
-  { "id": "A6", "accion": "A6", "tipo": "EX-POST", "eco": 2200, "amb": 12.00, "soc": 180000 }
-]
+        { "id": "A1", "accion": "Microbús", "tipo": "EX-ANTE", "eco": 5920.13, "amb": 68.38, "soc": 960377.53 },
+        { "id": "A2", "accion": "Telematico", "tipo": "EX-POST", "eco": 431.63, "amb": 5.73, "soc": 77257.43 },
+        { "id": "A3", "accion": "A3", "tipo": "EX-POST", "eco": 1850, "amb": 18.45, "soc": 215400 },
+        { "id": "A4", "accion": "A4", "tipo": "EX-POST", "eco": 4500, "amb": 45.00, "soc": 150000 },
+        { "id": "A5", "accion": "A5", "tipo": "EX-POST", "eco": 850, "amb": 8.50, "soc": 110000 },
+        { "id": "A6", "accion": "A6", "tipo": "EX-POST", "eco": 2200, "amb": 12.00, "soc": 180000 }
+      ]
     },
     "kg_fruta": {
       "id": "kg_fruta",
@@ -60,6 +60,62 @@
             "description": "Canal largo de distribución: fruta de origen nacional a través de red de distribución centralizada",
             "year": 2023,
             "tags": ["nacional", "canal-largo", "distribucion"]
+          }
+        }
+      ]
+    },
+    "tonelada_residuos": {
+      "id": "tonelada_residuos",
+      "label": "Gestión de 1 Tonelada de Residuos Mixtos",
+      "description": "Alternativas comparativas para el tratamiento y gestión de residuos sólidos urbanos",
+      "unit": "tonelada",
+      "alternatives": [
+        {
+          "id": "alt_res_001",
+          "label": "Vertedero Tradicional",
+          "tipo": "EX-ANTE",
+          "source": "static",
+          "scores": {
+            "eco": 2,
+            "amb": 9,
+            "soc": 5
+          },
+          "metadata": {
+            "description": "Depósito en vertedero. Bajo coste, pero altísimo impacto ambiental (peor opción AMB).",
+            "year": 2024,
+            "tags": ["baseline", "vertedero"]
+          }
+        },
+        {
+          "id": "alt_res_002",
+          "label": "Planta Incineradora",
+          "tipo": "EX-POST",
+          "source": "static",
+          "scores": {
+            "eco": 3,
+            "amb": 5,
+            "soc": 9
+          },
+          "metadata": {
+            "description": "Valorización energética. Fuerte rechazo vecinal y efecto NIMBY (peor opción SOC).",
+            "year": 2024,
+            "tags": ["incineracion", "energia"]
+          }
+        },
+        {
+          "id": "alt_res_003",
+          "label": "Planta de Reciclaje",
+          "tipo": "EX-POST",
+          "source": "static",
+          "scores": {
+            "eco": 9,
+            "amb": 2,
+            "soc": 2
+          },
+          "metadata": {
+            "description": "Economía circular. Altísima inversión inicial y costes operativos (peor opción ECO).",
+            "year": 2024,
+            "tags": ["reciclaje", "circular"]
           }
         }
       ]
