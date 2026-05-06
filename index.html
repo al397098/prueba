@@ -1,360 +1,87 @@
 <!DOCTYPE html>
-<html class="light" lang="es">
-
+<html lang="en-GB">
 <head>
-    <meta charset="utf-8" />
-    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>SONYA | Dashboard</title>
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=Inter:wght@100..900&family=JetBrains+Mono:wght@100..800&family=Space+Grotesk:wght@300..700&display=swap"
-        rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
-        rel="stylesheet" />
-    <script id="tailwind-config">
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    colors: {
-                        "primary": "#8b3d97", "primary-container": "#f3e8f5", "on-primary": "#ffffff",
-                        "secondary": "#6a1b9a", "surface": "#fdfcff", "on-surface": "#1d1a1e",
-                        "outline": "#7d747d", "outline-variant": "#cfc3cf",
-                        "surface-container-low": "#f8f2f9", "surface-container": "#f2ecf3", "surface-container-high": "#ece6ed"
-                    },
-                    fontFamily: { "headline": ["Manrope"], "body": ["Inter"], "label": ["Space Grotesk"] },
-                    borderRadius: { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" },
-                },
-            },
-        }
-    </script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SONYA | Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
     <style>
-        .blueprint-grid {
-            background-image: radial-gradient(#cfc3cf 0.5px, transparent 0.5px);
-            background-size: 32px 32px;
-        }
-
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-        }
-
-        .fill-icon {
-            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
+        body { background-color: #f7f6f3; font-family: 'DM Sans', sans-serif; }
+        .btn-google { background: #ffffff; color: #1c1917; border: 1px solid #e2ddd8; transition: all 0.25s ease; }
+        .btn-google:hover { transform: scale(1.02); box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1); }
+        .btn-app { background: #1c1917; color: #ffffff; transition: all 0.25s ease; }
+        .btn-app:hover { transform: scale(1.02); box-shadow: 0 10px 25px -5px rgba(28,25,23,0.3); }
+        .hidden-view { display: none !important; }
     </style>
 </head>
+<body class="min-h-screen flex flex-col items-center justify-center relative">
 
-<body class="bg-surface text-on-surface font-body selection:bg-primary-container selection:text-primary">
+    <div class="flex flex-col items-center mb-10 text-center">
+        <img src="logo_sonya.png" alt="SONYA" class="max-w-[200px] w-full object-contain mb-4 drop-shadow-sm" />
+        <p class="font-mono text-[10px] tracking-[0.22em] uppercase text-stone-400">Cloud Analytical Suite</p>
+    </div>
 
-    <!-- Top Navigation -->
-    <nav class="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-xl border-b border-outline-variant/30">
-        <div class="flex justify-between items-center px-6 py-4 max-w-7xl mx-auto w-full">
-            <div class="flex items-center gap-10">
-                <a href="index.html" class="flex items-center">
-                    <img src="logo_sonya.png" alt="SONYA Logo" class="h-9 w-auto object-contain">
-                </a>
-                <div class="hidden md:flex gap-8 items-center">
-                    <a class="font-headline font-semibold text-primary border-b-2 border-primary pb-1"
-                        href="index.html">Dashboard</a>
-                    <a class="font-headline font-semibold text-slate-500 hover:text-primary transition-colors"
-                        href="#engines">Motores de Análisis</a>
-                    <a class="font-headline font-semibold text-slate-500 hover:text-primary transition-colors"
-                        href="#">Documentación</a>
-                </div>
+    <!-- VISTA 1: LOGIN (Se muestra si no hay sesión) -->
+    <div id="view-login" class="flex flex-col items-center gap-4 w-full max-w-sm hidden-view">
+        <button id="btn-signin" class="btn-google flex items-center justify-center gap-3 w-full py-4 rounded-2xl font-bold">
+            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" class="w-5 h-5">
+            Acceder con Google
+        </button>
+        <p class="text-xs text-stone-400 mt-2 text-center px-4">Inicia sesión para aislar tus simulaciones de las de otros usuarios de SONYA.</p>
+    </div>
+
+    <!-- VISTA 2: DASHBOARD (Se muestra si estás logueado) -->
+    <div id="view-dashboard" class="flex flex-col gap-4 w-full max-w-sm hidden-view">
+        <div class="flex items-center justify-between px-2 mb-2">
+            <div class="flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span class="text-xs font-bold text-stone-600" id="user-name">Usuario</span>
             </div>
-            <div class="flex items-center gap-4">
-                <div class="flex items-center gap-2 px-3 py-1.5 bg-green-50 rounded-full border border-green-200">
-                    <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse shadow-[0_0_6px_rgba(34,197,94,0.5)]">
-                    </div>
-                    <span class="font-label text-[10px] uppercase tracking-widest text-green-700 font-bold">Motor Local
-                        Activo</span>
-                </div>
-                <img src="logo_sogres.png" alt="SOGRES"
-                    class="w-9 h-9 rounded-full object-cover border-2 border-primary/20 shadow-sm">
-            </div>
+            <button id="btn-signout" class="text-xs font-bold text-stone-400 hover:text-red-500">Cerrar Sesión</button>
         </div>
-    </nav>
 
-    <main class="blueprint-grid min-h-screen">
+        <a href="public/mrp.html" class="btn-app rounded-2xl flex flex-col px-7 py-5 shadow-lg group no-underline">
+            <span class="font-mono text-[9px] tracking-[0.25em] uppercase text-stone-400 mb-1">Engine</span>
+            <span class="font-serif text-xl">Entrar al Motor MRP</span>
+        </a>
 
-        <!-- HERO SECTION -->
-        <section class="pt-32 pb-20 px-6 max-w-5xl mx-auto min-h-[90vh] flex flex-col justify-center">
-            <div class="inline-flex items-center gap-2 px-3 py-1 bg-primary/10 rounded-full mb-8 w-fit">
-                <span class="material-symbols-outlined fill-icon text-primary text-sm">science</span>
-                <span class="font-label text-[10px] uppercase tracking-widest text-primary font-bold">Horizon Europe
-                    Project</span>
-            </div>
-            <h1 class="font-headline tracking-tighter leading-[1.1] mb-12">
-                <span
-                    class="block text-7xl md:text-9xl font-black bg-clip-text text-transparent bg-gradient-to-r from-primary via-[#6a1b9a] to-primary mb-6 drop-shadow-sm">
-                    SONYA
-                </span>
+        <a href="public/gestion_bbdd.html" class="btn-google rounded-2xl flex flex-col px-7 py-5 shadow-sm group no-underline">
+            <span class="font-mono text-[9px] tracking-[0.25em] uppercase text-stone-400 mb-1">Repository</span>
+            <span class="font-serif text-xl font-bold">Gestionar BBDD Privada</span>
+        </a>
+    </div>
 
-                <span class="block text-2xl md:text-4xl font-extrabold text-on-surface/90 max-w-4xl leading-snug">
-                    El papel de la
-                    <span class="relative inline-block">
-                        <span class="relative z-10 text-primary">economía social</span>
-                        <span class="absolute bottom-1 left-0 w-full h-3 bg-primary/10 -z-0 rounded-sm"></span>
-                    </span>
-                    en la lucha contra la <span class="text-secondary">exclusión social</span>, el empleo de calidad y
-                    la <span class="text-[#006a6a]">sostenibilidad</span>.
-                </span>
-            </h1>
-            <div class="flex flex-wrap items-center gap-x-8 gap-y-4 mb-12 py-6 border-y border-outline-variant/30">
-                <div class="flex flex-col"><span
-                        class="font-label text-[10px] uppercase tracking-widest text-outline">Fecha</span><span
-                        class="font-headline font-bold text-on-surface">16/10/2025</span></div>
-                <div class="w-px h-8 bg-outline-variant/50 hidden md:block"></div>
-                <div class="flex flex-col"><span
-                        class="font-label text-[10px] uppercase tracking-widest text-outline">Entidad</span><span
-                        class="font-headline font-bold text-on-surface">UJI · GRUPO SOGRES</span></div>
-                <div class="w-px h-8 bg-outline-variant/50 hidden md:block"></div>
-                <div class="flex flex-col"><span
-                        class="font-label text-[10px] uppercase tracking-widest text-outline">Esquema de
-                        Financiación</span><span class="font-headline font-bold text-on-surface">Horizon Europe</span>
-                </div>
-                <div class="w-px h-8 bg-outline-variant/50 hidden md:block"></div>
-                <div class="flex flex-col"><span
-                        class="font-label text-[10px] uppercase tracking-widest text-outline">Grant
-                        Agreement</span><span class="font-headline font-bold text-on-surface">101177171</span></div>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-12 gap-12">
-                <div class="md:col-span-8">
-                    <h2 class="font-headline text-sm font-black uppercase tracking-[0.2em] text-primary mb-6">Breve
-                        Descripción</h2>
-                    <p class="font-body text-xl text-on-surface/80 leading-relaxed mb-6">
-                        El proyecto <span class="text-primary font-bold">SONYA</span> investiga el potencial
-                        transformador de las Organizaciones de Economía Social (OES) frente a los desafíos demográficos
-                        del envejecimiento y la despoblación rural.
-                    </p>
-                    <p class="font-body text-lg text-on-surface/70 leading-relaxed">
-                        A través de una innovación multidisciplinar, analizamos cómo los nuevos modelos de atención
-                        social y gobernanza local pueden fomentar el empleo de alta calidad garantizando al mismo tiempo
-                        la sostenibilidad social y medioambiental a largo plazo en regiones europeas desatendidas.
-                    </p>
-                </div>
-                <div class="md:col-span-4 flex flex-col justify-end">
-                    <div class="bg-primary-container/30 p-6 rounded-2xl border border-primary/10">
-                        <p class="font-label text-[10px] uppercase tracking-widest text-primary mb-1 font-bold">
-                            Investigadora Principal UJI</p>
-                        <p class="font-headline font-extrabold text-on-surface text-lg">Idoya Ferrero Ferrero</p>
-                        <div class="mt-4 pt-4 border-t border-primary/10">
-                            <p class="font-label text-[10px] uppercase tracking-widest text-outline mb-1">Periodo del
-                                Proyecto</p>
-                            <p class="font-headline font-bold text-on-surface">2024 — 2028</p>
-                        </div>
-                        <div class="mt-3 pt-3 border-t border-primary/10">
-                            <p class="font-label text-[10px] uppercase tracking-widest text-outline mb-1">Versión del
-                                Sistema</p>
-                            <p class="font-headline font-bold text-on-surface">STABLE</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="mt-20 flex justify-center animate-bounce">
-                <a class="text-primary opacity-50 hover:opacity-100 transition-opacity" href="#ods">
-                    <span class="material-symbols-outlined text-4xl font-light">keyboard_double_arrow_down</span>
-                </a>
-            </div>
-        </section>
+    <script type="module">
+        import { auth, provider } from './public/js/firebase-config.js';
+        import { signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-        <!-- ODS SECTION -->
-        <section class="py-24 px-6 bg-surface-container-low border-y border-outline-variant/20" id="ods">
-            <div class="max-w-5xl mx-auto">
-                <div class="text-center mb-16">
-                    <h2 class="font-headline text-sm font-black uppercase tracking-[0.3em] text-primary mb-4">Alineación
-                        Estratégica</h2>
-                    <p class="font-headline text-3xl font-bold">Objetivos de Desarrollo Sostenible</p>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div
-                        class="group relative overflow-hidden p-8 bg-[#4C9F38] text-white rounded-2xl min-h-[280px] flex flex-col justify-between transition-transform hover:-translate-y-2">
-                        <span class="font-headline text-6xl font-black opacity-40">3</span>
-                        <div>
-                            <p class="font-headline font-bold text-2xl leading-tight mb-3">Salud y Bienestar</p>
-                            <p
-                                class="text-sm font-label uppercase tracking-widest opacity-90 border-t border-white/20 pt-4">
-                                Innovación en Cuidados</p>
-                        </div>
-                    </div>
-                    <div
-                        class="group relative overflow-hidden p-8 bg-[#A21942] text-white rounded-2xl min-h-[280px] flex flex-col justify-between transition-transform hover:-translate-y-2">
-                        <span class="font-headline text-6xl font-black opacity-40">8</span>
-                        <div>
-                            <p class="font-headline font-bold text-2xl leading-tight mb-3">Trabajo Decente y Crecimiento
-                            </p>
-                            <p
-                                class="text-sm font-label uppercase tracking-widest opacity-90 border-t border-white/20 pt-4">
-                                Impacto Economía Social</p>
-                        </div>
-                    </div>
-                    <div
-                        class="group relative overflow-hidden p-8 bg-[#FD9D24] text-white rounded-2xl min-h-[280px] flex flex-col justify-between transition-transform hover:-translate-y-2">
-                        <span class="font-headline text-6xl font-black opacity-40">11</span>
-                        <div>
-                            <p class="font-headline font-bold text-2xl leading-tight mb-3">Ciudades y Comunidades</p>
-                            <p
-                                class="text-sm font-label uppercase tracking-widest opacity-90 border-t border-white/20 pt-4">
-                                Resiliencia Rural</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+        const viewLogin = document.getElementById('view-login');
+        const viewDashboard = document.getElementById('view-dashboard');
+        const userName = document.getElementById('user-name');
 
-        <!-- ENGINES SECTION -->
-        <section class="py-24 px-6 max-w-7xl mx-auto" id="engines">
-            <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
-                <div>
-                    <h2 class="font-headline text-sm font-black uppercase tracking-[0.2em] text-primary mb-4">Acceso
-                        Técnico</h2>
-                    <h3 class="font-headline text-4xl font-extrabold text-on-surface">Motores de Análisis y Datos</h3>
-                </div>
-                <p class="font-body text-outline max-w-sm">Herramientas computacionales desarrolladas para la evaluación
-                    de indicadores socio-económicos y ambientales bajo paradigmas de sostenibilidad fuerte.</p>
-            </div>
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        // Escuchar el estado de autenticación en tiempo real
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // Logueado: Mostramos Dashboard
+                viewLogin.classList.add('hidden-view');
+                viewDashboard.classList.remove('hidden-view');
+                userName.textContent = `Hola, ${user.displayName.split(' ')[0]}`;
+            } else {
+                // Deslogueado: Mostramos Login
+                viewDashboard.classList.add('hidden-view');
+                viewLogin.classList.remove('hidden-view');
+            }
+        });
 
-                <div
-                    class="group relative bg-white border border-outline-variant/30 rounded-3xl p-1 transition-all duration-500 hover:shadow-[0_20px_50px_rgba(139,61,151,0.15)] hover:-translate-y-2">
-                    <div
-                        class="p-8 flex flex-col h-full bg-gradient-to-b from-white to-primary/[0.02] rounded-[1.4rem]">
-                        <div class="flex justify-between items-start mb-8">
-                            <div
-                                class="bg-primary/10 p-4 rounded-2xl text-primary group-hover:bg-primary group-hover:text-white transition-colors duration-500">
-                                <span class="material-symbols-outlined text-3xl"
-                                    style="font-variation-settings: 'FILL' 1;">analytics</span>
-                            </div>
-                            
-                        </div>
+        // Eventos de los botones
+        document.getElementById('btn-signin').addEventListener('click', () => {
+            signInWithPopup(auth, provider).catch(error => console.error("Error login:", error));
+        });
 
-                        <h3 class="font-headline text-2xl font-black text-on-surface mb-4">
-                            Motor CRITIC + <span class="text-primary">MRP</span>
-                        </h3>
-
-                        <p class="font-body text-sm leading-relaxed text-on-surface/70 mb-10 flex-grow">
-                            Motor analítico de alta precisión que prioriza paradigmas de <span
-                                class="font-bold text-on-surface">Sostenibilidad Fuerte</span> mediante una evaluación
-                            multicriterio robusta con <span class="text-secondary font-bold italic">límites de veto
-                                innegociables</span>.
-                        </p>
-
-                        <button onclick="location.href='./public/mrp.html'"
-                            class="w-full flex items-center justify-between px-6 py-4 bg-primary text-white rounded-2xl font-headline font-bold shadow-lg shadow-primary/20 hover:bg-secondary transition-all">
-                            Inicializar Motor
-                            <span class="material-symbols-outlined text-sm">arrow_forward_ios</span>
-                        </button>
-                    </div>
-                </div>
-
-                <div
-                    class="group relative bg-white border border-outline-variant/30 rounded-3xl p-1 transition-all duration-500 hover:shadow-[0_20px_50px_rgba(0,106,106,0.12)] hover:-translate-y-2">
-                    <div
-                        class="p-8 flex flex-col h-full bg-gradient-to-b from-white to-[#006a6a]/[0.03] rounded-[1.4rem]">
-                        <div class="flex justify-between items-start mb-8">
-                            <div
-                                class="bg-[#006a6a]/10 p-4 rounded-2xl text-[#006a6a] group-hover:bg-[#006a6a] group-hover:text-white transition-colors duration-500">
-                                <span class="material-symbols-outlined text-3xl"
-                                    style="font-variation-settings: 'FILL' 1;">calculate</span>
-                            </div>
-                            
-                        </div>
-
-                        <h3 class="font-headline text-2xl font-black text-on-surface mb-4">
-                            Motor CRITIC + <span class="text-[#006a6a]">TOPSIS</span>
-                        </h3>
-
-                        <p class="font-body text-sm leading-relaxed text-on-surface mb-10 flex-grow">
-                            Lógica comparativa alternativa para evaluar el <span class="font-bold">desempeño
-                                relativo</span> a través de <span class="text-[#006a6a] font-bold">indicadores
-                                socioeconómicos y ambientales</span> heterogéneos y eficiencia técnica.
-                        </p>
-
-                        <button onclick="location.href='./public/topsis.html'"
-                            class="w-full flex items-center justify-between px-6 py-4 border-2 border-[#006a6a] text-[#006a6a] rounded-2xl font-headline font-bold hover:bg-[#006a6a] hover:text-white transition-all shadow-sm">
-                            Acceder al Motor
-                            <span class="material-symbols-outlined text-sm">arrow_forward_ios</span>
-                        </button>
-                    </div>
-                </div>
-
-                <div
-                    class="group relative bg-white border border-outline-variant/30 rounded-3xl p-1 transition-all duration-500 hover:shadow-[0_20px_50px_rgba(29,26,30,0.1)] hover:-translate-y-2">
-                    <div class="p-8 flex flex-col h-full bg-gradient-to-b from-white to-slate-50 rounded-[1.4rem]">
-                        <div class="flex justify-between items-start mb-8">
-                            <div
-                                class="bg-slate-100 p-4 rounded-2xl text-slate-600 group-hover:bg-slate-900 group-hover:text-white transition-colors duration-500">
-                                <span class="material-symbols-outlined text-3xl"
-                                    style="font-variation-settings: 'FILL' 1;">database</span>
-                            </div>
-
-                        </div>
-
-                        <h3 class="font-headline text-2xl font-black text-on-surface mb-4">
-                            Gestión de <span class="text-slate-900">BBDD</span>
-                        </h3>
-
-                        <p class="font-body text-sm leading-relaxed text-on-surface/70 mb-10 flex-grow">
-                            Repositorio centralizado de <span class="font-bold text-on-surface">datos brutos y
-                                procesados</span> para el seguimiento histórico y la <span
-                                class="underline decoration-slate-300 underline-offset-4">validación científica</span>
-                            de resultados.
-                        </p>
-
-                        <button onclick="location.href='./public/gestion_bbdd.html'"
-                            class="w-full flex items-center justify-between px-6 py-4 bg-slate-900 text-white rounded-2xl font-headline font-bold hover:bg-black transition-all">
-                            Abrir Repositorio
-                            <span class="material-symbols-outlined text-sm">open_in_new</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <div
-            class="fixed top-0 right-0 -z-10 w-[800px] h-[800px] bg-primary/5 blur-[150px] rounded-full pointer-events-none">
-        </div>
-        <div
-            class="fixed bottom-0 left-0 -z-10 w-[600px] h-[600px] bg-secondary/5 blur-[120px] rounded-full pointer-events-none">
-        </div>
-    </main>
-
-    <footer class="w-full border-t border-outline-variant/30 bg-white">
-        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center px-6 py-10 gap-10">
-            <div class="flex flex-col gap-4 max-w-2xl">
-                <div class="flex items-start gap-4">
-                    <div class="w-12 h-7 bg-[#003399] rounded-sm flex-shrink-0 flex items-center justify-center">
-                        <span class="text-yellow-300 text-[8px] font-black tracking-tight">EU</span>
-                    </div>
-                    <p class="font-body text-[11px] text-slate-500 leading-relaxed italic">
-                        Financiado por la Unión Europea. Las opiniones y puntos de vista expresados solo comprometen a
-                        sus autores y no reflejan necesariamente los de la Unión Europea ni los de la Agencia Ejecutiva
-                        Europea de Investigación. Ni la Unión Europea ni la autoridad otorgante pueden ser consideradas
-                        responsables de ellos.
-                    </p>
-                </div>
-                <p class="font-label text-[10px] uppercase tracking-widest text-slate-400">
-                    © 2024 UJI Institutional Branding · SONYA Proyecto Horizonte Europa · <span id="footer-status"
-                        class="text-green-600 font-bold">STATUS: MOTOR_LOCAL_ACTIVO</span>
-                </p>
-            </div>
-            <div class="flex flex-col items-end gap-4">
-                <div class="flex gap-6">
-                    <a class="font-label text-[10px] uppercase tracking-widest text-slate-500 hover:text-primary transition-colors"
-                        href="#">Privacidad</a>
-                    <a class="font-label text-[10px] uppercase tracking-widest text-slate-500 hover:text-primary transition-colors"
-                        href="#">Soporte</a>
-                </div>
-                <div class="px-3 py-1.5 bg-primary/10 rounded-lg">
-                    <span class="text-primary font-black font-headline text-xs tracking-wider">SONYA</span>
-                </div>
-            </div>
-        </div>
-    </footer>
+        document.getElementById('btn-signout').addEventListener('click', () => {
+            signOut(auth).catch(error => console.error("Error logout:", error));
+        });
+    </script>
 </body>
-
 </html>

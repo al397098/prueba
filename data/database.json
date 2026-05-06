@@ -1,8 +1,8 @@
 {
   "_meta": {
     "project": "SONYA Suite Analítica",
-    "version": "2.0.0",
-    "description": "Base de datos segmentada por Unidades Funcionales (ACCIONES)",
+    "version": "3.0.0",
+    "description": "Base de datos segmentada por Unidades Funcionales (ACCIONES) con Índice de Satisfacción",
     "criteria": {
       "eco": { "label": "Económico", "nature": "cost" },
       "amb": { "label": "Ambiental", "nature": "cost" },
@@ -16,12 +16,12 @@
       "description": "Alternativas para la prestación de servicios de atención social medidas por trámite procesado en jornada laboral",
       "unit": "trámite/día",
       "alternativas": [
-        { "id": "A1", "accion": "Microbús", "tipo": "EX-ANTE", "eco": 5920.13, "amb": 68.38, "soc": 960377.53 },
-        { "id": "A2", "accion": "Telematico", "tipo": "EX-POST", "eco": 431.63, "amb": 5.73, "soc": 77257.43 },
-        { "id": "A3", "accion": "A3", "tipo": "EX-POST", "eco": 1850, "amb": 18.45, "soc": 215400 },
-        { "id": "A4", "accion": "A4", "tipo": "EX-POST", "eco": 4500, "amb": 45.00, "soc": 150000 },
-        { "id": "A5", "accion": "A5", "tipo": "EX-POST", "eco": 850, "amb": 8.50, "soc": 110000 },
-        { "id": "A6", "accion": "A6", "tipo": "EX-POST", "eco": 2200, "amb": 12.00, "soc": 180000 }
+        { "id": "A1", "accion": "Microbús", "tipo": "EX-ANTE", "eco": 5920.13, "amb": 68.38, "soc": 960377.53, "satisfaccion": 45 },
+        { "id": "A2", "accion": "Telematico", "tipo": "EX-POST", "eco": 431.63, "amb": 5.73, "soc": 77257.43, "satisfaccion": 85 },
+        { "id": "A3", "accion": "A3", "tipo": "EX-POST", "eco": 1850, "amb": 18.45, "soc": 215400, "satisfaccion": 60 },
+        { "id": "A4", "accion": "A4", "tipo": "EX-POST", "eco": 4500, "amb": 45.00, "soc": 150000, "satisfaccion": 75 },
+        { "id": "A5", "accion": "A5", "tipo": "EX-POST", "eco": 850, "amb": 8.50, "soc": 110000, "satisfaccion": 90 },
+        { "id": "A6", "accion": "A6", "tipo": "EX-POST", "eco": 2200, "amb": 12.00, "soc": 180000, "satisfaccion": 55 }
       ]
     },
     "kg_fruta": {
@@ -40,6 +40,7 @@
             "amb": 193.53,
             "soc": 481.19
           },
+          "satisfaccion": 80,
           "metadata": {
             "description": "Canal corto de distribución: frutería de proximidad con aprovisionamiento local",
             "year": 2022,
@@ -56,6 +57,7 @@
             "amb": 261.46,
             "soc": 576.56
           },
+          "satisfaccion": 65,
           "metadata": {
             "description": "Canal largo de distribución: fruta de origen nacional a través de red de distribución centralizada",
             "year": 2023,
@@ -80,6 +82,7 @@
             "amb": 9,
             "soc": 5
           },
+          "satisfaccion": 15,
           "metadata": {
             "description": "Depósito en vertedero. Bajo coste, pero altísimo impacto ambiental (peor opción AMB).",
             "year": 2024,
@@ -96,6 +99,7 @@
             "amb": 5,
             "soc": 9
           },
+          "satisfaccion": 25,
           "metadata": {
             "description": "Valorización energética. Fuerte rechazo vecinal y efecto NIMBY (peor opción SOC).",
             "year": 2024,
@@ -112,6 +116,7 @@
             "amb": 2,
             "soc": 2
           },
+          "satisfaccion": 95,
           "metadata": {
             "description": "Economía circular. Altísima inversión inicial y costes operativos (peor opción ECO).",
             "year": 2024,

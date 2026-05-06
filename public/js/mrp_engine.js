@@ -66,8 +66,8 @@ const MRPEngine = (() => {
 
   // ─── Definición de criterios ─────────────────────────────────
   const CRITERIA = [
-    { key: 'eco', label: 'Económico', nature: 'cost'    },
-    { key: 'amb', label: 'Ambiental', nature: 'cost'    },
+    { key: 'eco', label: 'Economic', nature: 'cost'    },
+    { key: 'amb', label: 'Environmental', nature: 'cost'    },
     { key: 'soc', label: 'Social',    nature: 'cost' }
   ];
 
@@ -344,8 +344,8 @@ const MRPEngine = (() => {
    */
   function _failingPillar(s_eco, s_amb, s_soc, ss) {
     const pairs = [
-      { label: 'Económico', val: s_eco },
-      { label: 'Ambiental', val: s_amb },
+      { label: 'Economic', val: s_eco },
+      { label: 'Environmental', val: s_amb },
       { label: 'Social',    val: s_soc }
     ];
     const failing = pairs.filter(p => Math.abs(p.val - ss) < EPS);
@@ -413,8 +413,8 @@ const MRPEngine = (() => {
    *   uf_count:   number,
    *   alpha:      number[],
    *   lineaRoja:  number,
-   *   pesos:      { Económico:number, Ambiental:number, Social:number },
-   *   critic_C:   { Económico:number, Ambiental:number, Social:number },
+   *   pesos:      { Economic:number, Environmental:number, Social:number },
+   *   critic_C:   { Economic:number, Environmental:number, Social:number },
    *   std:        { eco:number, amb:number, soc:number },
    *   pearson:    number[][],
    *   umbrales:   { eco:number[], amb:number[], soc:number[] },

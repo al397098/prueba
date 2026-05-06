@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="es" class="light">
+<html lang="en-GB" class="light">
 
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SONYA | Gestión de Base de Datos</title>
+  <title>SONYA | Database Management</title>
   <link
     href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500&display=swap"
     rel="stylesheet" />
@@ -234,7 +234,7 @@
   <div id="loading">
     <div class="bg-white p-8 rounded-2xl border border-outline-variant/30 shadow-2xl flex flex-col items-center gap-5">
       <div class="spinner"></div>
-      <p id="spin-msg" class="text-sm font-bold text-slate-600 font-headline">Cargando BBDD...</p>
+      <p id="spin-msg" class="text-sm font-bold text-slate-600 font-headline">Loading Database...</p>
     </div>
   </div>
   <div class="toast-wrap" id="toast-wrap"></div>
@@ -244,7 +244,7 @@
     <div class="p-6 flex flex-col h-full">
       <div class="mb-10 cursor-pointer transition-transform hover:scale-105 origin-left"
         onclick="location.href='../index.html'">
-        <img src="../logo_sonya.png" alt="SONYA Suite Analítica" class="h-10 w-auto object-contain">
+        <img src="../logo_sonya.png" alt="SONYA Analytical Suite" class="h-10 w-auto object-contain">
       </div>
       <nav class="space-y-1.5 flex-1">
         <a href="../index.html" class="snav-link"><span
@@ -253,24 +253,23 @@
             class="material-symbols-outlined fill-icon text-xl">database</span>BBDD</a>
         <a href="mrp.html" class="snav-link"><span class="material-symbols-outlined text-xl">analytics</span>Motor
           MRP</a>
-        <a href="topsis.html" class="snav-link"><span class="material-symbols-outlined text-xl">insights</span>Motor
-          TOPSIS</a>
+        
       </nav>
       <div class="mt-6 mb-4">
-        <label class="block font-mono text-[9px] uppercase tracking-widest text-outline mb-2">Filtrar por Acción</label>
+        <label class="block font-mono text-[9px] uppercase tracking-widest text-outline mb-2">Filter by Action</label>
         <select id="uf-filter-sel" onchange="onFilterUFChange(this.value)"
           class="w-full bg-white border border-slate-200 rounded-xl p-2.5 text-xs font-bold text-slate-700 focus:ring-2 focus:ring-accent-purple/20 transition-all cursor-pointer">
-          <option value="__all__">Todas las Acciones</option>
+          <option value="__all__">All Actions</option>
         </select>
       </div>
       <div class="p-5 bg-gradient-to-br from-white to-purple-50/40 border border-purple-100 rounded-2xl shadow-sm">
         <div class="flex items-center gap-2 mb-3 text-purple-600/80">
           <span class="material-symbols-outlined fill-icon text-lg">database</span>
-          <span class="text-[10px] font-mono font-bold uppercase tracking-widest">CRUD Repositorio</span>
+          <span class="text-[10px] font-mono font-bold uppercase tracking-widest">CRUD Repository</span>
         </div>
-        <h4 class="font-headline font-bold text-xs text-slate-900 mb-2">Datos de Sesión</h4>
-        <p class="text-[11px] leading-relaxed text-slate-600">Añadir alternativas recalcula los pesos CRITIC
-          dinámicamente. Los datos estáticos del JSON original no son editables.</p>
+        <h4 class="font-headline font-bold text-xs text-slate-900 mb-2">Session Data</h4>
+        <p class="text-[11px] leading-relaxed text-slate-600">Adding alternatives dynamically recalculates CRITIC weights.
+          Static data from the original JSON is read-only.</p>
       </div>
     </div>
   </aside>
@@ -278,10 +277,10 @@
   <main class="md:ml-64 flex-1 flex flex-col min-h-screen">
     <header
       class="sticky top-0 z-30 w-full h-14 bg-white/80 backdrop-blur-xl border-b border-slate-200/60 flex justify-between items-center px-8 shadow-sm">
-      <h2 class="font-headline font-extrabold text-lg tracking-tighter text-on-surface">Gestión de Base de Datos</h2>
+      <h2 class="font-headline font-extrabold text-lg tracking-tighter text-on-surface">Database Management</h2>
       <div class="flex items-center gap-2 px-3 py-1.5 bg-green-50 rounded-full border border-green-200">
         <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
-        <span class="text-[10px] font-mono font-bold text-green-700 uppercase tracking-widest">Motor Local Activo</span>
+        <span class="text-[10px] font-mono font-bold text-green-700 uppercase tracking-widest">Local Engine Active</span>
       </div>
     </header>
 
@@ -291,15 +290,15 @@
         <div class="relative flex justify-between items-end">
           <div>
             <div class="absolute -left-4 top-0 w-1 h-full bg-accent-purple/30 rounded-full"></div>
-            <h1 class="text-4xl font-black tracking-tighter font-headline text-on-surface mb-1 uppercase">Gestión de
-              Base de Datos</h1>
+            <h1 class="text-4xl font-black tracking-tighter font-headline text-on-surface mb-1 uppercase">Database
+              Management</h1>
             <div class="h-1 w-10 bg-accent-purple rounded-full mt-2 opacity-50"></div>
-            <p class="text-sm text-on-surface-variant mt-3 max-w-xl">Repositorio estructurado por Acciones. Los motores
-              MCDM solo comparan alternativas que comparten la misma Acción.</p>
+            <p class="text-sm text-on-surface-variant mt-3 max-w-xl">Repository structured by Actions. MCDM engines only compare
+              alternatives that share the same Action.</p>
           </div>
           <button onclick="document.getElementById('na-nom').focus()"
             class="flex items-center gap-2 bg-gradient-to-r from-accent-purple to-accent-magenta text-white px-6 py-3 rounded-xl font-headline font-bold shadow-lg shadow-purple-500/25 hover:scale-[1.02] active:scale-95 transition-all">
-            <span class="material-symbols-outlined">add</span> Añadir Registro
+            <span class="material-symbols-outlined">add</span> Add Record
           </button>
         </div>
 
@@ -311,10 +310,10 @@
             </div>
             <div class="flex justify-between items-start relative"><span
                 class="font-mono text-xs text-on-surface-variant tracking-widest uppercase">Total
-                Alternativas</span><span class="material-symbols-outlined text-accent-purple">analytics</span></div>
+                Alternatives</span><span class="material-symbols-outlined text-accent-purple">analytics</span></div>
             <div class="mt-4 relative"><span class="text-5xl font-bold font-headline text-on-surface"
                 id="metric-total">--</span>
-              <p class="text-xs text-on-surface-variant/60 mt-1">Todas los Escenarios</p>
+              <p class="text-xs text-on-surface-variant/60 mt-1">All Scenarios</p>
             </div>
           </div>
           <div
@@ -328,7 +327,7 @@
             </div>
             <div class="mt-4 relative"><span class="text-5xl font-bold font-headline text-secondary"
                 id="metric-ante">--</span>
-              <p class="text-xs text-secondary/60 mt-1">Acciones de Referencia</p>
+              <p class="text-xs text-secondary/60 mt-1">Reference Actions</p>
             </div>
           </div>
           <div
@@ -342,7 +341,7 @@
             </div>
             <div class="mt-4 relative"><span class="text-5xl font-bold font-headline text-primary"
                 id="metric-post">--</span>
-              <p class="text-xs text-primary/60 mt-1">Alternativas Propuestas</p>
+              <p class="text-xs text-primary/60 mt-1">Proposed Alternatives</p>
             </div>
           </div>
           <div
@@ -352,11 +351,11 @@
             </div>
             <div class="flex justify-between items-start relative"><span
                 class="font-mono text-xs text-orange-600/80 tracking-widest uppercase">Runtime</span><span
-                class="bg-orange-100 px-2 py-0.5 rounded-full text-[9px] font-bold text-orange-700 font-mono">SESIÓN</span>
+                class="bg-orange-100 px-2 py-0.5 rounded-full text-[9px] font-bold text-orange-700 font-mono">SESSION</span>
             </div>
             <div class="mt-4 relative"><span class="text-5xl font-bold font-headline text-orange-600"
                 id="metric-runtime">--</span>
-              <p class="text-xs text-orange-600/60 mt-1">Añadidas en esta sesión</p>
+              <p class="text-xs text-orange-600/60 mt-1">Added in this session</p>
             </div>
           </div>
         </div>
@@ -366,10 +365,10 @@
           <div class="xl:w-8/12 space-y-4">
             <div class="flex items-center justify-between px-1">
               <h2 class="font-headline font-bold text-xl text-on-surface flex items-center gap-2"><span
-                  class="material-symbols-outlined text-accent-purple">list_alt</span>Repositorio Maestro</h2>
+                  class="material-symbols-outlined text-accent-purple">list_alt</span>Master Repository</h2>
               <button onclick="clearRuntimeAll()"
                 class="text-xs text-outline hover:text-error transition-colors flex items-center gap-1 font-mono font-bold">
-                <span class="material-symbols-outlined text-sm">delete_sweep</span>Limpiar Runtime
+                <span class="material-symbols-outlined text-sm">delete_sweep</span>Clear Runtime
               </button>
             </div>
             <div
@@ -377,35 +376,39 @@
               <table class="w-full text-left border-collapse">
                 <thead>
                   <tr class="bg-surface-container-low border-b border-outline-variant/30">
-                    <th class="px-4 py-4 font-label text-xs uppercase tracking-widest text-on-surface-variant">Acción
+                    <th class="px-4 py-4 font-label text-xs uppercase tracking-widest text-on-surface-variant">Action
                     </th>
-                    <th class="px-4 py-4 font-label text-xs uppercase tracking-widest text-on-surface-variant">Tipo</th>
+                    <th class="px-4 py-4 font-label text-xs uppercase tracking-widest text-on-surface-variant">Type</th>
                     <th class="px-6 py-4 font-label text-xs uppercase tracking-widest text-on-surface-variant">
-                      Alternativa</th>
+                      Alternative</th>
                     <th
                       class="px-4 py-4 font-label text-xs uppercase tracking-widest text-on-surface-variant text-right">
-                      Amb</th>
+                      Env</th>
                     <th
                       class="px-4 py-4 font-label text-xs uppercase tracking-widest text-on-surface-variant text-right">
                       Soc</th>
                     <th
                       class="px-4 py-4 font-label text-xs uppercase tracking-widest text-on-surface-variant text-right">
                       Eco</th>
+                    <!-- NUEVA CABECERA: SAT -->
+                    <th
+                      class="px-4 py-4 font-label text-xs uppercase tracking-widest text-accent-purple text-right">
+                      Sat. %</th>
                     <th
                       class="px-6 py-4 font-label text-xs uppercase tracking-widest text-on-surface-variant text-right">
-                      Fuente</th>
+                      Source</th>
                   </tr>
                 </thead>
                 <tbody class="divide-y divide-surface-container" id="bbdd-table">
                   <tr>
-                    <td colspan="7" class="p-10 text-center text-outline font-headline">Cargando base de datos...</td>
+                    <td colspan="7" class="p-10 text-center text-outline font-headline">Loading database...</td>
                   </tr>
                 </tbody>
               </table>
               <div
                 class="bg-surface-container-low p-4 flex justify-between items-center px-6 border-t border-outline-variant/10">
-                <span class="text-xs font-mono text-on-surface-variant" id="bbdd-count">REPOSITORIO MAESTRO</span>
-                <span class="text-[10px] font-mono text-green-600 font-bold">● MOTOR LOCAL · SIN BACKEND</span>
+                <span class="text-xs font-mono text-on-surface-variant" id="bbdd-count">MASTER REPOSITORY</span>
+                <span class="text-[10px] font-mono text-green-600 font-bold">● LOCAL ENGINE · NO BACKEND</span>
               </div>
             </div>
           </div>
@@ -415,40 +418,40 @@
               <div class="mb-7 flex items-center gap-3">
                 <div class="p-2 bg-accent-purple/10 rounded-lg"><span
                     class="material-symbols-outlined fill-icon text-accent-purple">add_box</span></div>
-                <h2 class="font-headline font-bold text-xl text-on-surface">Nueva Alternativa</h2>
+                <h2 class="font-headline font-bold text-xl text-on-surface">New Alternative</h2>
               </div>
 
               <div class="space-y-5">
                 <div>
                   <label
-                    class="block font-label text-[10px] uppercase tracking-widest text-on-surface-variant mb-2">Acción
-                    de Medida</label>
+                    class="block font-label text-[10px] uppercase tracking-widest text-on-surface-variant mb-2">Measure
+                    Action</label>
                   <select id="na-uf" onchange="onNAUFChange(this.value)"
                     class="w-full bg-surface-container-low border-0 border-b-2 border-outline focus:ring-0 focus:border-accent-purple font-body text-sm px-4 py-3 transition-all appearance-none cursor-pointer">
-                    <option value="">Cargando Acción...</option>
+                    <option value="">Loading Action...</option>
                   </select>
                 </div>
                 <div>
                   <label
-                    class="block font-label text-[10px] uppercase tracking-widest text-on-surface-variant mb-2">Nombre
-                    de la Alternativa</label>
+                    class="block font-label text-[10px] uppercase tracking-widest text-on-surface-variant mb-2">Alternative's Name</label>
                   <input id="na-nom" type="text"
                     class="w-full bg-surface-container-low border-0 border-b-2 border-outline focus:ring-0 focus:border-accent-purple font-body text-sm px-4 py-3 transition-all"
-                    placeholder="Ej. Solución Circular" />
+                    placeholder="E.g. Circular Solution" />
                 </div>
                 <div>
                   <label
-                    class="block font-label text-[10px] uppercase tracking-widest text-on-surface-variant mb-2">Tipo de
-                    Impacto</label>
+                    class="block font-label text-[10px] uppercase tracking-widest text-on-surface-variant mb-2">Impact Type</label>
                   <select id="na-tipo"
                     class="w-full bg-surface-container-low border-0 border-b-2 border-outline focus:ring-0 focus:border-accent-purple font-body text-sm px-4 py-3 appearance-none cursor-pointer transition-all">
-                    <option value="EX-POST">EX-POST (Mejora propuesta)</option>
-                    <option value="EX-ANTE">EX-ANTE (Referencia base)</option>
+                    <option value="EX-POST">EX-POST (Proposed Improvement)</option>
+                    <option value="EX-ANTE">EX-ANTE (Base Reference)</option>
                   </select>
                 </div>
+
+
                 <div class="grid grid-cols-3 gap-4">
                   <div><label
-                      class="block font-label text-[10px] uppercase tracking-widest text-on-surface-variant mb-2">AMB</label><input
+                      class="block font-label text-[10px] uppercase tracking-widest text-on-surface-variant mb-2">ENV</label><input
                       id="na-amb" type="number" step="any" value="0"
                       class="w-full bg-surface-container-low border-0 border-b-2 border-outline focus:ring-0 focus:border-accent-purple font-mono text-center py-3 transition-all" />
                   </div>
@@ -463,18 +466,30 @@
                       class="w-full bg-surface-container-low border-0 border-b-2 border-outline focus:ring-0 focus:border-accent-purple font-mono text-center py-3 transition-all" />
                   </div>
                 </div>
+                
+                <!-- NEW FIELD: SATISFACTION INDEX -->
+                <div class="mt-4">
+                  <label
+                      class="block font-label text-[10px] uppercase tracking-widest text-accent-purple mb-2">% Satisfaction Index</label>
+                  <input
+                      id="na-sat" type="text" value="50" placeholder="E.g.: 80 or NS" title="Escribe NS si no la conoces"
+                      class="w-full bg-accent-purple/5 border-0 border-b-2 border-accent-purple focus:ring-0 focus:border-accent-magenta font-mono text-center py-3 transition-all text-accent-purple font-bold" />
+                  <p class="text-[9px] text-accent-purple/70 mt-1 font-mono text-center">Enter <b>NS</b> if unknown</p>
+                </div>
+
+
                 <div class="pt-4">
                   <button onclick="crearAlternativa()"
                     class="w-full bg-slate-900 hover:bg-accent-purple text-white py-4 rounded-xl font-headline font-extrabold uppercase tracking-widest transition-all shadow-md active:scale-[0.98] flex items-center justify-center gap-2">
-                    Guardar en Repositorio <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                    Save to Repository <span class="material-symbols-outlined text-sm">arrow_forward</span>
                   </button>
                 </div>
                 <div class="bg-amber-50 p-4 rounded-xl flex gap-3 items-start border border-amber-200/60">
                   <span
                     class="material-symbols-outlined fill-icon text-amber-600 text-[18px] flex-shrink-0 mt-0.5">info</span>
-                  <p class="text-[11px] text-amber-800 leading-relaxed"><strong>Sesión local:</strong> Las alternativas
-                    añadidas aquí se marcan como "Runtime" y persisten en localStorage. Los datos estáticos del JSON
-                    original son de solo lectura.</p>
+                  <p class="text-[11px] text-amber-800 leading-relaxed"><strong>Local session:</strong> Alternatives added here
+                    are marked as "Runtime" and persist in localStorage. Static data from the original JSON
+                    is read-only.</p>
                 </div>
               </div>
             </div>
@@ -487,42 +502,14 @@
 
   <script src="js/logic_connector.js"></script>
 
-  <script>
-    function sanitizeBBDD() {
-      let customUFs = JSON.parse(localStorage.getItem('sonya_custom_ufs')) || [];
-      let runtimeAlts = JSON.parse(localStorage.getItem('sonya_runtime_alts')) || [];
-
-      let cleanedUFs = customUFs.filter(uf => {
-        // Calculamos el conteo real
-        let countRuntime = runtimeAlts.filter(a => a.uf === uf.id || a.ufId === uf.id || a.uf === uf.label).length;
-        let countInside = (uf.alternativas || []).length;
-        let total = countRuntime + countInside;
-
-        uf.count = total; // Sincronizamos el contador real
-
-        // LÓGICA DE PROTECCIÓN:
-        // Si la acción tiene más de 0 alternativas, SE QUEDA.
-        if (total > 0) return true;
-
-        // Si la acción es muy nueva (creada hace menos de 1 minuto), SE QUEDA aunque esté a 0.
-        // Esto evita que se borre mientras el usuario está guardando datos desde los motores.
-        let timestampId = parseInt(uf.id.split('_').pop());
-        if (!isNaN(timestampId) && (Date.now() - timestampId < 60000)) return true;
-
-        // Solo borramos si está a 0 y no es nueva.
-        return false;
-      });
-
-      localStorage.setItem('sonya_custom_ufs', JSON.stringify(cleanedUFs));
-    }
-
-    // Ejecutamos la limpieza nada más arrancar la página
-    sanitizeBBDD();
+  <!-- Eliminamos el script normal e importamos como Módulo para poder usar Firebase -->
+  <script type="module">
+    import "./js/logic_connector.js"; // Esto ejecuta tu conector y lo carga en window.SonyaConnector
 
     let connector = null;
 
     // ── Helpers ──────────────────────────────────────────────────
-    function msg(txt, type = 'info') {
+    window.msg = function(txt, type = 'info') {
       const w = document.getElementById('toast-wrap'), t = document.createElement('div');
       t.className = 'toast';
       const col = type === 'err' ? '#ba1a1a' : type === 'ok' ? '#00696c' : '#9333ea';
@@ -532,7 +519,7 @@
       setTimeout(() => { t.classList.add('removing'); setTimeout(() => t.remove(), 300); }, 3200);
     }
 
-    function spin(on, text = 'Procesando...') {
+    window.spin = function(on, text = 'Processing...') {
       document.getElementById('spin-msg').innerText = text;
       document.getElementById('loading').classList.toggle('show', on);
     }
@@ -541,32 +528,25 @@
       ? `<span class="px-2 py-1 rounded-full text-[10px] font-bold bg-secondary/10 text-secondary font-mono">ANTE</span>`
       : `<span class="px-2 py-1 rounded-full text-[10px] font-bold bg-accent-purple/10 text-accent-purple font-mono">POST</span>`;
 
-    function populateUFSelects(ufs) {
-      // Filtrar de nuevo por si acaso para no mostrar NADA con (0)
-      const safeUFs = ufs.filter(uf => uf.count > 0 || !uf.id.startsWith('uf_custom_'));
 
-      const opts = safeUFs.map(uf => `<option value="${uf.id}">${uf.label} (${uf.count || 0})</option>`).join('');
+    // ── Funciones de BBDD conectadas a Firebase ──────────────────
+
+    window.populateUFSelects = async function() {
+      const ufs = await connector.getUFs();
+      const opts = ufs.map(uf => `<option value="${uf.id}">${uf.label}</option>`).join('');
 
       const selNA = document.getElementById('na-uf');
-      if (selNA) {
-        selNA.innerHTML = '<option value="">-- Seleccionar Acción --</option>' + opts + '<option value="__new__">Crear Nueva Acción</option>';
-      }
+      if (selNA) selNA.innerHTML = '<option value="">-- Select Action --</option>' + opts + '<option value="__new__">Create New Action</option>';
 
       const selFilter = document.getElementById('uf-filter-sel');
       if (selFilter) {
-        const prevVal = selFilter.value; // Guardamos lo que estaba seleccionado
-        selFilter.innerHTML = '<option value="__all__">Todas las Acciones</option>' + opts;
-
-        // Si la acción que teníamos seleccionada ya no existe (porque se borró), volvemos a "Todas"
-        if ([...selFilter.options].some(o => o.value === prevVal)) {
-          selFilter.value = prevVal;
-        } else {
-          selFilter.value = '__all__';
-          renderTable(); // Refrescamos la tabla para mostrar todo de nuevo
-        }
+        const prevVal = selFilter.value;
+        selFilter.innerHTML = '<option value="__all__">All Actions</option>' + opts;
+        if ([...selFilter.options].some(o => o.value === prevVal)) selFilter.value = prevVal;
       }
     }
-    function onFilterUFChange(val) {
+
+    window.onFilterUFChange = function(val) {
       if (val === '__new__') {
         openNewActionModal();
         document.getElementById('uf-filter-sel').value = '__all__';
@@ -575,226 +555,128 @@
       renderTable();
     }
 
-    function onNAUFChange(val) {
+    window.onNAUFChange = function(val) {
       if (val === '__new__') {
         openNewActionModal();
         document.getElementById('na-uf').value = '';
-        return;
       }
     }
-    function renderTable() {
+
+    window.renderTable = async function() {
       if (!connector) return;
+      spin(true, 'Cargando datos de Firestore...');
+      
       const filterUF = document.getElementById('uf-filter-sel').value;
-
       let allAlts = [];
-      const customUFs = JSON.parse(localStorage.getItem('sonya_custom_ufs')) || [];
-      const runtimeAlts = JSON.parse(localStorage.getItem('sonya_runtime_alts')) || [];
-      const staticUFs = connector.getUFs();
+      const ufs = await connector.getUFs();
 
-      // Unificamos todas las carpetas de Acciones
-      const ufsCompletas = [...staticUFs];
-      customUFs.forEach(c => { if (!ufsCompletas.some(u => u.id === c.id)) ufsCompletas.push(c); });
-      ufsCompletas.forEach(uf => {
-        // 1. Obtener alternativas estáticas (del JSON)
-        const deStatic = connector.getAlternatives(uf.id).map(a => ({ ...a, source: 'static' }));
-
-        // 2. Obtener alternativas guardadas DENTRO de la definición custom
-        const deCustomInside = (uf.alternativas || []).map(a => ({ ...a, source: 'runtime' }));
-
-        // 3. Obtener alternativas sueltas que apuntan a esta UF (por ID o por Nombre)
-        const deRuntimeSueltas = runtimeAlts.filter(a =>
-          a.uf === uf.id || a.ufId === uf.id || a.uf === uf.label
-        ).map(a => ({ ...a, source: 'runtime' }));
-
-        const combinadas = [...deStatic, ...deCustomInside, ...deRuntimeSueltas];
-        const uniqueInUF = new Map();
-
-        combinadas.forEach(alt => {
-          // Usamos nombre + tipo como clave única para evitar duplicados visuales
-          const key = `${alt.nombre}-${alt.tipo}`.toLowerCase();
-          if (!uniqueInUF.has(key)) {
-            uniqueInUF.set(key, {
-              ufId: uf.id,
-              ufLabel: uf.label,
-              id: alt.id || alt.nombre,
-              label: alt.nombre,
-              tipo: alt.tipo,
-              source: alt.source || 'runtime',
-              amb: alt.amb,
-              soc: alt.soc,
-              eco: alt.eco
-            });
-          }
+      for (const uf of ufs) {
+        if (filterUF !== '__all__' && uf.id !== filterUF) continue;
+        
+        const alts = await connector.getAlternatives(uf.id);
+        alts.forEach(a => {
+          allAlts.push({ ...a, ufLabel: uf.label });
         });
-        uniqueInUF.forEach(a => allAlts.push(a));
-      });
-      // Filtrar por la acción seleccionada en el menú lateral
-      const filtered = filterUF === '__all__' ? allAlts : allAlts.filter(a => a.ufId === filterUF);
+      }
 
-      // Actualizamos los contadores de las tarjetas superiores
+      // Actualizar Métricas Superiores
       document.getElementById('metric-total').textContent = allAlts.length;
       document.getElementById('metric-ante').textContent = allAlts.filter(a => a.tipo === 'EX-ANTE').length;
       document.getElementById('metric-post').textContent = allAlts.filter(a => a.tipo === 'EX-POST').length;
-      document.getElementById('metric-runtime').textContent = allAlts.filter(a => a.source === 'runtime').length;
-      document.getElementById('bbdd-count').textContent = `${filtered.length} REGISTROS VISIBLES`;
+      document.getElementById('metric-runtime').textContent = allAlts.length; // En Firebase todo es "cloud" ahora
+      document.getElementById('bbdd-count').textContent = `${allAlts.length} REGISTROS VISIBLES`;
 
-      if (!filtered.length) {
-        document.getElementById('bbdd-table').innerHTML = `<tr><td colspan="7" class="p-10 text-center text-outline font-headline">No hay registros cargados.</td></tr>`;
+      if (!allAlts.length) {
+        document.getElementById('bbdd-table').innerHTML = `<tr><td colspan="7" class="p-10 text-center text-outline font-headline">No records loaded.</td></tr>`;
+        spin(false);
         return;
       }
 
-      // Dibujamos la tabla
-      document.getElementById('bbdd-table').innerHTML = filtered.map(a => `
-          <tr class="hover:bg-surface-container-low/50 transition-colors group ${a.source === 'runtime' ? 'bg-amber-50/20' : ''}">
+      // Dibujar la tabla
+      document.getElementById('bbdd-table').innerHTML = allAlts.map(a => `
+          <tr class="hover:bg-surface-container-low/50 transition-colors group bg-amber-50/10">
             <td class="px-4 py-4"><span class="text-[10px] font-bold font-mono text-outline uppercase">${a.ufLabel}</span></td>
             <td class="px-4 py-4">${bTypeBBDD(a.tipo)}</td>
-            <td class="px-6 py-4"><div class="font-headline font-semibold text-sm text-on-surface">${a.label}</div></td>
+            <td class="px-6 py-4"><div class="font-headline font-semibold text-sm text-on-surface">${a.nombre}</div></td>
             <td class="px-4 py-5 text-right font-mono text-xs text-slate-700">${Number(a.amb || 0).toFixed(2)}</td>
             <td class="px-4 py-5 text-right font-mono text-xs text-slate-700">${Number(a.soc || 0).toFixed(2)}</td>
             <td class="px-4 py-5 text-right font-mono text-xs text-slate-700">${Number(a.eco || 0).toFixed(2)}</td>
+            <td class="px-4 py-5 text-right font-mono text-xs font-bold text-accent-purple">${a.satisfaccion !== undefined ? a.satisfaccion + '%' : '--'}</td>
             <td class="px-6 py-4 text-right">
               <div class="flex items-center justify-end gap-2">
-                <span class="${a.source === 'runtime' ? 'badge-runtime' : 'badge-static'}">${a.source === 'runtime' ? 'Runtime' : 'Estático'}</span>
-                ${a.source === 'runtime' ? `<button onclick="delAlternativa('${a.ufId}','${a.id}','${a.label}')" class="opacity-0 group-hover:opacity-100 p-1.5 text-error hover:bg-error/10 rounded-lg transition-all"><span class="material-symbols-outlined text-[18px]">delete</span></button>` : ''}
+                <span class="badge-runtime bg-blue-100 text-blue-800 border-blue-200">Cloud</span>
+                <button onclick="delAlternativa('${a.id}', '${a.nombre}')" class="opacity-0 group-hover:opacity-100 p-1.5 text-error hover:bg-error/10 rounded-lg transition-all"><span class="material-symbols-outlined text-[18px]">delete</span></button>
               </div>
             </td>
           </tr>`).join('');
+      
+      spin(false);
     }
-    // ── CRUD ─────────────────────────────────────────────────────
-    function crearAlternativa() {
+
+    window.crearAlternativa = async function() {
       const ufId = document.getElementById('na-uf').value;
       const nom = document.getElementById('na-nom').value.trim();
 
-      if (!ufId) { msg('Selecciona una Acción primero', 'err'); return; }
-      if (!nom) { msg('El nombre de la alternativa es obligatorio', 'err'); return; }
+      if (!ufId) { msg('Please select an Action first', 'err'); return; }
+      if (!nom) { msg('Alternative name is required', 'err'); return; }
 
-      const amb = parseFloat(document.getElementById('na-amb').value) || 0;
-      const soc = parseFloat(document.getElementById('na-soc').value) || 0;
-      const eco = parseFloat(document.getElementById('na-eco').value) || 0;
-      const tipo = document.getElementById('na-tipo').value;
-
+      let satInput = document.getElementById('na-sat').value.trim().toUpperCase();
       const nuevaAlt = {
-        id: 'alt_' + Date.now(),
         nombre: nom,
-        tipo: tipo,
-        amb: amb,
-        soc: soc,
-        eco: eco,
-        source: 'runtime'
+        tipo: document.getElementById('na-tipo').value,
+        amb: parseFloat(document.getElementById('na-amb').value) || 0,
+        soc: parseFloat(document.getElementById('na-soc').value) || 0,
+        eco: parseFloat(document.getElementById('na-eco').value) || 0,
+        satisfaccion: (satInput === 'NS' || satInput === '') ? 50 : (parseFloat(satInput) || 50)
       };
 
-      if (ufId.startsWith('uf_custom_')) {
-        let customUFs = JSON.parse(localStorage.getItem('sonya_custom_ufs')) || [];
-        let index = customUFs.findIndex(u => u.id === ufId);
-
-        if (index !== -1) {
-          if (!customUFs[index].alternativas) customUFs[index].alternativas = [];
-          customUFs[index].alternativas.push(nuevaAlt);
-          customUFs[index].count = customUFs[index].alternativas.length;
-          localStorage.setItem('sonya_custom_ufs', JSON.stringify(customUFs));
-        }
-      } else {
-        connector.addAlternative(ufId, {
-          label: nom,
-          tipo: tipo,
-          scores: { amb, soc, eco }
-        });
-      }
-
-      document.getElementById('na-nom').value = '';
-      document.getElementById('na-amb').value = '0';
-      document.getElementById('na-soc').value = '0';
-      document.getElementById('na-eco').value = '0';
-
-      msg(`"${nom}" guardada correctamente`, 'ok');
-
-      sanitizeBBDD(); // Pasamos la Roomba para actualizar
-      renderTable();
-
-      const ufsActualizadas = [...connector.getUFs()];
-      const customUFs = JSON.parse(localStorage.getItem('sonya_custom_ufs')) || [];
-      customUFs.forEach(c => {
-        if (!ufsActualizadas.some(u => u.id === c.id)) ufsActualizadas.push(c);
-      });
-      populateUFSelects(ufsActualizadas);
-    }
-
-
-
-    function delAlternativa(ufId, altId, altName) {
-      if (!confirm(`¿Eliminar "${altName}"?`)) return;
-
-      // 1. Borrar de runtime suelto
-      let runtimeAlts = JSON.parse(localStorage.getItem('sonya_runtime_alts')) || [];
-      let nuevasRuntime = runtimeAlts.filter(a => !((a.uf === ufId || a.ufId === ufId) && (a.id === altId || a.nombre === altName)));
-      localStorage.setItem('sonya_runtime_alts', JSON.stringify(nuevasRuntime));
-
-      // 2. Borrar de carpetas custom
-      let customUFs = JSON.parse(localStorage.getItem('sonya_custom_ufs')) || [];
-      let ufIndex = customUFs.findIndex(u => u.id === ufId || u.label === ufId);
-      if (ufIndex !== -1) {
-        customUFs[ufIndex].alternativas = (customUFs[ufIndex].alternativas || []).filter(a => a.id !== altId && a.nombre !== altName);
-        customUFs[ufIndex].count = customUFs[ufIndex].alternativas.length;
-        localStorage.setItem('sonya_custom_ufs', JSON.stringify(customUFs));
-      }
-
-      msg('Registro eliminado', 'ok');
-
-      // 3. LIMPIEZA Y REFRESCO CRÍTICO
-      sanitizeBBDD(); // Elimina la carpeta de la memoria si llegó a 0
-      renderTable();  // Limpia la tabla
-
-      // 4. ESTO ES LO QUE TE FALTA: Forzar que los desplegables se vuelvan a dibujar
-      const staticUFs = connector.getUFs();
-      const cleanedCustomUFs = JSON.parse(localStorage.getItem('sonya_custom_ufs')) || [];
-      populateUFSelects([...staticUFs, ...cleanedCustomUFs]);
-    }
-
-
-    function clearRuntimeAll() {
-      if (!confirm('¿Limpiar TODAS las alternativas añadidas en esta sesión?')) return;
-      connector.clearAllRuntime();
-      localStorage.removeItem('sonya_custom_ufs');
-      msg('Runtime limpiado. Solo quedan los datos estáticos del JSON.', 'ok');
-      setTimeout(() => location.reload(), 800);
-    }
-
-    // ── Bootstrap ────────────────────────────────────────────────
-    window.addEventListener('DOMContentLoaded', async () => {
-      spin(true, 'Cargando BBDD desde database.json...');
+      spin(true, 'Guardando en la nube...');
       try {
-        connector = await SonyaConnector.init();
-
-        const customUFs = JSON.parse(localStorage.getItem('sonya_custom_ufs')) || [];
-        const ufs = connector.getUFs();
-        customUFs.forEach(cuf => {
-          if (!ufs.some(u => u.id === cuf.id)) {
-            ufs.push(cuf);
-          }
-        });
-
-        populateUFSelects(ufs);
-        renderTable();
-        msg(`BBDD cargada — ${connector.getStatus().totalAlts} alternativas en ${ufs.length} U.F.`, 'ok');
-      } catch (e) {
-        document.getElementById('bbdd-table').innerHTML = `<tr><td colspan="7" class="p-10 text-center text-error font-headline">${e.message}</td></tr>`;
-        msg(`Error al cargar: ${e.message}`, 'err');
+        await connector.addAlternative(ufId, nuevaAlt);
+        msg(`"${nom}" saved successfully to Firebase`, 'ok');
+        
+        // Limpiar formulario
+        document.getElementById('na-nom').value = '';
+        document.getElementById('na-amb').value = '0';
+        document.getElementById('na-soc').value = '0';
+        document.getElementById('na-eco').value = '0';
+        document.getElementById('na-sat').value = '50';
+        
+        await renderTable();
+      } catch (error) {
+        msg('Error saving to cloud', 'err');
       }
       spin(false);
-    });
+    }
 
-    // ── Modal ────────────────────────────────────────────────────
-    function openNewActionModal() {
+    window.delAlternativa = async function(altId, altName) {
+      if (!confirm(`Delete "${altName}" permanently from the database?`)) return;
+      
+      spin(true, 'Borrando de la nube...');
+      try {
+        await connector.removeAlternative(altId);
+        msg('Record deleted permanently', 'ok');
+        await renderTable();
+      } catch (error) {
+        msg('Error deleting record', 'err');
+      }
+      spin(false);
+    }
+
+    window.clearRuntimeAll = function() {
+      msg('Clear ALL is disabled in Cloud Mode. Please delete records individually.', 'warn');
+    }
+
+    // ── Modal de Nueva Acción ────────────────────────────────────
+    window.openNewActionModal = function() {
       const modal = document.getElementById('global-new-action-modal');
       const content = document.getElementById('global-new-action-content');
       modal.classList.remove('hidden');
-      setTimeout(() => {
-        content.classList.remove('scale-95', 'opacity-0');
-      }, 10);
+      setTimeout(() => content.classList.remove('scale-95', 'opacity-0'), 10);
       document.getElementById('gna-name').focus();
     }
 
-    function closeNewActionModal() {
+    window.closeNewActionModal = function() {
       const content = document.getElementById('global-new-action-content');
       content.classList.add('scale-95', 'opacity-0');
       setTimeout(() => {
@@ -804,44 +686,47 @@
       }, 200);
     }
 
-    function confirmNewAction() {
+    window.confirmNewAction = async function() {
       const nombre = document.getElementById('gna-name').value.trim();
       const unit = document.getElementById('gna-unit').value.trim();
 
-      if (!nombre) { msg('Ingresa un nombre para la Acción', 'err'); return; }
-      if (nombre.length < 3) { msg('El nombre debe tener al menos 3 caracteres', 'warn'); return; }
-
-      const ufsActuales = connector.getUFs();
-      if (ufsActuales.some(uf => uf.label.toLowerCase() === nombre.toLowerCase())) {
-        msg('Ya existe una Acción con ese nombre', 'err'); return;
+      if (!nombre) { msg('Please enter an Action name', 'err'); return; }
+      
+      spin(true, 'Creando colección en Firebase...');
+      try {
+        await connector.addUF({ label: nombre, unit: unit });
+        msg(`Action "${nombre}" created successfully`, 'ok');
+        closeNewActionModal();
+        await populateUFSelects();
+      } catch (error) {
+        msg('Error creating Action', 'err');
       }
-
-      const newUF = {
-        id: 'uf_custom_' + Date.now(),
-        label: nombre,
-        unit: unit || 'Unidades',
-        count: 0,
-        alternativas: []
-      };
-
-      const customUFs = JSON.parse(localStorage.getItem('sonya_custom_ufs')) || [];
-      customUFs.push(newUF);
-      localStorage.setItem('sonya_custom_ufs', JSON.stringify(customUFs));
-
-      msg(`Acción "${nombre}" creada exitosamente`, 'ok');
-      closeNewActionModal();
-
-      spin(true, 'Actualizando BBDD...');
-      setTimeout(() => location.reload(), 600);
+      spin(false);
     }
 
+    // ── Arranque ────────────────────────────────────────────────
+    window.addEventListener('DOMContentLoaded', async () => {
+      spin(true, 'Conectando a Firebase Firestore...');
+      try {
+        connector = await window.SonyaConnector.init();
+        await populateUFSelects();
+        await renderTable();
+        msg(`Connected securely to Cloud Database`, 'ok');
+      } catch (e) {
+        document.getElementById('bbdd-table').innerHTML = `<tr><td colspan="7" class="p-10 text-center text-error font-headline">Connection Error: ${e.message}</td></tr>`;
+        msg(`Connection error`, 'err');
+      }
+      spin(false);
+    });
+    // ── Eventos de teclado ───────────────────────────────────────
     document.addEventListener('DOMContentLoaded', () => {
       ['gna-name', 'gna-unit'].forEach(id => {
         document.getElementById(id)?.addEventListener('keypress', (e) => {
-          if (e.key === 'Enter') confirmNewAction();
+          if (e.key === 'Enter') window.confirmNewAction();
         });
       });
     });
+
   </script>
   <div id="global-new-action-modal"
     class="hidden fixed inset-0 z-[9999] flex items-center justify-center bg-slate-900/40 backdrop-blur-sm p-4">
@@ -851,32 +736,32 @@
         <div class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-800">
           <span class="material-symbols-outlined">create_new_folder</span>
         </div>
-        <h3 class="text-xl font-bold font-headline text-slate-900">Crear Nueva Acción</h3>
+        <h3 class="text-xl font-bold font-headline text-slate-900">Create New Action</h3>
       </div>
-      <p class="text-xs text-slate-500 mb-6">Define el contenedor principal en la BBDD para poder asignarle alternativas
-        (EX-ANTE y EX-POST).</p>
+      <p class="text-xs text-slate-500 mb-6">Define the main container in the database for assigning alternatives
+        (EX-ANTE and EX-POST).</p>
 
       <div class="space-y-5 mb-8">
         <div>
-          <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Nombre de la
-            Acción</label>
-          <input type="text" id="gna-name" placeholder="Ej: Nueva Ley de Residuos, Proceso de Producción X"
+          <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Action
+            Name</label>
+          <input type="text" id="gna-name" placeholder="E.g.: New Waste Legislation, Production Process X"
             class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3.5 text-sm font-bold text-slate-800 focus:ring-2 focus:ring-accent-purple/30 outline-none transition-all">
         </div>
         <div>
-          <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Unidad de Medida
-            (Opcional)</label>
-          <input type="text" id="gna-unit" placeholder="Ej: Horas, €, kg CO2"
+          <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Unit of Measurement
+            (Optional)</label>
+          <input type="text" id="gna-unit" placeholder="E.g.: Hours, £, kg CO2"
             class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3.5 text-sm font-bold text-slate-800 focus:ring-2 focus:ring-accent-purple/30 outline-none transition-all">
         </div>
       </div>
 
       <div class="flex justify-end gap-3 pt-2">
         <button onclick="closeNewActionModal()"
-          class="px-5 py-2.5 text-sm font-bold text-slate-500 hover:bg-slate-100 rounded-xl transition-colors">Cancelar</button>
+          class="px-5 py-2.5 text-sm font-bold text-slate-500 hover:bg-slate-100 rounded-xl transition-colors">Cancel</button>
         <button onclick="confirmNewAction()"
           class="flex items-center gap-2 px-6 py-2.5 text-sm font-extrabold text-white bg-slate-900 hover:bg-accent-purple rounded-xl shadow-lg transition-all active:scale-95">
-          <span class="material-symbols-outlined text-lg">check</span> Guardar en BBDD
+          <span class="material-symbols-outlined text-lg">check</span> Save to Database
         </button>
       </div>
     </div>
