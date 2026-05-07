@@ -588,7 +588,7 @@
                 <section class="mt-8 bg-white rounded-xl border border-purple-200 shadow-xl overflow-hidden">
                     <div class="px-6 py-5 border-b border-purple-100 flex justify-between items-center bg-purple-50">
                         <h4 class="font-headline font-bold text-xl text-purple-900 flex items-center gap-2">
-                            <span class="material-symbols-outlined">how_to_reg</span> Viable Ranking - Satisfaction
+                            <span class="material-symbols-outlined">how_to_reg</span> Viable Ranking - Effectiveness
                         </h4>
                         <div class="flex items-center gap-2">
                             <span class="text-xs font-bold text-purple-700">Minimum required:</span>
@@ -707,7 +707,7 @@
                                     <!-- NEW: EX-ANTE SATISFACTION -->
                                     <div><label
                                             class="block text-[10px] font-bold text-[#8b3d97] uppercase tracking-widest mb-1.5 ml-2">%
-                                            Satisfaction</label><input type="text" id="m-ante-sat"
+                                            Effectiveness</label><input type="text" id="m-ante-sat"
                                             placeholder="E.g.: 80 or NS"
                                             class="w-full bg-purple-50 border-none rounded-xl p-3 pl-4 font-label font-bold focus:ring-2 focus:ring-[#8b3d97]/40 text-[#8b3d97]">
                                         <p class="text-[9px] text-slate-400 mt-1 ml-2 font-mono">Enter <b>NS</b> if
@@ -830,7 +830,7 @@
                         <div
                             class="px-6 py-5 border-b border-purple-100 flex justify-between items-center bg-purple-50">
                             <h4 class="font-headline font-bold text-xl text-purple-900 flex items-center gap-2">
-                                <span class="material-symbols-outlined">how_to_reg</span> Viable Ranking - Satisfaction
+                                <span class="material-symbols-outlined">how_to_reg</span> Viable Ranking - Effectiveness
                             </h4>
                             <div class="flex items-center gap-2">
                                 <span class="text-xs font-bold text-purple-700">Minimum required:</span>
@@ -871,9 +871,9 @@
                         <!-- NEW: Satisfaction Input -->
                         <div class="mt-10 pt-8 border-t border-outline-variant/20">
                             <h3 class="font-headline text-lg font-bold mb-4 flex items-center gap-2 text-[#8b3d97]">
-                                <span class="material-symbols-outlined">how_to_reg</span>Satisfaction Limit
+                                <span class="material-symbols-outlined">how_to_reg</span>Effectiveness Limit
                             </h3>
-                            <p class="text-xs text-on-surface-variant mb-4">Set the minimum satisfaction % to
+                            <p class="text-xs text-on-surface-variant mb-4">Set the minimum effectiveness % to
                                 accept a solution.</p>
                             <div class="flex items-center gap-4">
                                 <input type="number" id="ctrl-min-sat" value="20" min="0" max="100"
@@ -1428,7 +1428,7 @@
                 </div>`).join('');
 
             document.getElementById('ctrl-lr-selector').innerHTML = mrpAlpha.map((a, i) => `
-                <button onclick="mrpLR=${a};buildMCtrl();" class="flex-1 h-full rounded-full flex flex-col items-center justify-center transition-all font-mono text-xs font-bold ${mrpLR === a ? 'bg-error text-white shadow-lg shadow-error/30 ring-4 ring-red-100' : 'hover:bg-white/60 text-outline'}">
+                <button onclick="setRedLine(${a})" class="flex-1 h-full rounded-full flex flex-col items-center justify-center transition-all font-mono text-xs font-bold ${mrpLR === a ? 'bg-error text-white shadow-lg shadow-error/30 ring-4 ring-red-100' : 'hover:bg-white/60 text-outline'}">
                     A${i}${mrpLR === a ? '<span style="font-size:8px;letter-spacing:0.05em;text-transform:uppercase;font-weight:700;display:block">Veto</span>' : ''}
                 </button>`).join('');
 
@@ -1447,6 +1447,11 @@
                         </td>`).join('')}
                 </tr>`).join('');
         }
+        // Nueva función para cambiar la línea roja desde el HTML
+        window.setRedLine = function(val) {
+            mrpLR = val;
+            window.buildMCtrl();
+        };
 
         window.applyMConfig = function() {
             mrpAlpha = [0, 1, 2, 3, 4].map(i => parseFloat(document.getElementById(`ca-${i}`).value));
@@ -1483,7 +1488,7 @@
                         <div><label class="block text-[9px] font-bold text-teal-600 uppercase tracking-widest mb-1 ml-1">Environmental</label><input type="number" step="any" id="sim-ep-amb-${simDraftCount}" placeholder="0.0" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 font-mono text-sm focus:ring-2 focus:ring-[#8b3d97]/20"></div>
                         <div><label class="block text-[9px] font-bold text-purple-600 uppercase tracking-widest mb-1 ml-1">Social</label><input type="number" step="any" id="sim-ep-soc-${simDraftCount}" placeholder="0.0" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 font-mono text-sm focus:ring-2 focus:ring-[#8b3d97]/20"></div>
                         <div><label class="block text-[9px] font-bold text-primary uppercase tracking-widest mb-1 ml-1">Economic</label><input type="number" step="any" id="sim-ep-eco-${simDraftCount}" placeholder="0.0" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 font-mono text-sm focus:ring-2 focus:ring-[#8b3d97]/20"></div>
-                        <div><label class="block text-[9px] font-bold text-[#8b3d97] uppercase tracking-widest mb-1 ml-1">Satisfaction</label><input type="text" id="sim-ep-sat-${simDraftCount}" placeholder="E.g.: 80 or NS" title="Escribe NS si no la conoces" class="w-full bg-purple-50 border border-purple-200 text-[#8b3d97] rounded-lg p-2.5 font-mono text-sm focus:ring-2 focus:ring-[#8b3d97]/40"></div>
+                        <div><label class="block text-[9px] font-bold text-[#8b3d97] uppercase tracking-widest mb-1 ml-1">Effectiveness</label><input type="text" id="sim-ep-sat-${simDraftCount}" placeholder="E.g.: 80 or NS" title="Escribe NS si no la conoces" class="w-full bg-purple-50 border border-purple-200 text-[#8b3d97] rounded-lg p-2.5 font-mono text-sm focus:ring-2 focus:ring-[#8b3d97]/40"></div>
                     </div>
                 </div>`;
             document.getElementById('m-expost-list').appendChild(d);
@@ -1602,7 +1607,7 @@
                 html += `
                 <div class="mt-8 bg-white border-t border-purple-200">
                     <div class="px-6 py-5 border-b border-purple-100 flex justify-between items-center bg-purple-50">
-                        <h4 class="font-headline font-bold text-xl text-purple-900 flex items-center gap-2"><span class="material-symbols-outlined">how_to_reg</span> Viable Ranking - Satisfaction</h4>
+                        <h4 class="font-headline font-bold text-xl text-purple-900 flex items-center gap-2"><span class="material-symbols-outlined">how_to_reg</span> Viable Ranking - Effectiveness</h4>
                         <div class="flex items-center gap-2"><span class="text-xs font-bold text-purple-700">Minimum required:</span><span class="bg-white px-3 py-1 rounded-md border border-purple-200 font-mono font-bold text-sm text-purple-800">${mrpMinSat}%</span></div>
                     </div>
                     <div class="overflow-x-auto"><table class="w-full text-left border-collapse">
