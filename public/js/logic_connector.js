@@ -55,6 +55,22 @@ class SonyaConnector {
             return { id: docRef.id, ...ufData };
         } catch (error) { console.error(error); throw error; }
     }
+    async removeUF(ufId) {
+        try {
+            // 1. Borramos la Acción principal
+            await deleteDoc(doc(db, "usuarios", this.uid, "acciones", ufId));
+            
+            // 2. Borrado en cascada: buscamos y borramos las alternativas que colgaran de ella
+            const alts = await this.getAlternatives(ufId);
+            for (const alt of alts) {
+                await this.removeAlternative(alt.id);
+            }
+            return true;
+        } catch (error) { 
+            console.error("Error eliminando Acción:", error); 
+            throw error; 
+        }
+    }
 
     async getAlternatives(ufId) {
         try {
