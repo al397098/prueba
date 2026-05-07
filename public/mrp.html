@@ -357,7 +357,7 @@
                         class="material-symbols-outlined text-xl">database</span>BBDD</a>
                 <a href="mrp.html" class="sidebar-link active"><span
                         class="material-symbols-outlined fill-icon text-xl">analytics</span>Motor MRP</a>
-                
+
             </nav>
             <div class="mt-8 p-5 bg-gradient-to-br from-white to-red-50/40 border border-red-100 rounded-2xl shadow-sm">
                 <div class="flex items-center gap-2 mb-2">
@@ -491,58 +491,20 @@
                                 class="text-[10px] font-mono bg-white px-2 py-1 rounded border border-outline-variant/20 text-outline font-bold">MRP
                                 VETO LOGIC</span>
                         </div>
-                        <div class="space-y-0">
-                            <div class="flex items-start gap-3">
-                                <div class="flex flex-col items-center pt-1">
-                                    <div class="std-dot"></div>
-                                    <div class="connector h-7"></div>
-                                </div>
-                                <div class="flex-1 pb-5 flex items-center justify-between"><span
-                                        class="font-headline font-bold text-sm text-slate-400">Alpha [4] :
-                                        Ideal</span><span class="data-mono text-[11px] text-slate-400">4.00</span></div>
+
+                        <div class="bg-surface-container-low p-8 rounded-xl border border-outline-variant/10">
+                            <div class="flex items-center justify-between mb-8">
+                                <h4 class="font-headline font-bold text-xl flex items-center gap-2"><span
+                                        class="material-symbols-outlined text-error">gavel</span>Active Red Line</h4>
+                                <span
+                                    class="text-[10px] font-mono bg-white px-2 py-1 rounded border border-outline-variant/20 text-outline font-bold">MRP
+                                    VETO LOGIC</span>
                             </div>
-                            <div class="flex items-start gap-3">
-                                <div class="flex flex-col items-center pt-1">
-                                    <div class="std-dot"></div>
-                                    <div class="connector h-7"></div>
-                                </div>
-                                <div class="flex-1 pb-5 flex items-center justify-between"><span
-                                        class="font-headline font-bold text-sm text-slate-400">Alpha [3] : High
-                                        Performance</span><span class="data-mono text-[11px] text-slate-400">3.00</span></div>
-                            </div>
-                            <div class="flex items-start gap-3">
-                                <div class="flex flex-col items-center pt-1">
-                                    <div class="std-dot"></div>
-                                    <div class="connector h-8"></div>
-                                </div>
-                                <div class="flex-1 pb-5 flex items-center justify-between"><span
-                                        class="font-headline font-bold text-sm text-slate-400">Alpha [2] :
-                                        Standard</span><span class="data-mono text-[11px] text-slate-400">2.50</span>
-                                </div>
-                            </div>
-                            <div class="flex items-start gap-3">
-                                <div class="flex flex-col items-center pt-1">
-                                    <div class="red-dot"></div>
-                                    <div class="connector h-8"></div>
-                                </div>
-                                <div class="flex-1 bg-red-50/60 border border-red-200 rounded-lg px-4 py-3 mb-0">
-                                    <div class="flex items-center justify-between"><span
-                                            class="font-headline font-extrabold text-sm text-red-600 uppercase tracking-tight">Alpha
-                                            [1] : RED LINE (VETO)</span><span
-                                            class="data-mono text-sm font-bold text-red-600" id="lr-display">1.00</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="flex items-start gap-3 pt-3">
-                                <div class="flex flex-col items-center pt-1">
-                                    <div class="std-dot opacity-40"></div>
-                                </div>
-                                <div class="flex-1 flex items-center justify-between"><span
-                                        class="font-headline font-bold text-sm text-slate-300">Alpha [0] :
-                                        Unacceptable</span><span class="data-mono text-[11px] text-slate-300">0.00</span>
-                                </div>
+
+                            <div class="space-y-0" id="redline-visual-panel">
                             </div>
                         </div>
+
                     </div>
                 </section>
 
@@ -735,7 +697,8 @@
                         </div>
                         <div id="m-expost-existing-container"
                             class="hidden mb-6 p-5 bg-slate-50 rounded-2xl border border-slate-200">
-                            <p class="text-[10px] font-black uppercase text-slate-400 tracking-widest mb-4">Existing solutions
+                            <p class="text-[10px] font-black uppercase text-slate-400 tracking-widest mb-4">Existing
+                                solutions
                                 in the database:</p>
                             <div id="m-expost-existing-list" class="grid grid-cols-1 md:grid-cols-2 gap-3">
                             </div>
@@ -779,7 +742,8 @@
                             <select id="m-scenario-uf" onchange="onScenarioActionChange(this.value)"
                                 class="w-full bg-slate-50 border-0 border-b-2 border-outline focus:border-[#8b3d97] focus:ring-0 font-body text-sm py-3 transition-colors cursor-pointer"></select>
                             <div class="mt-6 p-4 bg-purple-50 rounded-xl border border-purple-100">
-                                <p class="text-[10px] font-black text-purple-400 uppercase tracking-widest mb-1">Detected
+                                <p class="text-[10px] font-black text-purple-400 uppercase tracking-widest mb-1">
+                                    Detected
                                     Baseline</p>
                                 <div id="m-scenario-base-info" class="text-sm font-bold text-purple-900 italic">
                                     Select an action...</div>
@@ -787,7 +751,8 @@
                         </div>
                         <div>
                             <label
-                                class="block font-mono text-[10px] uppercase tracking-widest text-outline mb-2 text-center">Select Alternatives to Compare</label>
+                                class="block font-mono text-[10px] uppercase tracking-widest text-outline mb-2 text-center">Select
+                                Alternatives to Compare</label>
                             <div id="m-scenario-expost-list"
                                 class="space-y-2 max-h-60 overflow-y-auto pr-2 no-scrollbar"></div>
                             <button onclick="generateScenarioRanking()"
@@ -984,8 +949,8 @@
         </main>
     </div>
 
-<script src="js/mrp_engine.js"></script>
-    
+    <script src="js/mrp_engine.js"></script>
+
     <!-- Importamos el conector como módulo de Firebase -->
     <script type="module">
         import "./js/logic_connector.js";
@@ -997,14 +962,14 @@
         let simEC = 0;
         let mrpAlpha = [...window.MRPEngine.ALPHA_DEFAULT];
         let mrpLR = window.MRPEngine.LR_DEFAULT;
-        let mrpQCustom = null; 
-        let mrpMinSat = 20;    
+        let mrpQCustom = null;
+        let mrpMinSat = 20;
         let simDraftCount = 0;
         let currentDraftSimulation = null;
         let scenarioSelectedEPs = [];
 
         // ── Helpers UI (Exigidos en el objeto global 'window') ────
-        window.msg = function(txt, type = 'info') {
+        window.msg = function (txt, type = 'info') {
             const w = document.getElementById('toast-wrap'), t = document.createElement('div');
             t.className = 'toast';
             const c = type === 'err' ? '#ba1a1a' : type === 'ok' ? '#00696c' : '#8b3d97';
@@ -1013,13 +978,13 @@
             w.appendChild(t);
             setTimeout(() => { t.classList.add('removing'); setTimeout(() => t.remove(), 300); }, 3500);
         }
-        
-        window.spin = function(on, text = 'Calculating...') {
+
+        window.spin = function (on, text = 'Calculating...') {
             document.getElementById('spin-msg').innerText = text;
             document.getElementById('loading').classList.toggle('show', on);
         }
-        
-        window.switchInnerTab = function(tab, btn) {
+
+        window.switchInnerTab = function (tab, btn) {
             document.querySelectorAll('.mrp-tab-btn').forEach(b => {
                 b.className = 'mrp-tab-btn h-full border-b-[3px] border-transparent text-slate-500 font-semibold text-sm tracking-wide px-2 lg:px-4 transition-all whitespace-nowrap';
             });
@@ -1040,7 +1005,7 @@
             if (val <= 0.01) return `<span class="badge-ko${cls}">${val.toFixed(2)}</span>`;
             return `<span class="badge-n${cls}">${val.toFixed(2)}</span>`;
         };
-        
+
         function getBadge(baseValue, currentValue) {
             if (!baseValue || !currentValue) return '<span class="text-slate-300">-</span>';
             const diff = baseValue - currentValue;
@@ -1052,22 +1017,22 @@
 
         // ── Core Async Functions (Firebase Connected) ────────────
 
-        window.populateUFSelectors = async function(ufs, selectedId) {
+        window.populateUFSelectors = async function (ufs, selectedId) {
             const opts = ufs.map(uf => `<option value="${uf.id}" ${uf.id === selectedId ? 'selected' : ''}>${uf.label}</option>`).join('');
-            
+
             const sidebarSel = document.getElementById('uf-sidebar-sel');
             if (sidebarSel) sidebarSel.innerHTML = opts + `<option value="__new__">➕ Create New Action</option>`;
-            
+
             const simGlobalSel = document.getElementById('sim-uf-sel');
             if (simGlobalSel) simGlobalSel.innerHTML = `<option value="">-- Select Existing Action --</option><option value="__new__" style="font-weight:bold; color:#8b3d97">➕ Create New Action from Scratch</option>` + opts;
-            
+
             const scenarioSel = document.getElementById('m-scenario-uf');
             if (scenarioSel) scenarioSel.innerHTML = `<option value="">-- Select Existing Action --</option>` + opts;
         }
 
-        window.onUFChange = async function(ufId) {
+        window.onUFChange = async function (ufId) {
             ['uf-sidebar-sel', 'sim-uf-sel'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ufId; });
-            
+
             const builderAction = document.getElementById('m-action-builder-container');
             const anteSel = document.getElementById('m-ante-sel');
             const exPostList = document.getElementById('m-expost-existing-container');
@@ -1099,7 +1064,7 @@
             await window.loadM();
         }
 
-        window.onAnteChange = function(val) {
+        window.onAnteChange = function (val) {
             const baselineInputs = document.getElementById('m-ante-new');
             if (val === '__new_base__') {
                 if (baselineInputs) {
@@ -1114,9 +1079,9 @@
             }
         }
 
-        window.refreshAnteSelect = async function() {
+        window.refreshAnteSelect = async function () {
             if (!connector || !activeUF || activeUF === '__new__') return;
-            
+
             const alts = await connector.getAlternatives(activeUF);
             const exAntes = alts.filter(a => a.tipo === 'EX-ANTE');
             const anteSel = document.getElementById('m-ante-sel');
@@ -1133,7 +1098,7 @@
             window.onAnteChange(exAntes[0].nombre);
         }
 
-        window.refreshExPostExistingList = async function(ufId) {
+        window.refreshExPostExistingList = async function (ufId) {
             const container = document.getElementById('m-expost-existing-container');
             const list = document.getElementById('m-expost-existing-list');
 
@@ -1186,14 +1151,56 @@
                 </div>`).join('');
         }
 
-        window.loadM = async function() {
+        function renderRedLineVisual() {
+            const labels = ['Unacceptable', 'Reserve Level', 'Standard', 'High Performance', 'Ideal'];
+            let html = '';
+            const reversedIndices = [4, 3, 2, 1, 0]; // Lo dibujamos de arriba a abajo
+            
+            reversedIndices.forEach(i => {
+                const val = mrpAlpha[i];
+                const isVeto = (val === mrpLR); // ¿Es este Alpha la línea roja elegida?
+                
+                if (isVeto) {
+                    html += `
+                    <div class="flex items-start gap-3">
+                        <div class="flex flex-col items-center pt-1">
+                            <div class="red-dot"></div>
+                            ${i > 0 ? '<div class="connector h-8"></div>' : ''}
+                        </div>
+                        <div class="flex-1 bg-red-50/60 border border-red-200 rounded-lg px-4 py-3 mb-0">
+                            <div class="flex items-center justify-between"><span
+                                    class="font-headline font-extrabold text-sm text-red-600 uppercase tracking-tight">Alpha
+                                    [${i}] : RED LINE (VETO)</span><span
+                                    class="data-mono text-sm font-bold text-red-600">${val.toFixed(2)}</span>
+                            </div>
+                        </div>
+                    </div>`;
+                } else {
+                    html += `
+                    <div class="flex items-start gap-3">
+                        <div class="flex flex-col items-center pt-1">
+                            <div class="std-dot ${i === 0 ? 'opacity-40' : ''}"></div>
+                            ${i > 0 ? `<div class="connector ${i === 1 ? 'h-8' : 'h-7'}"></div>` : ''}
+                        </div>
+                        <div class="flex-1 pb-5 flex items-center justify-between"><span
+                                class="font-headline font-bold text-sm ${i === 0 ? 'text-slate-300' : 'text-slate-400'}">Alpha [${i}] :
+                                ${labels[i]}</span><span class="data-mono text-[11px] ${i === 0 ? 'text-slate-300' : 'text-slate-400'}">${val.toFixed(2)}</span></div>
+                    </div>`;
+                }
+            });
+            
+            const panel = document.getElementById('redline-visual-panel');
+            if (panel) panel.innerHTML = html;
+        }
+
+        window.loadM = async function () {
             if (!connector || !activeUF) return;
             spin(true, 'Processing MRP matrix from Cloud...');
-            
+
             try {
                 const ufs = await connector.getUFs();
                 const ufInfo = ufs.find(u => u.id === activeUF);
-                
+
                 // Pedimos datos frescos de Firestore y normalizamos la satisfacción
                 const rawAlts = await connector.getAlternatives(activeUF);
                 const altsDisponibles = rawAlts.map(alt => ({
@@ -1208,10 +1215,10 @@
                 }
 
                 lastResult = window.MRPEngine.run(altsDisponibles, { alpha: mrpAlpha, qCustom: mrpQCustom, lineaRoja: mrpLR });
-                
+
                 if (ufInfo) renderUFInfobar(ufInfo, altsDisponibles.length);
                 renderWeights(lastResult.pesos);
-
+                renderRedLineVisual();
                 const d = lastResult.ranking;
                 const ok = d.filter(r => !r.vetada).length;
                 const exAnte = d.find(item => item.tipo === 'EX-ANTE');
@@ -1297,8 +1304,8 @@
                                 </thead>
                                 <tbody class="divide-y divide-blue-50">
                                     ${survivalRanking.map((r, i) => {
-                                        const icon = r.pilarEliminado === 'Environmental' ? 'eco' : (r.pilarEliminado === 'Social' ? 'groups' : 'payments');
-                                        return `
+                        const icon = r.pilarEliminado === 'Environmental' ? 'eco' : (r.pilarEliminado === 'Social' ? 'groups' : 'payments');
+                        return `
                                         <tr class="hover:bg-blue-50/40 transition-all group">
                                             <td class="px-6 py-5 text-center font-mono font-bold text-blue-300 group-hover:text-blue-500">${String(i + 1).padStart(2, '0')}</td>
                                             <td class="px-6 py-5">
@@ -1325,7 +1332,7 @@
                                 : `<span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 text-slate-500 text-[10px] font-black rounded-lg border border-slate-200 uppercase tracking-widest">Secondary</span>`}
                                             </td>
                                         </tr>`
-                                    }).join('')}
+                    }).join('')}
                                 </tbody>
                             </table>
                         </div>`;
@@ -1404,7 +1411,7 @@
                 const satBody = document.getElementById('m-sat-table-body');
                 if (satBody) satBody.innerHTML = satTableHTML;
                 document.getElementById('display-min-sat').textContent = mrpMinSat + '%';
-                
+
                 document.getElementById('sidebar-status').textContent = `${d.length} alt. · RL=${mrpLR}`;
                 msg(`Ranking Cloud MRP Updated`, 'ok');
 
@@ -1416,7 +1423,7 @@
         }
 
         // ── Control Panel ─────────────────────────────────────────
-        window.buildMCtrl = function() {
+        window.buildMCtrl = function () {
             const labels = ['Unacceptable', 'Reserva (Red Line)', 'Standard', 'High Performance', 'Ideal'];
             document.getElementById('ctrl-alpha-inputs').innerHTML = mrpAlpha.map((a, i) => `
                 <div class="flex items-center justify-between">
@@ -1448,12 +1455,12 @@
                 </tr>`).join('');
         }
         // Nueva función para cambiar la línea roja desde el HTML
-        window.setRedLine = function(val) {
+        window.setRedLine = function (val) {
             mrpLR = val;
             window.buildMCtrl();
         };
 
-        window.applyMConfig = function() {
+        window.applyMConfig = function () {
             mrpAlpha = [0, 1, 2, 3, 4].map(i => parseFloat(document.getElementById(`ca-${i}`).value));
             if (!mrpAlpha.includes(mrpLR)) mrpLR = mrpAlpha[1];
             const nq = {};
@@ -1468,14 +1475,14 @@
             lastResult = null; window.loadM();
         }
 
-        window.resetMQ = function() {
+        window.resetMQ = function () {
             mrpQCustom = null;
             msg('Percentiles restored to Data-Driven mode', 'info');
             lastResult = null; window.loadM(); setTimeout(window.buildMCtrl, 600);
         }
 
         // ── Simulation Logic ──────────────────────────────────────
-        window.addSimRow = function() {
+        window.addSimRow = function () {
             simDraftCount++;
             const d = document.createElement('div');
             d.id = `sim-ep-${simDraftCount}`;
@@ -1494,7 +1501,7 @@
             document.getElementById('m-expost-list').appendChild(d);
         }
 
-        window.executeDraftSimulation = async function() {
+        window.executeDraftSimulation = async function () {
             const ufVal = document.getElementById('sim-uf-sel')?.value;
             if (!ufVal) { msg('Please select or create an Action first', 'err'); return; }
 
@@ -1661,7 +1668,7 @@
             spin(false);
         }
 
-        window.persistDraftSimulation = async function() {
+        window.persistDraftSimulation = async function () {
             if (!currentDraftSimulation) return;
             spin(true, 'Saving to Cloud Database...');
 
@@ -1690,7 +1697,7 @@
         }
 
         // ── Scenario Selectable Logic ─────────────────────────────
-        window.onScenarioActionChange = async function(val) {
+        window.onScenarioActionChange = async function (val) {
             if (!val || !connector) return;
 
             scenarioSelectedEPs = [];
@@ -1717,7 +1724,7 @@
             `).join('');
         }
 
-        window.toggleScenarioAlt = function(nombre, isChecked) {
+        window.toggleScenarioAlt = function (nombre, isChecked) {
             if (isChecked) {
                 if (!scenarioSelectedEPs.includes(nombre)) scenarioSelectedEPs.push(nombre);
             } else {
@@ -1725,7 +1732,7 @@
             }
         }
 
-        window.generateScenarioRanking = async function() {
+        window.generateScenarioRanking = async function () {
             const actionName = document.getElementById('m-scenario-uf').value;
             if (!actionName) { msg('Please select an Action first', 'err'); return; }
             if (scenarioSelectedEPs.length === 0) { msg('Please tick at least one EX-POST alternative', 'err'); return; }
@@ -1813,7 +1820,7 @@
 
                     const aprobado = !isNS && parseFloat(sat) >= mrpMinSat;
                     let badgeSat = isNS ? `<span class="inline-flex items-center gap-1.5 px-3 py-1 bg-yellow-100 text-yellow-800 text-xs font-bold rounded-full border border-yellow-200">Pending (NS)</span>` : (aprobado ? `<span class="inline-flex items-center gap-1.5 px-3 py-1 bg-green-100 text-green-800 text-xs font-bold rounded-full border border-green-200">Accepted (Sat.)</span>` : `<span class="inline-flex items-center gap-1.5 px-3 py-1 bg-red-100 text-red-800 text-xs font-bold rounded-full border border-red-200">Rejected (Sat.)</span>`);
-                    
+
                     return `<tr class="hover:bg-purple-50/20 transition-colors"><td class="px-4 py-5"><div class="font-headline font-bold text-slate-800">${r.accion}</div><div class="text-[9px] font-bold font-mono text-slate-400 mt-1 uppercase">${r.tipo}</div></td><td class="px-4 py-5 text-center font-mono font-bold text-lg ${colorScore}">${scoreToShow.toFixed(3)}</td><td class="px-4 py-5 text-center">${badgeSS}</td><td class="px-4 py-5 text-center">${limitante}</td><td class="px-4 py-5 text-center"><span class="font-mono font-bold text-xl ${isNS ? 'text-yellow-600' : (aprobado ? 'text-green-600' : 'text-red-600')}">${isNS ? 'NS' : sat + '%'}</span></td><td class="px-4 py-5 text-right">${badgeSat}</td></tr>`;
                 }).join('');
 
@@ -1825,10 +1832,10 @@
         }
 
         // ── New Action Modal ─────────────────────────────────────
-        window.openNewActionModal = function() { document.getElementById('global-new-action-modal').classList.remove('hidden'); }
-        window.closeNewActionModal = function() { document.getElementById('global-new-action-modal').classList.add('hidden'); }
-        
-        window.confirmNewAction = async function() {
+        window.openNewActionModal = function () { document.getElementById('global-new-action-modal').classList.remove('hidden'); }
+        window.closeNewActionModal = function () { document.getElementById('global-new-action-modal').classList.add('hidden'); }
+
+        window.confirmNewAction = async function () {
             const nombre = document.getElementById('gna-name').value.trim();
             const unit = document.getElementById('gna-unit').value.trim();
             if (!nombre) { msg('Please enter a name', 'err'); return; }
@@ -1840,12 +1847,12 @@
                 window.closeNewActionModal();
                 const ufs = await connector.getUFs();
                 await window.populateUFSelectors(ufs, activeUF);
-            } catch(e) { msg('Error creating Action', 'err'); }
+            } catch (e) { msg('Error creating Action', 'err'); }
             spin(false);
         }
 
         // ── Math Tab ──────────────────────────────────────────────
-        window.buildMath = function() {
+        window.buildMath = function () {
             if (!lastResult) {
                 document.getElementById('m-math-container').innerHTML = `<div class="p-12 text-center text-slate-400 bg-white rounded-xl border border-outline-variant/15 shadow-sm"><span class="material-symbols-outlined text-5xl mb-4 block">functions</span><p class="font-headline font-bold">Carga primero el Global Ranking.</p></div>`;
                 return;
@@ -1883,7 +1890,7 @@
         // ── Initialization ─────────────────────────────────────────
         window.addEventListener('DOMContentLoaded', async () => {
             spin(true, 'Connecting to Cloud Engine...');
-            
+
             // Añadir soporte para Enter en el Modal
             ['gna-name', 'gna-unit'].forEach(id => {
                 document.getElementById(id)?.addEventListener('keypress', (e) => {
@@ -1894,7 +1901,7 @@
             try {
                 connector = await window.SonyaConnector.init();
                 const ufs = await connector.getUFs();
-                if(ufs.length > 0) {
+                if (ufs.length > 0) {
                     await window.populateUFSelectors(ufs, ufs[0].id);
                     activeUF = ufs[0].id;
                     await window.loadM();
